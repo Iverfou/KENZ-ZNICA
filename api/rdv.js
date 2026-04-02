@@ -222,11 +222,10 @@ export default async function handler(req, res) {
     };
 
     // Envoyer email équipe
-    await sendEmail(teamEmail, teamSubject, teamBody);
+    await sendEmail('fouedtaffar@outlook.com', teamSubject, teamBody);
 
     // Envoyer confirmation client si email valide
-    if (email && email.includes('@')) {
-      await sendEmail(email, clientSubject, clientBody);
+    await sendEmail('fouedtaffar@outlook.com', clientSubject, clientBody);
     }
 
     return res.status(200).json({ success: true, message: 'Emails envoyés' });
