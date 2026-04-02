@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/api/chat",       "dest": "/api/chat.js" },
+    { "src": "/api/rdv",        "dest": "/api/rdv.js" },
+    { "src": "/api/profil",     "dest": "/api/profil.js" },
+    { "src": "/api/newsletter", "dest": "/api/newsletter.js" },
+    { "src": "/",               "dest": "/index.html" },
+    { "src": "/agenda",         "dest": "/agenda.html" },
+    { "src": "/realisations",   "dest": "/realisations.html" },
+    { "src": "/vente",          "dest": "/vente.html" },
+    { "src": "/art",            "dest": "/art.html" },
+    { "src": "/profil",         "dest": "/profil.html" },
+    { "src": "/(.*)",           "dest": "/$1" }
+  ],
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin",  "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
+        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" },
+        { "key": "X-Content-Type-Options",       "value": "nosniff" },
+        { "key": "X-Frame-Options",              "value": "DENY" }
+      ]
+    }
+  ]
+}
