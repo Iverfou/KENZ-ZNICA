@@ -1,38 +1,605 @@
-<p style="font-size:0.8rem;color:var(--muted);margin-bottom:2rem">
-  Cliquez sur un membre pour prendre rendez-vous.
-</p>
-<div class="team-grid">
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KENZ ZNICA — Rénovation & Patrimoine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8D5A3; --gold-dark: #8B6914;
+  --noir: #0D0D0D; --charcoal: #1A1A1A; --stone: #2C2C2C;
+  --cream: #F5F0E8; --muted: #9A9A8A; --white: #FEFEFE;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: var(--noir); color: var(--cream); font-family: var(--sans); font-weight: 300; overflow-x: hidden; }
 
-  <a href="agenda.html?dir=0" class="team-card" style="text-decoration:none;display:block;cursor:pointer">
-    <div class="team-avatar">FZ</div>
-    <div class="team-name">Fatma Zohra Toubal</div>
-    <div class="team-role">Rénovation & Gestion</div>
-    <p class="team-desc">Pilote tous les chantiers de rénovation résidentielle et commerciale.</p>
-    <div style="margin-top:1rem;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)">Prendre RDV →</div>
-  </a>
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 4rem;
+  background: rgba(13,13,13,0.92); backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(201,168,76,0.2);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold); }
+.nav-logo span { color: var(--cream); font-weight: 300; }
+.nav-links { display: flex; gap: 2.5rem; align-items: center; }
+.nav-links a { font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.3s; }
+.nav-links a:hover { color: var(--gold); }
+.lang-selector { display: flex; gap: 0.5rem; }
+.lang-btn { background: none; border: 0.5px solid rgba(201,168,76,0.3); color: var(--muted); font-size: 0.7rem; letter-spacing: 0.1em; padding: 0.3rem 0.7rem; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
+.lang-btn.active, .lang-btn:hover { background: var(--gold); color: var(--noir); border-color: var(--gold); }
 
-  <a href="agenda.html?dir=1" class="team-card" style="text-decoration:none;display:block;cursor:pointer">
-    <div class="team-avatar">NJ</div>
-    <div class="team-name">Najat Toubal</div>
-    <div class="team-role">Décoration & Événements culturels</div>
-    <p class="team-desc">Artiste et directrice artistique. Crée des œuvres sur mesure pour les intérieurs.</p>
-    <div style="margin-top:1rem;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)">Prendre RDV →</div>
-  </a>
+/* BOUTON RDV MOBILE FIXE */
+.mobile-rdv {
+  display: none; position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 99;
+  background: var(--gold); color: var(--noir);
+  padding: 0.9rem 1.5rem; font-size: 0.75rem; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 500; text-decoration: none;
+  font-family: var(--sans); box-shadow: 0 4px 20px rgba(201,168,76,0.4);
+}
+@media (max-width: 900px) { .mobile-rdv { display: block; } }
 
-  <a href="agenda.html?dir=2" class="team-card" style="text-decoration:none;display:block;cursor:pointer">
-    <div class="team-avatar">AN</div>
-    <div class="team-name">Abdelnasser Toubal</div>
-    <div class="team-role">Financement & Transactions immobilières</div>
-    <p class="team-desc">Expert en montages financiers. Accompagne les acheteurs et investisseurs.</p>
-    <div style="margin-top:1rem;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)">Prendre RDV →</div>
-  </a>
+.hero { height: 100vh; position: relative; display: flex; align-items: flex-end; padding: 0 4rem 6rem; overflow: hidden; }
+.hero-bg { position: absolute; inset: 0; background: linear-gradient(135deg, #0D0D0D 0%, #1A1410 50%, #0D0D0D 100%); }
+.hero-pattern { position: absolute; inset: 0; opacity: 0.04; background-image: repeating-linear-gradient(45deg, var(--gold) 0, var(--gold) 1px, transparent 0, transparent 50%); background-size: 30px 30px; }
+.hero-accent { position: absolute; top: 0; right: 0; width: 45%; height: 100%; background: linear-gradient(180deg, rgba(201,168,76,0.06) 0%, transparent 100%); border-left: 0.5px solid rgba(201,168,76,0.15); }
+.hero-number { position: absolute; top: 50%; right: 6rem; transform: translateY(-50%); font-family: var(--serif); font-size: 18vw; font-weight: 300; color: rgba(201,168,76,0.04); line-height: 1; user-select: none; pointer-events: none; }
+.hero-content { position: relative; z-index: 1; max-width: 700px; }
+.hero-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+.hero-tag::before { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+.hero-title { font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem); font-weight: 300; line-height: 1.05; margin-bottom: 1.5rem; animation: fadeUp 1s ease both; }
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-subtitle { font-size: 0.9rem; color: var(--muted); line-height: 1.8; max-width: 500px; margin-bottom: 3rem; animation: fadeUp 1s ease 0.2s both; }
+.hero-cta { display: flex; gap: 1.5rem; align-items: center; animation: fadeUp 1s ease 0.4s both; }
+.btn-primary { background: var(--gold); color: var(--noir); padding: 1rem 2.5rem; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; font-weight: 500; transition: all 0.3s; border: none; cursor: pointer; font-family: var(--sans); }
+.btn-primary:hover { background: var(--gold-light); }
+.btn-ghost { color: var(--cream); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border-bottom: 0.5px solid rgba(245,240,232,0.3); padding-bottom: 2px; transition: all 0.3s; }
+.btn-ghost:hover { color: var(--gold); border-color: var(--gold); }
 
-  <a href="agenda.html?dir=3" class="team-card" style="text-decoration:none;display:block;cursor:pointer">
-    <div class="team-avatar">WH</div>
-    <div class="team-name">Wahil Toubal</div>
-    <div class="team-role">Logistique</div>
-    <p class="team-desc">Coordonne les approvisionnements et la logistique de chantier.</p>
-    <div style="margin-top:1rem;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold)">Prendre RDV →</div>
-  </a>
+.stats-bar { background: var(--charcoal); border-top: 0.5px solid rgba(201,168,76,0.15); border-bottom: 0.5px solid rgba(201,168,76,0.15); display: flex; justify-content: center; }
+.stat-item { padding: 2.5rem 4rem; text-align: center; border-right: 0.5px solid rgba(201,168,76,0.1); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: var(--serif); font-size: 2.8rem; font-weight: 300; color: var(--gold); line-height: 1; }
+.stat-label { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.5rem; }
 
+.section { padding: 8rem 4rem; }
+.section-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.section-title { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 300; line-height: 1.1; margin-bottom: 4rem; }
+.section-title em { font-style: italic; color: var(--gold); }
+
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(201,168,76,0.1); border: 0.5px solid rgba(201,168,76,0.1); }
+.service-card { background: var(--charcoal); padding: 3rem 2.5rem; transition: background 0.3s; position: relative; overflow: hidden; }
+.service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+.service-card:hover::before { transform: scaleX(1); }
+.service-card:hover { background: var(--stone); }
+.service-num { font-family: var(--serif); font-size: 3.5rem; font-weight: 300; color: rgba(201,168,76,0.15); line-height: 1; margin-bottom: 1.5rem; }
+.service-icon { font-size: 1.8rem; margin-bottom: 1.5rem; }
+.service-title { font-family: var(--serif); font-size: 1.5rem; font-weight: 400; color: var(--cream); margin-bottom: 1rem; line-height: 1.2; }
+.service-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+.service-link { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: gap 0.3s; }
+.service-link:hover { gap: 1rem; }
+
+/* EQUIPE */
+.team-section { background: var(--charcoal); }
+.team-hint { font-size: 0.8rem; color: var(--muted); margin-bottom: 2rem; font-style: italic; }
+.team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 0; }
+.team-card {
+  border: 0.5px solid rgba(201,168,76,0.15); padding: 2rem;
+  transition: border-color 0.3s, transform 0.2s;
+  text-decoration: none; display: block; color: inherit; cursor: pointer;
+  position: relative;
+}
+.team-card:hover { border-color: var(--gold); transform: translateY(-3px); }
+.team-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 1.4rem; font-weight: 400; color: var(--noir); margin-bottom: 1.5rem; }
+.team-name { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; color: var(--cream); margin-bottom: 0.3rem; }
+.team-role { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; }
+.team-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; }
+.team-rdv { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border-top: 0.5px solid rgba(201,168,76,0.2); padding-top: 1rem; margin-top: auto; }
+
+.locations-section { background: var(--noir); }
+.locations-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+.location-card { border-left: 2px solid var(--gold); padding-left: 2rem; }
+.location-flag { font-size: 2rem; margin-bottom: 1rem; }
+.location-country { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; color: var(--cream); margin-bottom: 0.5rem; }
+.location-cities { font-size: 0.85rem; color: var(--muted); line-height: 1.8; }
+
+.chat-section { background: var(--charcoal); }
+.chat-container { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+.chat-intro .section-title { margin-bottom: 1.5rem; }
+.chat-intro p { font-size: 0.9rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+.chat-feature { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+.chat-feature-icon { width: 32px; height: 32px; border: 0.5px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+.chat-feature-text { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+.chatbox { border: 0.5px solid rgba(201,168,76,0.3); background: var(--noir); display: flex; flex-direction: column; height: 520px; }
+.chatbox-header { padding: 1rem 1.5rem; border-bottom: 0.5px solid rgba(201,168,76,0.15); display: flex; align-items: center; gap: 1rem; }
+.chat-avatar-small { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--gold-dark), var(--gold)); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--noir); font-weight: 500; }
+.chatbox-name { font-size: 0.85rem; font-weight: 500; }
+.chatbox-status { font-size: 0.7rem; color: #4CAF50; }
+.chat-messages { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+.chat-messages::-webkit-scrollbar { width: 4px; }
+.chat-messages::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); }
+.msg { max-width: 80%; display: flex; flex-direction: column; gap: 0.3rem; }
+.msg.user { align-self: flex-end; }
+.msg.bot { align-self: flex-start; }
+.msg-bubble { padding: 0.8rem 1rem; font-size: 0.82rem; line-height: 1.6; border-radius: 2px; }
+.msg.bot .msg-bubble { background: var(--stone); color: var(--cream); border-left: 2px solid var(--gold); }
+.msg.user .msg-bubble { background: rgba(201,168,76,0.15); color: var(--cream); border-right: 2px solid var(--gold); text-align: right; }
+.msg-time { font-size: 0.65rem; color: var(--muted); }
+.msg.user .msg-time { text-align: right; }
+.chat-input-area { border-top: 0.5px solid rgba(201,168,76,0.15); padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; }
+.chat-upload-bar { display: flex; gap: 0.5rem; align-items: center; }
+.upload-btn { background: none; border: 0.5px solid rgba(201,168,76,0.3); color: var(--muted); font-size: 0.7rem; letter-spacing: 0.08em; padding: 0.4rem 0.8rem; cursor: pointer; transition: all 0.2s; font-family: var(--sans); display: flex; align-items: center; gap: 0.4rem; }
+.upload-btn:hover { border-color: var(--gold); color: var(--gold); }
+.upload-preview { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.img-thumb { width: 40px; height: 40px; object-fit: cover; border: 0.5px solid rgba(201,168,76,0.3); }
+.chat-row { display: flex; gap: 0.8rem; }
+.chat-input { flex: 1; background: var(--stone); border: 0.5px solid rgba(201,168,76,0.2); color: var(--cream); padding: 0.8rem 1rem; font-size: 0.82rem; font-family: var(--sans); outline: none; resize: none; transition: border-color 0.2s; }
+.chat-input:focus { border-color: var(--gold); }
+.chat-input::placeholder { color: var(--muted); }
+.chat-send { background: var(--gold); border: none; color: var(--noir); padding: 0 1.2rem; cursor: pointer; font-size: 1rem; transition: background 0.2s; font-weight: 500; }
+.chat-send:hover { background: var(--gold-light); }
+.typing { display: none; }
+.typing.visible { display: flex; }
+.typing span { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; animation: blink 1.4s infinite; margin: 0 2px; }
+.typing span:nth-child(2) { animation-delay: 0.2s; }
+.typing span:nth-child(3) { animation-delay: 0.4s; }
+
+footer { background: #080808; padding: 4rem; border-top: 0.5px solid rgba(201,168,76,0.15); display: flex; justify-content: space-between; align-items: center; }
+.footer-logo { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; color: var(--gold); letter-spacing: 0.1em; }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--gold); }
+.footer-copy { font-size: 0.75rem; color: var(--muted); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes blink { 0%, 80%, 100% { opacity: 0.2; } 40% { opacity: 1; } }
+
+[dir="rtl"] .nav-links { flex-direction: row-reverse; }
+[dir="rtl"] .hero-tag::before { display: none; }
+[dir="rtl"] .hero-tag::after { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+[dir="rtl"] .service-link { flex-direction: row-reverse; }
+[dir="rtl"] .location-card { border-left: none; border-right: 2px solid var(--gold); padding-left: 0; padding-right: 2rem; }
+[dir="rtl"] .msg.bot .msg-bubble { border-left: none; border-right: 2px solid var(--gold); }
+[dir="rtl"] .msg.user .msg-bubble { border-right: none; border-left: 2px solid var(--gold); text-align: left; }
+[dir="rtl"] .mobile-rdv { right: auto; left: 1.5rem; }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .hero { padding: 0 1.5rem 4rem; }
+  .section { padding: 5rem 1.5rem; }
+  .services-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+  .chat-container { grid-template-columns: 1fr; }
+  .locations-grid { grid-template-columns: 1fr; gap: 2rem; }
+  footer { flex-direction: column; gap: 2rem; text-align: center; }
+  .stat-item { padding: 2rem 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- BOUTON RDV FIXE MOBILE -->
+<a href="agenda.html" class="mobile-rdv">📅 Rendez-vous</a>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">KENZ<span> ZNICA</span></div>
+  <div class="nav-links">
+    <a href="#services" data-i18n="nav_services">Services</a>
+    <a href="realisations.html" data-i18n="nav_realisations">Réalisations</a>
+    <a href="vente.html" data-i18n="nav_vente">Vente</a>
+    <a href="art.html" data-i18n="nav_art">Art</a>
+    <a href="agenda.html" data-i18n="nav_rdv">Rendez-vous</a>
+    <a href="profil.html" data-i18n="nav_profil">Mon profil</a>
+  </div>
+  <div class="lang-selector">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-accent"></div>
+  <div class="hero-number">KZ</div>
+  <div class="hero-content">
+    <div class="hero-tag" data-i18n="hero_tag">Algérie & Maroc — Depuis 2018</div>
+    <h1 class="hero-title" data-i18n="hero_title">L'art de <em>transformer</em><br>les espaces</h1>
+    <p class="hero-subtitle" data-i18n="hero_subtitle">Rénovation d'espaces résidentiels et commerciaux, achat-revente d'appartements redesignés, décoration artistique et œuvres signées.</p>
+    <div class="hero-cta">
+      <a href="#chat" class="btn-primary" data-i18n="hero_cta1">Parler à notre agent IA</a>
+      <a href="realisations.html" class="btn-ghost" data-i18n="hero_cta2">Voir nos réalisations →</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item"><div class="stat-num">+120</div><div class="stat-label" data-i18n="stat1">Projets réalisés</div></div>
+  <div class="stat-item"><div class="stat-num">+35%</div><div class="stat-label" data-i18n="stat2">Valeur ajoutée moyenne</div></div>
+  <div class="stat-item"><div class="stat-num">2</div><div class="stat-label" data-i18n="stat3">Pays — DZ & MA</div></div>
+  <div class="stat-item"><div class="stat-num">4</div><div class="stat-label" data-i18n="stat4">Expertises métier</div></div>
 </div>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="section-tag" data-i18n="services_tag">Nos expertises</div>
+  <h2 class="section-title" data-i18n="services_title">Ce que nous<br><em>créons</em> pour vous</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-icon">🏗️</div>
+      <h3 class="service-title" data-i18n="s1_title">Rénovation d'espaces résidentiels & commerciaux</h3>
+      <p class="service-desc" data-i18n="s1_desc">Transformation complète de vos appartements, villas et locaux commerciaux. De la démolition à la finition, nous gérons chaque étape avec précision.</p>
+      <a href="agenda.html" class="service-link" data-i18n="s1_link">Demander un devis →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-icon">🏠</div>
+      <h3 class="service-title" data-i18n="s2_title">Achat & revente d'appartements redesignés</h3>
+      <p class="service-desc" data-i18n="s2_desc">Nous acquérons des biens à fort potentiel, les rénovons selon des standards premium, puis les proposons clé en main avec historique complet de valorisation.</p>
+      <a href="vente.html" class="service-link" data-i18n="s2_link">Voir les biens →</a>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-icon">🎨</div>
+      <h3 class="service-title" data-i18n="s3_title">Décoration artistique & œuvres signées</h3>
+      <p class="service-desc" data-i18n="s3_desc">Tableaux et installations réalisés par Najat Toubal pour sublimer vos intérieurs. Commissions personnalisées et événements culturels sur demande.</p>
+      <a href="art.html" class="service-link" data-i18n="s3_link">Découvrir l'art →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ÉQUIPE — cartes cliquables -->
+<section class="section team-section">
+  <div class="section-tag" data-i18n="team_tag">Direction</div>
+  <h2 class="section-title" data-i18n="team_title">Une famille d'<em>experts</em></h2>
+  <p class="team-hint" data-i18n="team_hint">Cliquez sur un membre pour prendre rendez-vous directement.</p>
+  <div class="team-grid">
+
+    <a href="agenda.html?dir=0" class="team-card">
+      <div class="team-avatar">FZ</div>
+      <div class="team-name">Fatma Zohra Toubal</div>
+      <div class="team-role" data-i18n="team1_role">Rénovation & Gestion</div>
+      <p class="team-desc" data-i18n="team1_desc">Pilote tous les chantiers de rénovation résidentielle et commerciale. Garant de la qualité, des délais et de la satisfaction client.</p>
+      <div class="team-rdv" data-i18n="team_rdv_btn">Prendre rendez-vous →</div>
+    </a>
+
+    <a href="agenda.html?dir=1" class="team-card">
+      <div class="team-avatar">NJ</div>
+      <div class="team-name">Najat Toubal</div>
+      <div class="team-role" data-i18n="team2_role">Décoration & Événements culturels</div>
+      <p class="team-desc" data-i18n="team2_desc">Artiste et directrice artistique. Crée des œuvres sur mesure pour les intérieurs et organise des événements culturels.</p>
+      <div class="team-rdv" data-i18n="team_rdv_btn">Prendre rendez-vous →</div>
+    </a>
+
+    <a href="agenda.html?dir=2" class="team-card">
+      <div class="team-avatar">AN</div>
+      <div class="team-name">Abdelnasser Toubal</div>
+      <div class="team-role" data-i18n="team3_role">Financement & Transactions immobilières</div>
+      <p class="team-desc" data-i18n="team3_desc">Expert en montages financiers et transactions. Accompagne les acheteurs et investisseurs de l'acquisition à la revente.</p>
+      <div class="team-rdv" data-i18n="team_rdv_btn">Prendre rendez-vous →</div>
+    </a>
+
+    <a href="agenda.html?dir=3" class="team-card">
+      <div class="team-avatar">WH</div>
+      <div class="team-name">Wahil Toubal</div>
+      <div class="team-role" data-i18n="team4_role">Logistique</div>
+      <p class="team-desc" data-i18n="team4_desc">Coordonne les approvisionnements, les équipes terrain et la logistique de chantier pour assurer fluidité et efficacité.</p>
+      <div class="team-rdv" data-i18n="team_rdv_btn">Prendre rendez-vous →</div>
+    </a>
+
+  </div>
+</section>
+
+<!-- LOCALISATIONS -->
+<section class="section locations-section">
+  <div class="section-tag" data-i18n="loc_tag">Présence</div>
+  <h2 class="section-title" data-i18n="loc_title">Deux pays,<br>une <em>exigence</em></h2>
+  <div class="locations-grid">
+    <div class="location-card">
+      <div class="location-flag">🇩🇿</div>
+      <div class="location-country" data-i18n="loc1_country">Algérie</div>
+      <p class="location-cities" data-i18n="loc1_cities">Alger — Oran — Constantine — Annaba<br>Tizi Ouzou — Béjaïa — Sétif — Jijel</p>
+    </div>
+    <div class="location-card">
+      <div class="location-flag">🇲🇦</div>
+      <div class="location-country" data-i18n="loc2_country">Maroc</div>
+      <p class="location-cities" data-i18n="loc2_cities">Casablanca — Rabat — Marrakech<br>Tanger — Fès — Agadir</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHATBOT -->
+<section class="section chat-section" id="chat">
+  <div class="chat-container">
+    <div class="chat-intro">
+      <div class="section-tag" data-i18n="chat_tag">Agent IA</div>
+      <h2 class="section-title" data-i18n="chat_title">Parlez-nous de<br>votre <em>projet</em></h2>
+      <p data-i18n="chat_intro_text">Notre agent IA analyse votre situation, répond à vos questions et peut examiner les photos de votre bien actuel pour vous conseiller au mieux.</p>
+      <div class="chat-feature">
+        <div class="chat-feature-icon">📸</div>
+        <p class="chat-feature-text" data-i18n="chat_feat1">Envoyez des photos de votre appartement — l'agent analyse l'état actuel et suggère des axes de rénovation.</p>
+      </div>
+      <div class="chat-feature">
+        <div class="chat-feature-icon">💬</div>
+        <p class="chat-feature-text" data-i18n="chat_feat2">Posez toutes vos questions : budget, délais, types de travaux, valeur de revente estimée.</p>
+      </div>
+      <div class="chat-feature">
+        <div class="chat-feature-icon">📅</div>
+        <p class="chat-feature-text" data-i18n="chat_feat3">L'agent vous oriente vers le bon directeur et peut initier une prise de rendez-vous directement.</p>
+      </div>
+    </div>
+    <div class="chatbox">
+      <div class="chatbox-header">
+        <div class="chat-avatar-small">KZ</div>
+        <div>
+          <div class="chatbox-name">Agent KENZ ZNICA</div>
+          <div class="chatbox-status" data-i18n="chat_online">● En ligne</div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg bot">
+          <div class="msg-bubble" data-i18n="chat_welcome">Bonjour ! Je suis l'agent IA de KENZ ZNICA. Je peux vous conseiller sur votre projet de rénovation, vous montrer nos réalisations ou vous aider à prendre rendez-vous. Vous pouvez aussi m'envoyer des photos de votre bien 📸</div>
+          <div class="msg-time">maintenant</div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <div class="chat-upload-bar">
+          <button class="upload-btn" onclick="document.getElementById('imgInput').click()">📎 <span data-i18n="upload_btn">Joindre des photos</span></button>
+          <input type="file" id="imgInput" accept="image/*" multiple style="display:none" onchange="handleImages(event)">
+          <div class="upload-preview" id="uploadPreview"></div>
+        </div>
+        <div class="chat-row">
+          <textarea class="chat-input" id="chatInput" rows="2" placeholder="Décrivez votre projet..." data-i18n-ph="chat_placeholder" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+          <button class="chat-send" onclick="sendMessage()">→</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">KENZ ZNICA</div>
+  <div class="footer-links">
+    <a href="realisations.html" data-i18n="nav_realisations">Réalisations</a>
+    <a href="vente.html" data-i18n="nav_vente">Vente</a>
+    <a href="art.html" data-i18n="nav_art">Art</a>
+    <a href="agenda.html" data-i18n="nav_rdv">Rendez-vous</a>
+    <a href="profil.html" data-i18n="nav_profil">Mon profil</a>
+  </div>
+  <div class="footer-copy">© 2025 KENZ ZNICA — Algérie & Maroc</div>
+</footer>
+
+<script>
+const i18n = {
+  fr: {
+    nav_services:'Services', nav_realisations:'Réalisations', nav_vente:'Vente', nav_art:'Art', nav_rdv:'Rendez-vous', nav_profil:'Mon profil',
+    hero_tag:'Algérie & Maroc — Depuis 2018',
+    hero_title:'L\'art de <em>transformer</em><br>les espaces',
+    hero_subtitle:'Rénovation d\'espaces résidentiels et commerciaux, achat-revente d\'appartements redesignés, décoration artistique et œuvres signées.',
+    hero_cta1:'Parler à notre agent IA', hero_cta2:'Voir nos réalisations →',
+    stat1:'Projets réalisés', stat2:'Valeur ajoutée moyenne', stat3:'Pays — DZ & MA', stat4:'Expertises métier',
+    services_tag:'Nos expertises', services_title:'Ce que nous<br><em>créons</em> pour vous',
+    s1_title:'Rénovation d\'espaces résidentiels & commerciaux', s1_desc:'Transformation complète de vos appartements, villas et locaux commerciaux. De la démolition à la finition, nous gérons chaque étape avec précision.', s1_link:'Demander un devis →',
+    s2_title:'Achat & revente d\'appartements redesignés', s2_desc:'Nous acquérons des biens à fort potentiel, les rénovons selon des standards premium, puis les proposons clé en main avec historique complet de valorisation.', s2_link:'Voir les biens →',
+    s3_title:'Décoration artistique & œuvres signées', s3_desc:'Tableaux et installations réalisés par Najat Toubal pour sublimer vos intérieurs. Commissions personnalisées et événements culturels sur demande.', s3_link:'Découvrir l\'art →',
+    team_tag:'Direction', team_title:'Une famille d\'<em>experts</em>',
+    team_hint:'Cliquez sur un membre pour prendre rendez-vous directement.',
+    team1_role:'Rénovation & Gestion', team1_desc:'Pilote tous les chantiers de rénovation résidentielle et commerciale. Garant de la qualité, des délais et de la satisfaction client.',
+    team2_role:'Décoration & Événements culturels', team2_desc:'Artiste et directrice artistique. Crée des œuvres sur mesure pour les intérieurs et organise des événements culturels.',
+    team3_role:'Financement & Transactions immobilières', team3_desc:'Expert en montages financiers et transactions. Accompagne les acheteurs et investisseurs de l\'acquisition à la revente.',
+    team4_role:'Logistique', team4_desc:'Coordonne les approvisionnements, les équipes terrain et la logistique de chantier pour assurer fluidité et efficacité.',
+    team_rdv_btn:'Prendre rendez-vous →',
+    loc_tag:'Présence', loc_title:'Deux pays,<br>une <em>exigence</em>',
+    loc1_country:'Algérie', loc1_cities:'Alger — Oran — Constantine — Annaba<br>Tizi Ouzou — Béjaïa — Sétif — Jijel',
+    loc2_country:'Maroc', loc2_cities:'Casablanca — Rabat — Marrakech<br>Tanger — Fès — Agadir',
+    chat_tag:'Agent IA', chat_title:'Parlez-nous de<br>votre <em>projet</em>',
+    chat_intro_text:'Notre agent IA analyse votre situation, répond à vos questions et peut examiner les photos de votre bien actuel pour vous conseiller au mieux.',
+    chat_feat1:'Envoyez des photos de votre appartement — l\'agent analyse l\'état actuel et suggère des axes de rénovation.',
+    chat_feat2:'Posez toutes vos questions : budget, délais, types de travaux, valeur de revente estimée.',
+    chat_feat3:'L\'agent vous oriente vers le bon directeur et peut initier une prise de rendez-vous directement.',
+    chat_online:'● En ligne',
+    chat_welcome:'Bonjour ! Je suis l\'agent IA de KENZ ZNICA. Je peux vous conseiller sur votre projet de rénovation, vous montrer nos réalisations ou vous aider à prendre rendez-vous. Vous pouvez aussi m\'envoyer des photos de votre bien 📸',
+    upload_btn:'Joindre des photos', chat_placeholder:'Décrivez votre projet...',
+  },
+  ar: {
+    nav_services:'الخدمات', nav_realisations:'الإنجازات', nav_vente:'البيع', nav_art:'فن', nav_rdv:'المواعيد', nav_profil:'ملفي',
+    hero_tag:'الجزائر والمغرب — منذ 2018',
+    hero_title:'فن <em>تحويل</em><br>الفضاءات',
+    hero_subtitle:'تجديد المساحات السكنية والتجارية، شراء وإعادة بيع الشقق المصممة، الديكور الفني والأعمال الموقعة.',
+    hero_cta1:'تحدث مع وكيلنا الذكي', hero_cta2:'شاهد إنجازاتنا →',
+    stat1:'مشروع منجز', stat2:'متوسط القيمة المضافة', stat3:'دولتان — الجزائر والمغرب', stat4:'تخصصات',
+    services_tag:'خبراتنا', services_title:'ما <em>نبدعه</em> لكم',
+    s1_title:'تجديد المساحات السكنية والتجارية', s1_desc:'تحويل شامل لشققكم وفيلاتكم ومحلاتكم التجارية. من الهدم إلى التشطيب، نتولى كل مرحلة بدقة واحترافية.', s1_link:'طلب تقدير →',
+    s2_title:'شراء وإعادة بيع الشقق المعاد تصميمها', s2_desc:'نقتني عقارات ذات إمكانات عالية، نجددها وفق معايير مميزة، ثم نعرضها جاهزة مع سجل كامل للتقييم.', s2_link:'عرض العقارات →',
+    s3_title:'الديكور الفني والأعمال الموقعة', s3_desc:'لوحات وتركيبات فنية من إبداع نجاة توبال لتزيين داخلياتكم. طلبات خاصة وفعاليات ثقافية عند الطلب.', s3_link:'اكتشف الفن →',
+    team_tag:'الإدارة', team_title:'عائلة من <em>الخبراء</em>',
+    team_hint:'انقر على أحد الأعضاء لحجز موعد مباشرة.',
+    team1_role:'التجديد والإدارة', team1_desc:'تشرف على جميع مشاريع التجديد السكني والتجاري وتضمن الجودة والمواعيد ورضا العملاء.',
+    team2_role:'الديكور والفعاليات الثقافية', team2_desc:'فنانة ومديرة فنية. تبتكر أعمالاً خاصة للمساحات الداخلية وتنظم فعاليات ثقافية.',
+    team3_role:'التمويل والمعاملات العقارية', team3_desc:'خبير في التمويل والمعاملات. يرافق المشترين والمستثمرين من الاقتناء إلى إعادة البيع.',
+    team4_role:'اللوجستيك', team4_desc:'ينسق التوريد والفرق الميدانية ولوجستيك الورشة لضمان السلاسة والكفاءة.',
+    team_rdv_btn:'حجز موعد →',
+    loc_tag:'الحضور', loc_title:'دولتان،<br><em>نفس المعيار</em>',
+    loc1_country:'الجزائر', loc1_cities:'الجزائر العاصمة — وهران — قسنطينة — عنابة<br>تيزي وزو — بجاية — سطيف — جيجل',
+    loc2_country:'المغرب', loc2_cities:'الدار البيضاء — الرباط — مراكش<br>طنجة — فاس — أكادير',
+    chat_tag:'الوكيل الذكي', chat_title:'حدثنا عن<br><em>مشروعك</em>',
+    chat_intro_text:'يحلل وكيلنا الذكي وضعك، يجيب على أسئلتك ويمكنه فحص صور عقارك لتقديم أفضل النصائح.',
+    chat_feat1:'أرسل صوراً لشقتك — يحلل الوكيل الحالة الراهنة ويقترح محاور التجديد.',
+    chat_feat2:'اطرح جميع أسئلتك: الميزانية، المواعيد، أنواع الأشغال، قيمة إعادة البيع المتوقعة.',
+    chat_feat3:'يوجهك الوكيل نحو المدير المناسب ويمكنه تحديد موعد مباشرة.',
+    chat_online:'● متاح',
+    chat_welcome:'مرحباً! أنا الوكيل الذكي لـ KENZ ZNICA. يمكنني تقديم المشورة حول مشروع التجديد الخاص بك، وإرشادك إلى إنجازاتنا أو مساعدتك في حجز موعد. يمكنك أيضاً إرسال صور عقارك 📸',
+    upload_btn:'إرفاق صور', chat_placeholder:'صف مشروعك...',
+  },
+  en: {
+    nav_services:'Services', nav_realisations:'Portfolio', nav_vente:'For Sale', nav_art:'Art', nav_rdv:'Book', nav_profil:'My Profile',
+    hero_tag:'Algeria & Morocco — Since 2018',
+    hero_title:'The art of <em>transforming</em><br>spaces',
+    hero_subtitle:'Renovation of residential and commercial spaces, redesigned apartment resale, and signed artistic decoration.',
+    hero_cta1:'Talk to our AI agent', hero_cta2:'See our portfolio →',
+    stat1:'Completed projects', stat2:'Average added value', stat3:'Countries — DZ & MA', stat4:'Areas of expertise',
+    services_tag:'Our expertise', services_title:'What we <em>create</em> for you',
+    s1_title:'Residential & commercial space renovation', s1_desc:'Complete transformation of your apartments, villas and commercial premises. From demolition to finishing, we manage every step with precision.', s1_link:'Request a quote →',
+    s2_title:'Acquisition & resale of redesigned apartments', s2_desc:'We acquire high-potential properties, fully renovate them to premium standards, then offer them turnkey with a complete valuation history.', s2_link:'View properties →',
+    s3_title:'Artistic decoration & signed artworks', s3_desc:'Paintings and installations by Najat Toubal to elevate your interiors. Custom commissions and cultural events on request.', s3_link:'Discover art →',
+    team_tag:'Management', team_title:'A family of <em>experts</em>',
+    team_hint:'Click on a team member to book an appointment directly.',
+    team1_role:'Renovation & Management', team1_desc:'Oversees all renovation projects. Guarantor of quality, deadlines and client satisfaction.',
+    team2_role:'Decoration & Cultural Events', team2_desc:'Artist and artistic director. Creates bespoke works for interiors and organises cultural events.',
+    team3_role:'Financing & Real Estate Transactions', team3_desc:'Expert in financial structuring and transactions. Accompanies buyers and investors from acquisition to resale.',
+    team4_role:'Logistics', team4_desc:'Coordinates supplies, field teams and site logistics to ensure fluidity and efficiency.',
+    team_rdv_btn:'Book appointment →',
+    loc_tag:'Presence', loc_title:'Two countries,<br>one <em>standard</em>',
+    loc1_country:'Algeria', loc1_cities:'Algiers — Oran — Constantine — Annaba<br>Tizi Ouzou — Béjaïa — Sétif — Jijel',
+    loc2_country:'Morocco', loc2_cities:'Casablanca — Rabat — Marrakech<br>Tangier — Fès — Agadir',
+    chat_tag:'AI Agent', chat_title:'Tell us about<br>your <em>project</em>',
+    chat_intro_text:'Our AI agent analyses your situation, answers your questions and can review photos of your property to advise you best.',
+    chat_feat1:'Send photos of your apartment — the agent analyses the current condition and suggests renovation directions.',
+    chat_feat2:'Ask all your questions: budget, timelines, types of work, estimated resale value.',
+    chat_feat3:'The agent guides you to the right director and can initiate an appointment directly.',
+    chat_online:'● Online',
+    chat_welcome:'Hello! I\'m the KENZ ZNICA AI agent. I can advise you on your renovation project, show you our portfolio or help you book an appointment. You can also send photos of your property 📸',
+    upload_btn:'Attach photos', chat_placeholder:'Describe your project...',
+  },
+  es: {
+    nav_services:'Servicios', nav_realisations:'Realizaciones', nav_vente:'Venta', nav_art:'Arte', nav_rdv:'Cita', nav_profil:'Mi perfil',
+    hero_tag:'Argelia y Marruecos — Desde 2018',
+    hero_title:'El arte de <em>transformar</em><br>los espacios',
+    hero_subtitle:'Renovación de espacios residenciales y comerciales, compraventa de apartamentos rediseñados, decoración artística y obras firmadas.',
+    hero_cta1:'Hablar con nuestro agente IA', hero_cta2:'Ver nuestras realizaciones →',
+    stat1:'Proyectos realizados', stat2:'Valor añadido medio', stat3:'Países — DZ & MA', stat4:'Áreas de expertise',
+    services_tag:'Nuestras áreas', services_title:'Lo que <em>creamos</em> para usted',
+    s1_title:'Renovación de espacios residenciales y comerciales', s1_desc:'Transformación completa de apartamentos, villas y locales comerciales. Desde el derribo hasta el acabado, gestionamos cada etapa con precisión.', s1_link:'Pedir presupuesto →',
+    s2_title:'Compra y reventa de apartamentos rediseñados', s2_desc:'Adquirimos propiedades con alto potencial, las reformamos con estándares premium y las ofrecemos llave en mano con historial completo de valorización.', s2_link:'Ver propiedades →',
+    s3_title:'Decoración artística y obras firmadas', s3_desc:'Cuadros e instalaciones de Najat Toubal para realzar sus interiores. Comisiones personalizadas y eventos culturales a petición.', s3_link:'Descubrir el arte →',
+    team_tag:'Dirección', team_title:'Una familia de <em>expertos</em>',
+    team_hint:'Haga clic en un miembro para reservar una cita directamente.',
+    team1_role:'Renovación y Gestión', team1_desc:'Dirige todos los proyectos de renovación. Garante de la calidad, plazos y satisfacción del cliente.',
+    team2_role:'Decoración y Eventos culturales', team2_desc:'Artista y directora artística. Crea obras a medida para interiores y organiza eventos culturales.',
+    team3_role:'Financiación y Transacciones inmobiliarias', team3_desc:'Experto en estructuración financiera. Acompaña a compradores e inversores desde la adquisición hasta la reventa.',
+    team4_role:'Logística', team4_desc:'Coordina los suministros, los equipos de campo y la logística de obra para garantizar fluidez y eficiencia.',
+    team_rdv_btn:'Reservar cita →',
+    loc_tag:'Presencia', loc_title:'Dos países,<br>una <em>exigencia</em>',
+    loc1_country:'Argelia', loc1_cities:'Argel — Orán — Constantina — Annaba<br>Tizi Ouzou — Béjaïa — Sétif — Jijel',
+    loc2_country:'Marruecos', loc2_cities:'Casablanca — Rabat — Marrakech<br>Tánger — Fez — Agadir',
+    chat_tag:'Agente IA', chat_title:'Cuéntenos sobre<br>su <em>proyecto</em>',
+    chat_intro_text:'Nuestro agente IA analiza su situación, responde a sus preguntas y puede revisar las fotos de su propiedad para asesorarle mejor.',
+    chat_feat1:'Envíe fotos de su apartamento — el agente analiza el estado actual y sugiere ejes de renovación.',
+    chat_feat2:'Haga todas sus preguntas: presupuesto, plazos, tipos de obras, valor de reventa estimado.',
+    chat_feat3:'El agente le orienta hacia el director adecuado y puede iniciar una cita directamente.',
+    chat_online:'● En línea',
+    chat_welcome:'¡Hola! Soy el agente IA de KENZ ZNICA. Puedo asesorarle sobre su proyecto de renovación, mostrarle nuestras realizaciones o ayudarle a reservar una cita. También puede enviarme fotos de su propiedad 📸',
+    upload_btn:'Adjuntar fotos', chat_placeholder:'Describa su proyecto...',
+  }
+};
+
+let currentLang = 'fr';
+let uploadedImages = [];
+let conversationHistory = [];
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent.toLowerCase()===lang) b.classList.add('active'); });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(t[key]) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if(t[key]) el.placeholder = t[key];
+  });
+}
+
+function getTime() { return new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}); }
+
+function addMessage(text, role) {
+  const msgs = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  div.innerHTML = `<div class="msg-bubble">${text}</div><div class="msg-time">${getTime()}</div>`;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function showTyping() {
+  const msgs = document.getElementById('chatMessages');
+  const t = document.createElement('div');
+  t.className = 'msg bot'; t.id = 'typing';
+  t.innerHTML = '<div class="msg-bubble typing visible"><span></span><span></span><span></span></div>';
+  msgs.appendChild(t); msgs.scrollTop = msgs.scrollHeight;
+}
+function hideTyping() { const t = document.getElementById('typing'); if(t) t.remove(); }
+
+function handleImages(e) {
+  const files = Array.from(e.target.files);
+  const preview = document.getElementById('uploadPreview');
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      uploadedImages.push({ data: ev.target.result.split(',')[1], mediaType: file.type });
+      const img = document.createElement('img');
+      img.src = ev.target.result; img.className = 'img-thumb';
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+const systemPrompts = {
+  fr: `Tu es l'agent IA de KENZ ZNICA, une agence spécialisée dans la rénovation d'espaces résidentiels et commerciaux, l'achat-revente d'appartements redesignés, et la décoration artistique avec des œuvres signées par Najat Toubal. Présente en Algérie et au Maroc. L'équipe de direction : Fatma Zohra Toubal (Rénovation & Gestion), Najat Toubal (Décoration artistique & Événements culturels), Abdelnasser Toubal (Financement & Transactions immobilières), Wahil Toubal (Logistique). Réponds en français, sois chaleureux, professionnel et expert. Si le client envoie des photos, analyse-les et donne des recommandations de rénovation concrètes. Propose des rendez-vous sur agenda.html. Oriente vers le bon directeur selon le besoin.`,
+  ar: `أنت الوكيل الذكي لـ KENZ ZNICA، وكالة متخصصة في تجديد المساحات السكنية والتجارية، وشراء وإعادة بيع الشقق المعاد تصميمها، والديكور الفني بأعمال موقعة من نجاة توبال. حاضرة في الجزائر والمغرب. فريق الإدارة: فاطمة الزهراء توبال، نجاة توبال، عبد الناصر توبال، وهيل توبال. أجب بالعربية، كن دافئاً ومحترفاً وخبيراً.`,
+  en: `You are the AI agent for KENZ ZNICA, an agency specialising in residential and commercial space renovation, redesigned apartment acquisition and resale, and artistic decoration with signed artworks by Najat Toubal. Operating in Algeria and Morocco. Respond in English, be warm, professional and expert. If the client sends photos, analyse them and provide concrete renovation recommendations.`,
+  es: `Eres el agente IA de KENZ ZNICA, una agencia especializada en renovación de espacios residenciales y comerciales, compraventa de apartamentos rediseñados, y decoración artística con obras firmadas por Najat Toubal. Presente en Argelia y Marruecos. Responde en español, sé cálido, profesional y experto.`
+};
+
+async function sendMessage() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text && uploadedImages.length === 0) return;
+  const displayText = text || `📸 ${uploadedImages.length} photo(s)`;
+  addMessage(displayText, 'user');
+  input.value = '';
+  showTyping();
+  let userContent = [];
+  uploadedImages.forEach(img => { userContent.push({ type: 'image', source: { type: 'base64', media_type: img.mediaType, data: img.data } }); });
+  if (text) userContent.push({ type: 'text', text });
+  if (userContent.length === 0) userContent = [{ type: 'text', text: displayText }];
+  conversationHistory.push({ role: 'user', content: userContent });
+  uploadedImages = [];
+  document.getElementById('uploadPreview').innerHTML = '';
+  document.getElementById('imgInput').value = '';
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conversationHistory, system: systemPrompts[currentLang], lang: currentLang })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Désolé, une erreur est survenue.';
+    hideTyping();
+    addMessage(reply, 'bot');
+    conversationHistory.push({ role: 'assistant', content: reply });
+  } catch(err) {
+    hideTyping();
+    addMessage('Une erreur réseau est survenue. Veuillez réessayer.', 'bot');
+  }
+}
+</script>
+</body>
+</html>
