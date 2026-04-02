@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KENZ ZNICA — Rendez-vous</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8D5A3; --gold-dark: #8B6914;
+  --noir: #0D0D0D; --charcoal: #1A1A1A; --stone: #2C2C2C;
+  --cream: #F5F0E8; --muted: #9A9A8A; --white: #FEFEFE;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--noir); color: var(--cream); font-family: var(--sans); font-weight: 300; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 4rem;
+  background: rgba(13,13,13,0.95); backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(201,168,76,0.2);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; }
+.nav-logo span { color: var(--cream); font-weight: 300; }
+.nav-links { display: flex; gap: 2rem; align-items: center; }
+.nav-links a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.lang-selector { display: flex; gap: 0.4rem; }
+.lang-btn { background: none; border: 0.5px solid rgba(201,168,76,0.3); color: var(--muted); font-size: 0.7rem; padding: 0.3rem 0.6rem; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
+.lang-btn.active, .lang-btn:hover { background: var(--gold); color: var(--noir); border-color: var(--gold); }
+
+.page-header {
+  padding: 9rem 4rem 4rem;
+  border-bottom: 0.5px solid rgba(201,168,76,0.15);
+  background: var(--charcoal);
+}
+.page-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+.page-tag::before { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+.page-title { font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; }
+.page-title em { font-style: italic; color: var(--gold); }
+
+.main { display: grid; grid-template-columns: 280px 1fr; min-height: calc(100vh - 200px); }
+
+/* ── SIDEBAR DIRECTEURS ── */
+.sidebar {
+  background: var(--charcoal);
+  border-right: 0.5px solid rgba(201,168,76,0.15);
+  padding: 2rem 0;
+  position: sticky; top: 80px; height: calc(100vh - 80px); overflow-y: auto;
+}
+.sidebar-title { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); padding: 0 1.5rem; margin-bottom: 1rem; }
+.director-btn {
+  width: 100%; background: none; border: none; cursor: pointer;
+  padding: 1.2rem 1.5rem; display: flex; align-items: center; gap: 1rem;
+  border-left: 3px solid transparent; transition: all 0.2s; text-align: left;
+  border-bottom: 0.5px solid rgba(201,168,76,0.08);
+}
+.director-btn:hover { background: rgba(201,168,76,0.06); }
+.director-btn.active { background: rgba(201,168,76,0.1); border-left-color: var(--gold); }
+.dir-avatar {
+  width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif); font-size: 1rem; font-weight: 400;
+  color: var(--noir); background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+}
+.dir-info { flex: 1; }
+.dir-name { font-size: 0.82rem; font-weight: 500; color: var(--cream); line-height: 1.2; font-family: var(--sans); }
+.dir-role { font-size: 0.68rem; color: var(--muted); margin-top: 0.2rem; letter-spacing: 0.03em; }
+
+/* ── CALENDAR AREA ── */
+.calendar-area { padding: 2rem 3rem; background: var(--noir); }
+
+.week-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 2rem; padding-bottom: 1.5rem;
+  border-bottom: 0.5px solid rgba(201,168,76,0.15);
+}
+.week-label { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; }
+.week-label span { color: var(--gold); font-style: italic; }
+.nav-week-btn {
+  background: none; border: 0.5px solid rgba(201,168,76,0.3);
+  color: var(--gold); width: 36px; height: 36px; cursor: pointer;
+  font-size: 1rem; transition: all 0.2s; font-family: var(--sans);
+}
+.nav-week-btn:hover { background: var(--gold); color: var(--noir); }
+
+.calendar-grid { display: grid; grid-template-columns: 60px repeat(6, 1fr); gap: 1px; background: rgba(201,168,76,0.08); }
+.cal-header { background: var(--charcoal); padding: 0.8rem 0.5rem; text-align: center; }
+.cal-header.time-col { background: var(--noir); }
+.day-name { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.day-num { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; color: var(--cream); margin-top: 0.2rem; }
+.day-num.today { color: var(--gold); }
+
+.time-label { background: var(--noir); padding: 0.5rem; text-align: center; font-size: 0.65rem; color: var(--muted); display: flex; align-items: center; justify-content: center; }
+.slot {
+  background: var(--charcoal); padding: 0.3rem; cursor: pointer;
+  transition: all 0.2s; position: relative; min-height: 36px;
+  display: flex; align-items: center; justify-content: center;
+}
+.slot:hover:not(.taken):not(.past) { background: rgba(201,168,76,0.15); }
+.slot.free::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: rgba(201,168,76,0.3); }
+.slot.taken { background: rgba(201,168,76,0.08); cursor: not-allowed; }
+.slot.taken::after { content: '●'; font-size: 0.6rem; color: rgba(201,168,76,0.25); }
+.slot.past { opacity: 0.3; cursor: not-allowed; }
+.slot.selected { background: var(--gold) !important; }
+.slot.selected::after { content: '✓'; color: var(--noir); font-size: 0.75rem; font-weight: 500; }
+
+/* ── FORMULAIRE RDV ── */
+.rdv-panel {
+  display: none; position: fixed; inset: 0; z-index: 200;
+  background: rgba(0,0,0,0.7); align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.rdv-panel.open { display: flex; }
+.rdv-box {
+  background: var(--charcoal); border: 0.5px solid rgba(201,168,76,0.3);
+  width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+}
+.rdv-header {
+  padding: 1.5rem 2rem; border-bottom: 0.5px solid rgba(201,168,76,0.15);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.rdv-header h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 300; }
+.rdv-header h3 em { color: var(--gold); font-style: italic; }
+.close-btn { background: none; border: none; color: var(--muted); font-size: 1.3rem; cursor: pointer; transition: color 0.2s; }
+.close-btn:hover { color: var(--cream); }
+.rdv-summary {
+  padding: 1rem 2rem; background: rgba(201,168,76,0.08);
+  border-bottom: 0.5px solid rgba(201,168,76,0.15);
+  font-size: 0.82rem; color: var(--muted);
+}
+.rdv-summary strong { color: var(--gold); }
+.rdv-form { padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+.form-group label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.form-group input, .form-group select, .form-group textarea {
+  background: var(--stone); border: 0.5px solid rgba(201,168,76,0.2);
+  color: var(--cream); padding: 0.7rem 1rem; font-size: 0.82rem;
+  font-family: var(--sans); outline: none; transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+.form-group select option { background: var(--stone); }
+.form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
+.btn-submit {
+  background: var(--gold); color: var(--noir); border: none;
+  padding: 1rem 2rem; font-size: 0.8rem; letter-spacing: 0.12em;
+  text-transform: uppercase; cursor: pointer; font-weight: 500;
+  font-family: var(--sans); transition: background 0.2s; width: 100%;
+  margin-top: 0.5rem;
+}
+.btn-submit:hover { background: var(--gold-light); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.success-msg {
+  display: none; padding: 2rem; text-align: center;
+}
+.success-msg.show { display: block; }
+.success-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+.success-title { font-family: var(--serif); font-size: 1.5rem; font-weight: 300; color: var(--gold); margin-bottom: 0.5rem; }
+.success-text { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+/* ── LÉGENDE ── */
+.legend { display: flex; gap: 2rem; align-items: center; margin-bottom: 1.5rem; }
+.leg-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.72rem; color: var(--muted); }
+.leg-dot { width: 10px; height: 10px; border-radius: 50%; }
+.leg-dot.free { background: rgba(201,168,76,0.3); }
+.leg-dot.taken { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.2); }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .page-header { padding: 7rem 1.5rem 3rem; }
+  .main { grid-template-columns: 1fr; }
+  .sidebar { position: relative; top: 0; height: auto; display: grid; grid-template-columns: 1fr 1fr; padding: 1rem; gap: 0.5rem; }
+  .sidebar-title { grid-column: 1/-1; }
+  .director-btn { border-left: none; border-bottom: 3px solid transparent; }
+  .director-btn.active { border-bottom-color: var(--gold); border-left-color: transparent; }
+  .calendar-area { padding: 1.5rem; }
+  .calendar-grid { grid-template-columns: 50px repeat(6, 1fr); }
+  .form-row { grid-template-columns: 1fr; }
+  .rdv-box { max-height: 95vh; }
+}
+
+[dir="rtl"] .page-tag::before { display: none; }
+[dir="rtl"] .page-tag::after { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+[dir="rtl"] .director-btn { border-left: none; border-right: 3px solid transparent; }
+[dir="rtl"] .director-btn.active { border-right-color: var(--gold); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">KENZ<span> ZNICA</span></a>
+  <div class="nav-links">
+    <a href="index.html#services" data-i18n="nav_services">Services</a>
+    <a href="realisations.html" data-i18n="nav_realisations">Réalisations</a>
+    <a href="vente.html" data-i18n="nav_vente">Vente</a>
+    <a href="art.html" data-i18n="nav_art">Art</a>
+    <a href="agenda.html" class="active" data-i18n="nav_rdv">Rendez-vous</a>
+    <a href="profil.html" data-i18n="nav_profil">Mon profil</a>
+  </div>
+  <div class="lang-selector">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-tag" data-i18n="page_tag">Prise de rendez-vous</div>
+  <h1 class="page-title" data-i18n="page_title">Réservez votre <em>consultation</em></h1>
+</div>
+
+<div class="main">
+
+  <!-- SIDEBAR DIRECTEURS -->
+  <aside class="sidebar">
+    <div class="sidebar-title" data-i18n="sidebar_title">Choisissez un directeur</div>
+    <button class="director-btn active" onclick="selectDirector(0)" id="dir-0">
+      <div class="dir-avatar">FZ</div>
+      <div class="dir-info">
+        <div class="dir-name">Fatma Zohra Toubal</div>
+        <div class="dir-role" data-i18n="dir0_role">Rénovation & Gestion</div>
+      </div>
+    </button>
+    <button class="director-btn" onclick="selectDirector(1)" id="dir-1">
+      <div class="dir-avatar">NJ</div>
+      <div class="dir-info">
+        <div class="dir-name">Najat Toubal</div>
+        <div class="dir-role" data-i18n="dir1_role">Décoration & Événements</div>
+      </div>
+    </button>
+    <button class="director-btn" onclick="selectDirector(2)" id="dir-2">
+      <div class="dir-avatar">AN</div>
+      <div class="dir-info">
+        <div class="dir-name">Abdelnasser Toubal</div>
+        <div class="dir-role" data-i18n="dir2_role">Financement & Transactions</div>
+      </div>
+    </button>
+    <button class="director-btn" onclick="selectDirector(3)" id="dir-3">
+      <div class="dir-avatar">WH</div>
+      <div class="dir-info">
+        <div class="dir-name">Wahil Toubal</div>
+        <div class="dir-role" data-i18n="dir3_role">Logistique</div>
+      </div>
+    </button>
+  </aside>
+
+  <!-- CALENDAR -->
+  <div class="calendar-area">
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot free"></div> <span data-i18n="leg_free">Disponible</span></div>
+      <div class="leg-item"><div class="leg-dot taken"></div> <span data-i18n="leg_taken">Réservé</span></div>
+    </div>
+
+    <div class="week-nav">
+      <button class="nav-week-btn" onclick="changeWeek(-1)">‹</button>
+      <div class="week-label" id="weekLabel"></div>
+      <button class="nav-week-btn" onclick="changeWeek(1)">›</button>
+    </div>
+
+    <div class="calendar-grid" id="calendarGrid"></div>
+  </div>
+</div>
+
+<!-- MODAL RDV -->
+<div class="rdv-panel" id="rdvPanel">
+  <div class="rdv-box">
+    <div class="rdv-header">
+      <h3 data-i18n="rdv_title">Confirmer le <em>rendez-vous</em></h3>
+      <button class="close-btn" onclick="closePanel()">✕</button>
+    </div>
+    <div class="rdv-summary" id="rdvSummary"></div>
+
+    <div class="rdv-form" id="rdvFormArea">
+      <div class="form-row">
+        <div class="form-group">
+          <label data-i18n="label_prenom">Prénom</label>
+          <input type="text" id="f_prenom" placeholder="Votre prénom" data-i18n-ph="ph_prenom">
+        </div>
+        <div class="form-group">
+          <label data-i18n="label_nom">Nom</label>
+          <input type="text" id="f_nom" placeholder="Votre nom" data-i18n-ph="ph_nom">
+        </div>
+      </div>
+      <div class="form-group">
+        <label data-i18n="label_email">Email</label>
+        <input type="email" id="f_email" placeholder="votre@email.com">
+      </div>
+      <div class="form-group">
+        <label data-i18n="label_tel">Téléphone</label>
+        <input type="tel" id="f_tel" placeholder="+213 / +212...">
+      </div>
+      <div class="form-group">
+        <label data-i18n="label_pays">Pays</label>
+        <select id="f_pays">
+          <option value="DZ">🇩🇿 Algérie</option>
+          <option value="MA">🇲🇦 Maroc</option>
+          <option value="autre">Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label data-i18n="label_sujet">Sujet du rendez-vous</label>
+        <select id="f_sujet">
+          <option data-i18n="sujet1" value="renovation">Rénovation résidentielle / commerciale</option>
+          <option data-i18n="sujet2" value="achat">Achat d'appartement redesigné</option>
+          <option data-i18n="sujet3" value="vente">Mise en vente d'un bien</option>
+          <option data-i18n="sujet4" value="decoration">Décoration artistique / Œuvres</option>
+          <option data-i18n="sujet5" value="financement">Financement / Investissement</option>
+          <option data-i18n="sujet6" value="autre">Autre</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label data-i18n="label_notes">Notes (optionnel)</label>
+        <textarea id="f_notes" rows="3" placeholder="Décrivez brièvement votre projet..." data-i18n-ph="ph_notes"></textarea>
+      </div>
+      <button class="btn-submit" id="submitBtn" onclick="submitRDV()" data-i18n="btn_confirm">Confirmer le rendez-vous</button>
+    </div>
+
+    <div class="success-msg" id="successMsg">
+      <div class="success-icon">✓</div>
+      <div class="success-title" data-i18n="success_title">Rendez-vous confirmé</div>
+      <p class="success-text" id="successText"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+const DAYS_FR = ['Lun','Mar','Mer','Jeu','Ven','Sam'];
+const DAYS_AR = ['الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+const DAYS_EN = ['Mon','Tue','Wed','Thu','Fri','Sat'];
+const DAYS_ES = ['Lun','Mar','Mié','Jue','Vie','Sáb'];
+const MONTHS_FR = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+const MONTHS_AR = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const MONTHS_EN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const MONTHS_ES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+const TIMES = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30'];
+
+const directors = [
+  { name: 'Fatma Zohra Toubal', role_fr: 'Rénovation & Gestion', role_ar: 'التجديد والإدارة', role_en: 'Renovation & Management', role_es: 'Renovación y Gestión', initials: 'FZ' },
+  { name: 'Najat Toubal', role_fr: 'Décoration & Événements', role_ar: 'الديكور والفعاليات', role_en: 'Decoration & Events', role_es: 'Decoración y Eventos', initials: 'NJ' },
+  { name: 'Abdelnasser Toubal', role_fr: 'Financement & Transactions', role_ar: 'التمويل والمعاملات', role_en: 'Financing & Transactions', role_es: 'Financiación y Transacciones', initials: 'AN' },
+  { name: 'Wahil Toubal', role_fr: 'Logistique', role_ar: 'اللوجستيك', role_en: 'Logistics', role_es: 'Logística', initials: 'WH' },
+];
+
+let currentLang = 'fr';
+let currentDirector = 0;
+let currentWeekOffset = 0;
+let selectedSlot = null;
+let takenSlots = {};
+
+function getStorageKey(dirIdx) { return `kz_taken_${dirIdx}`; }
+function loadTaken(dirIdx) {
+  try { return JSON.parse(localStorage.getItem(getStorageKey(dirIdx)) || '{}'); }
+  catch { return {}; }
+}
+function saveTaken(dirIdx, data) {
+  localStorage.setItem(getStorageKey(dirIdx), JSON.stringify(data));
+}
+
+function getMondayOfWeek(offset) {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = (day === 0 ? -6 : 1 - day);
+  d.setDate(d.getDate() + diff + offset * 7);
+  d.setHours(0,0,0,0);
+  return d;
+}
+
+function getWeekDays(offset) {
+  const mon = getMondayOfWeek(offset);
+  return Array.from({length: 6}, (_, i) => {
+    const d = new Date(mon); d.setDate(mon.getDate() + i); return d;
+  });
+}
+
+function dateKey(date, time) {
+  return `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}_${time}`;
+}
+
+function renderWeekLabel() {
+  const days = getWeekDays(currentWeekOffset);
+  const first = days[0], last = days[5];
+  const months = { fr: MONTHS_FR, ar: MONTHS_AR, en: MONTHS_EN, es: MONTHS_ES }[currentLang];
+  document.getElementById('weekLabel').innerHTML =
+    `${first.getDate()} – ${last.getDate()} <span>${months[last.getMonth()]} ${last.getFullYear()}</span>`;
+}
+
+function renderCalendar() {
+  renderWeekLabel();
+  const days = getWeekDays(currentWeekOffset);
+  const today = new Date(); today.setHours(0,0,0,0);
+  const now = new Date();
+  const dayNames = { fr: DAYS_FR, ar: DAYS_AR, en: DAYS_EN, es: DAYS_ES }[currentLang];
+  const taken = loadTaken(currentDirector);
+
+  let html = `<div class="cal-header time-col"></div>`;
+  days.forEach((d, i) => {
+    const isToday = d.toDateString() === today.toDateString();
+    html += `<div class="cal-header"><div class="day-name">${dayNames[i]}</div><div class="day-num${isToday?' today':''}">${d.getDate()}</div></div>`;
+  });
+
+  TIMES.forEach(time => {
+    html += `<div class="time-label">${time}</div>`;
+    days.forEach(d => {
+      const key = dateKey(d, time);
+      const isPast = d < today || (d.toDateString() === today.toDateString() && time <= `${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`);
+      const isTaken = !!taken[key];
+      let cls = 'slot';
+      if (isPast) cls += ' past';
+      else if (isTaken) cls += ' taken';
+      else cls += ' free';
+      const onclick = (!isPast && !isTaken) ? `onclick="selectSlot('${key}','${time}',${d.getDate()},${d.getMonth()},${d.getFullYear()})"` : '';
+      html += `<div class="${cls}" ${onclick} id="slot_${key}"></div>`;
+    });
+  });
+
+  document.getElementById('calendarGrid').innerHTML = html;
+}
+
+function selectSlot(key, time, day, month, year) {
+  document.querySelectorAll('.slot.selected').forEach(s => { s.classList.remove('selected'); s.classList.add('free'); });
+  const el = document.getElementById('slot_'+key);
+  if (el) { el.classList.remove('free'); el.classList.add('selected'); }
+  selectedSlot = { key, time, day, month, year };
+  openPanel();
+}
+
+function selectDirector(idx) {
+  currentDirector = idx;
+  document.querySelectorAll('.director-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  renderCalendar();
+}
+
+function changeWeek(dir) { currentWeekOffset += dir; renderCalendar(); }
+
+function openPanel() {
+  const dir = directors[currentDirector];
+  const months = { fr: MONTHS_FR, ar: MONTHS_AR, en: MONTHS_EN, es: MONTHS_ES }[currentLang];
+  const s = selectedSlot;
+  const dateStr = `${s.day} ${months[s.month]} ${s.year}`;
+  const t = i18n[currentLang];
+  document.getElementById('rdvSummary').innerHTML =
+    `<strong>${dir.name}</strong> — ${dir['role_'+currentLang]}<br>${t.summary_with || 'Le'} <strong>${dateStr}</strong> ${t.at || 'à'} <strong>${s.time}</strong>`;
+  document.getElementById('rdvFormArea').style.display = 'flex';
+  document.getElementById('successMsg').classList.remove('show');
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('rdvPanel').classList.add('open');
+}
+function closePanel() {
+  document.getElementById('rdvPanel').classList.remove('open');
+  document.querySelectorAll('.slot.selected').forEach(s => { s.classList.remove('selected'); s.classList.add('free'); });
+  selectedSlot = null;
+}
+
+async function submitRDV() {
+  const prenom = document.getElementById('f_prenom').value.trim();
+  const nom = document.getElementById('f_nom').value.trim();
+  const email = document.getElementById('f_email').value.trim();
+  const tel = document.getElementById('f_tel').value.trim();
+  const pays = document.getElementById('f_pays').value;
+  const sujet = document.getElementById('f_sujet').value;
+  const notes = document.getElementById('f_notes').value.trim();
+  if (!prenom || !nom || !email) { alert(i18n[currentLang].fill_required || 'Veuillez remplir les champs obligatoires.'); return; }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  const dir = directors[currentDirector];
+  const months = { fr: MONTHS_FR, ar: MONTHS_AR, en: MONTHS_EN, es: MONTHS_ES }[currentLang];
+  const s = selectedSlot;
+  const dateStr = `${s.day} ${months[s.month]} ${s.year}`;
+
+  const payload = {
+    prenom, nom, email, tel, pays, sujet, notes,
+    directeur: dir.name,
+    directeur_role: dir['role_'+currentLang],
+    date: dateStr,
+    heure: s.time,
+    lang: currentLang
+  };
+
+  try {
+    const res = await fetch('/api/rdv', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    if (res.ok) {
+      // Marquer le créneau comme pris
+      const taken = loadTaken(currentDirector);
+      taken[s.key] = { nom: `${prenom} ${nom}`, sujet };
+      saveTaken(currentDirector, taken);
+
+      document.getElementById('rdvFormArea').style.display = 'none';
+      const t = i18n[currentLang];
+      document.getElementById('successText').textContent =
+        `${t.success_text_1 || 'Confirmation envoyée à'} ${email}. ${t.success_text_2 || 'Votre rendez-vous avec'} ${dir.name} ${t.success_text_3 || 'le'} ${dateStr} ${t.at || 'à'} ${s.time} ${t.success_text_4 || 'est bien enregistré.'}`;
+      document.getElementById('successMsg').classList.add('show');
+      setTimeout(() => { closePanel(); renderCalendar(); }, 4000);
+    } else {
+      throw new Error();
+    }
+  } catch {
+    alert(i18n[currentLang].error_msg || 'Une erreur est survenue. Veuillez réessayer.');
+    btn.disabled = false;
+    btn.textContent = i18n[currentLang].btn_confirm || 'Confirmer le rendez-vous';
+  }
+}
+
+// ── I18N ──
+const i18n = {
+  fr: {
+    nav_services:'Services', nav_realisations:'Réalisations', nav_vente:'Vente', nav_art:'Art', nav_rdv:'Rendez-vous', nav_profil:'Mon profil',
+    page_tag:'Prise de rendez-vous', page_title:'Réservez votre <em>consultation</em>',
+    sidebar_title:'Choisissez un directeur',
+    dir0_role:'Rénovation & Gestion', dir1_role:'Décoration & Événements', dir2_role:'Financement & Transactions', dir3_role:'Logistique',
+    leg_free:'Disponible', leg_taken:'Réservé',
+    rdv_title:'Confirmer le <em>rendez-vous</em>',
+    label_prenom:'Prénom', label_nom:'Nom', label_email:'Email', label_tel:'Téléphone',
+    label_pays:'Pays', label_sujet:'Sujet du rendez-vous', label_notes:'Notes (optionnel)',
+    ph_prenom:'Votre prénom', ph_nom:'Votre nom', ph_notes:'Décrivez brièvement votre projet...',
+    sujet1:'Rénovation résidentielle / commerciale', sujet2:'Achat d\'appartement redesigné',
+    sujet3:'Mise en vente d\'un bien', sujet4:'Décoration artistique / Œuvres',
+    sujet5:'Financement / Investissement', sujet6:'Autre',
+    btn_confirm:'Confirmer le rendez-vous',
+    summary_with:'Le', at:'à',
+    success_title:'Rendez-vous confirmé',
+    success_text_1:'Confirmation envoyée à', success_text_2:'Votre rendez-vous avec',
+    success_text_3:'le', success_text_4:'est bien enregistré.',
+    fill_required:'Veuillez remplir les champs obligatoires.',
+    error_msg:'Une erreur est survenue. Veuillez réessayer.',
+  },
+  ar: {
+    nav_services:'الخدمات', nav_realisations:'الإنجازات', nav_vente:'البيع', nav_art:'فن', nav_rdv:'المواعيد', nav_profil:'ملفي',
+    page_tag:'حجز موعد', page_title:'احجز <em>استشارتك</em>',
+    sidebar_title:'اختر مديراً',
+    dir0_role:'التجديد والإدارة', dir1_role:'الديكور والفعاليات', dir2_role:'التمويل والمعاملات', dir3_role:'اللوجستيك',
+    leg_free:'متاح', leg_taken:'محجوز',
+    rdv_title:'تأكيد <em>الموعد</em>',
+    label_prenom:'الاسم الأول', label_nom:'اللقب', label_email:'البريد الإلكتروني', label_tel:'الهاتف',
+    label_pays:'البلد', label_sujet:'موضوع الموعد', label_notes:'ملاحظات (اختياري)',
+    ph_prenom:'اسمك الأول', ph_nom:'لقبك', ph_notes:'صف مشروعك باختصار...',
+    sujet1:'تجديد سكني أو تجاري', sujet2:'شراء شقة معاد تصميمها',
+    sujet3:'بيع عقار', sujet4:'ديكور فني / أعمال',
+    sujet5:'تمويل / استثمار', sujet6:'أخرى',
+    btn_confirm:'تأكيد الموعد',
+    summary_with:'بتاريخ', at:'الساعة',
+    success_title:'تم تأكيد الموعد',
+    success_text_1:'تم إرسال التأكيد إلى', success_text_2:'موعدك مع',
+    success_text_3:'بتاريخ', success_text_4:'مسجل بنجاح.',
+    fill_required:'يرجى ملء الحقول الإلزامية.',
+    error_msg:'حدث خطأ. يرجى المحاولة مرة أخرى.',
+  },
+  en: {
+    nav_services:'Services', nav_realisations:'Portfolio', nav_vente:'For Sale', nav_art:'Art', nav_rdv:'Book', nav_profil:'My Profile',
+    page_tag:'Book an appointment', page_title:'Schedule your <em>consultation</em>',
+    sidebar_title:'Choose a director',
+    dir0_role:'Renovation & Management', dir1_role:'Decoration & Events', dir2_role:'Financing & Transactions', dir3_role:'Logistics',
+    leg_free:'Available', leg_taken:'Booked',
+    rdv_title:'Confirm your <em>appointment</em>',
+    label_prenom:'First name', label_nom:'Last name', label_email:'Email', label_tel:'Phone',
+    label_pays:'Country', label_sujet:'Appointment subject', label_notes:'Notes (optional)',
+    ph_prenom:'Your first name', ph_nom:'Your last name', ph_notes:'Briefly describe your project...',
+    sujet1:'Residential / commercial renovation', sujet2:'Purchase of redesigned apartment',
+    sujet3:'Property listing', sujet4:'Artistic decoration / Artworks',
+    sujet5:'Financing / Investment', sujet6:'Other',
+    btn_confirm:'Confirm appointment',
+    summary_with:'On', at:'at',
+    success_title:'Appointment confirmed',
+    success_text_1:'Confirmation sent to', success_text_2:'Your appointment with',
+    success_text_3:'on', success_text_4:'has been recorded.',
+    fill_required:'Please fill in the required fields.',
+    error_msg:'An error occurred. Please try again.',
+  },
+  es: {
+    nav_services:'Servicios', nav_realisations:'Realizaciones', nav_vente:'Venta', nav_art:'Arte', nav_rdv:'Cita', nav_profil:'Mi perfil',
+    page_tag:'Reserva de cita', page_title:'Reserve su <em>consulta</em>',
+    sidebar_title:'Elija un director',
+    dir0_role:'Renovación y Gestión', dir1_role:'Decoración y Eventos', dir2_role:'Financiación y Transacciones', dir3_role:'Logística',
+    leg_free:'Disponible', leg_taken:'Reservado',
+    rdv_title:'Confirmar la <em>cita</em>',
+    label_prenom:'Nombre', label_nom:'Apellido', label_email:'Email', label_tel:'Teléfono',
+    label_pays:'País', label_sujet:'Asunto de la cita', label_notes:'Notas (opcional)',
+    ph_prenom:'Su nombre', ph_nom:'Su apellido', ph_notes:'Describa brevemente su proyecto...',
+    sujet1:'Renovación residencial / comercial', sujet2:'Compra de apartamento rediseñado',
+    sujet3:'Puesta en venta de un bien', sujet4:'Decoración artística / Obras',
+    sujet5:'Financiación / Inversión', sujet6:'Otro',
+    btn_confirm:'Confirmar la cita',
+    summary_with:'El', at:'a las',
+    success_title:'Cita confirmada',
+    success_text_1:'Confirmación enviada a', success_text_2:'Su cita con',
+    success_text_3:'el', success_text_4:'ha sido registrada.',
+    fill_required:'Por favor, rellene los campos obligatorios.',
+    error_msg:'Se ha producido un error. Por favor, inténtelo de nuevo.',
+  }
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent.toLowerCase()===lang) b.classList.add('active'); });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if(t[key]) el.placeholder = t[key];
+  });
+  renderCalendar();
+}
+
+// Init
+renderCalendar();
+
+// Pré-sélection depuis vente.html ou chatbot
+const params = new URLSearchParams(window.location.search);
+if (params.get('dir')) selectDirector(parseInt(params.get('dir')));
+</script>
+</body>
+</html>

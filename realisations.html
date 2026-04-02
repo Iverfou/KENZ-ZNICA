@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KENZ ZNICA — Réalisations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8D5A3; --gold-dark: #8B6914;
+  --noir: #0D0D0D; --charcoal: #1A1A1A; --stone: #2C2C2C;
+  --cream: #F5F0E8; --muted: #9A9A8A;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--noir); color: var(--cream); font-family: var(--sans); font-weight: 300; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 4rem;
+  background: rgba(13,13,13,0.95); backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(201,168,76,0.2);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; }
+.nav-logo span { color: var(--cream); font-weight: 300; }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.lang-selector { display: flex; gap: 0.4rem; }
+.lang-btn { background: none; border: 0.5px solid rgba(201,168,76,0.3); color: var(--muted); font-size: 0.7rem; padding: 0.3rem 0.6rem; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
+.lang-btn.active, .lang-btn:hover { background: var(--gold); color: var(--noir); border-color: var(--gold); }
+
+.page-header { padding: 9rem 4rem 4rem; background: var(--charcoal); border-bottom: 0.5px solid rgba(201,168,76,0.15); }
+.page-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+.page-tag::before { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+.page-title { font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; margin-bottom: 2.5rem; }
+.page-title em { font-style: italic; color: var(--gold); }
+
+/* ── FILTRES ── */
+.filters { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.filter-btn {
+  background: none; border: 0.5px solid rgba(201,168,76,0.25);
+  color: var(--muted); font-size: 0.72rem; letter-spacing: 0.08em;
+  text-transform: uppercase; padding: 0.5rem 1.2rem; cursor: pointer;
+  font-family: var(--sans); transition: all 0.2s;
+}
+.filter-btn:hover { border-color: var(--gold); color: var(--cream); }
+.filter-btn.active { background: var(--gold); color: var(--noir); border-color: var(--gold); }
+
+/* ── GRILLE PROJETS ── */
+.projects-section { padding: 4rem; }
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 2rem; }
+
+.project-card {
+  border: 0.5px solid rgba(201,168,76,0.15); background: var(--charcoal);
+  cursor: pointer; transition: border-color 0.3s, transform 0.2s;
+  overflow: hidden;
+}
+.project-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+
+/* ── SLIDER AVANT/APRÈS ── */
+.slider-wrap {
+  position: relative; height: 260px; overflow: hidden; user-select: none;
+}
+.slider-img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.img-before { z-index: 1; }
+.img-after { z-index: 2; clip-path: inset(0 50% 0 0); transition: clip-path 0.05s; }
+
+.slider-handle {
+  position: absolute; top: 0; bottom: 0; z-index: 3;
+  left: 50%; transform: translateX(-50%);
+  width: 2px; background: var(--gold); cursor: ew-resize;
+}
+.slider-handle::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--noir);
+  display: flex; align-items: center; justify-content: center;
+}
+.slider-handle::after {
+  content: '◀ ▶';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.55rem; color: var(--noir); white-space: nowrap; z-index: 4;
+  pointer-events: none;
+}
+.label-before, .label-after {
+  position: absolute; bottom: 12px; z-index: 5;
+  font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+  background: rgba(13,13,13,0.75); color: var(--cream);
+  padding: 0.3rem 0.7rem; pointer-events: none;
+}
+.label-before { left: 12px; }
+.label-after { right: 12px; }
+
+.project-info { padding: 1.5rem; }
+.project-badges { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.badge {
+  font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 0.25rem 0.6rem; border: 0.5px solid;
+}
+.badge.type-residentiel { border-color: rgba(201,168,76,0.4); color: var(--gold); }
+.badge.type-commercial { border-color: rgba(100,180,140,0.4); color: #64B48C; }
+.badge.type-artistique { border-color: rgba(180,100,160,0.4); color: #B464A0; }
+.badge.pays { border-color: rgba(154,154,138,0.3); color: var(--muted); }
+
+.project-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 300; margin-bottom: 0.4rem; }
+.project-location { font-size: 0.75rem; color: var(--muted); margin-bottom: 1rem; }
+
+.project-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; margin-bottom: 1.2rem; }
+.pstat { background: var(--stone); padding: 0.7rem; text-align: center; }
+.pstat-val { font-family: var(--serif); font-size: 1.2rem; font-weight: 300; color: var(--gold); }
+.pstat-label { font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-top: 0.2rem; }
+
+.project-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; }
+.project-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold); text-decoration: none; border-bottom: 0.5px solid rgba(201,168,76,0.3);
+  padding-bottom: 2px; transition: gap 0.3s;
+}
+.project-cta:hover { gap: 1rem; }
+
+/* ── MODAL DÉTAIL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0; z-index: 300;
+  background: rgba(0,0,0,0.85); align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.modal-overlay.open { display: flex; }
+.modal-box {
+  background: var(--charcoal); border: 0.5px solid rgba(201,168,76,0.3);
+  width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto;
+}
+.modal-header {
+  padding: 1.5rem 2rem; border-bottom: 0.5px solid rgba(201,168,76,0.15);
+  display: flex; justify-content: space-between; align-items: flex-start;
+}
+.modal-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; }
+.modal-title em { color: var(--gold); font-style: italic; }
+.close-modal { background: none; border: none; color: var(--muted); font-size: 1.3rem; cursor: pointer; }
+.close-modal:hover { color: var(--cream); }
+.modal-slider-wrap { position: relative; height: 380px; overflow: hidden; user-select: none; }
+.modal-body { padding: 2rem; }
+.modal-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+.modal-stat { background: var(--stone); padding: 1rem; text-align: center; }
+.modal-stat-val { font-family: var(--serif); font-size: 1.6rem; font-weight: 300; color: var(--gold); }
+.modal-stat-label { font-size: 0.65rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+.modal-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+.modal-travaux { margin-bottom: 2rem; }
+.modal-travaux h4 { font-family: var(--serif); font-size: 1.1rem; font-weight: 300; color: var(--cream); margin-bottom: 1rem; }
+.travaux-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.travaux-item {
+  font-size: 0.72rem; padding: 0.35rem 0.8rem;
+  border: 0.5px solid rgba(201,168,76,0.25); color: var(--muted);
+}
+.modal-rdv-btn {
+  display: block; width: 100%; background: var(--gold); color: var(--noir);
+  border: none; padding: 1rem; font-size: 0.8rem; letter-spacing: 0.12em;
+  text-transform: uppercase; cursor: pointer; font-weight: 500;
+  font-family: var(--sans); text-align: center; text-decoration: none;
+  transition: background 0.2s;
+}
+.modal-rdv-btn:hover { background: var(--gold-light); }
+
+/* ── NO RESULTS ── */
+.no-results { text-align: center; padding: 6rem 2rem; color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .page-header { padding: 7rem 1.5rem 3rem; }
+  .projects-section { padding: 2rem 1.5rem; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .modal-stats { grid-template-columns: 1fr 1fr; }
+  .modal-slider-wrap { height: 260px; }
+}
+[dir="rtl"] .page-tag::before { display: none; }
+[dir="rtl"] .page-tag::after { content:''; width:40px; height:0.5px; background:var(--gold); }
+[dir="rtl"] .label-before { left:auto; right:12px; }
+[dir="rtl"] .label-after { right:auto; left:12px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">KENZ<span> ZNICA</span></a>
+  <div class="nav-links">
+    <a href="index.html#services" data-i18n="nav_services">Services</a>
+    <a href="realisations.html" class="active" data-i18n="nav_realisations">Réalisations</a>
+    <a href="vente.html" data-i18n="nav_vente">Vente</a>
+    <a href="art.html" data-i18n="nav_art">Art</a>
+    <a href="agenda.html" data-i18n="nav_rdv">Rendez-vous</a>
+    <a href="profil.html" data-i18n="nav_profil">Mon profil</a>
+  </div>
+  <div class="lang-selector">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-tag" data-i18n="page_tag">Nos réalisations</div>
+  <h1 class="page-title" data-i18n="page_title">Chaque espace,<br>une <em>transformation</em></h1>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" onclick="filterProjects('all')" data-i18n="filter_all">Tous</button>
+    <button class="filter-btn" onclick="filterProjects('residentiel')" data-i18n="filter_res">Résidentiel</button>
+    <button class="filter-btn" onclick="filterProjects('commercial')" data-i18n="filter_com">Commercial</button>
+    <button class="filter-btn" onclick="filterProjects('artistique')" data-i18n="filter_art">Artistique</button>
+    <button class="filter-btn" onclick="filterProjects('DZ')" data-i18n="filter_dz">🇩🇿 Algérie</button>
+    <button class="filter-btn" onclick="filterProjects('MA')" data-i18n="filter_ma">🇲🇦 Maroc</button>
+  </div>
+</div>
+
+<section class="projects-section">
+  <div class="projects-grid" id="projectsGrid"></div>
+  <div class="no-results" id="noResults" style="display:none" data-i18n="no_results">Aucun projet trouvé pour ce filtre.</div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+const PROJECTS = [
+  {
+    id: 1,
+    title_fr: "Appartement Hydra",
+    title_ar: "شقة حيدرة",
+    title_en: "Hydra Apartment",
+    title_es: "Apartamento Hydra",
+    location_fr: "Alger, Algérie",
+    location_ar: "الجزائر العاصمة، الجزائر",
+    location_en: "Algiers, Algeria",
+    location_es: "Argel, Argelia",
+    type: "residentiel", pays: "DZ",
+    surface: "110m²", duree: "4 mois", valeur: "+38%",
+    prix_avant: "18M DA", cout_travaux: "7M DA", prix_apres: "29M DA",
+    before_color: "#4A3728",
+    after_color: "#1A1A2E",
+    before_label_fr: "Avant rénovation", before_label_ar: "قبل التجديد", before_label_en: "Before", before_label_es: "Antes",
+    after_label_fr: "Après rénovation", after_label_ar: "بعد التجديد", after_label_en: "After", after_label_es: "Después",
+    desc_fr: "Appartement années 80 entièrement transformé. Ouverture du salon sur cuisine, création d'une suite parentale, pose de marbre italien et menuiseries sur mesure. Décoration signée Najat Toubal.",
+    desc_ar: "شقة من الثمانينيات تم تحويلها بالكامل. فتح الصالون على المطبخ، إنشاء جناح رئيسي، تركيب الرخام الإيطالي والأثاث المخصص. ديكور بتوقيع نجاة توبال.",
+    desc_en: "1980s apartment fully transformed. Open-plan living/kitchen, master suite creation, Italian marble flooring and bespoke joinery. Decoration signed by Najat Toubal.",
+    desc_es: "Apartamento de los 80 totalmente transformado. Apertura del salón a la cocina, creación de suite principal, mármol italiano y carpintería a medida. Decoración firmada por Najat Toubal.",
+    travaux: ["Démolition cloisons", "Plomberie complète", "Électricité refaite", "Marbre sol & murs", "Cuisine équipée", "Suite parentale", "Menuiserie sur mesure", "Peinture décorative"],
+  },
+  {
+    id: 2,
+    title_fr: "Villa Oran Plage",
+    title_ar: "فيلا وهران بلاج",
+    title_en: "Oran Beach Villa",
+    title_es: "Villa Playa Orán",
+    location_fr: "Oran, Algérie",
+    location_ar: "وهران، الجزائر",
+    location_en: "Oran, Algeria",
+    location_es: "Orán, Argelia",
+    type: "residentiel", pays: "DZ",
+    surface: "240m²", duree: "7 mois", valeur: "+42%",
+    prix_avant: "45M DA", cout_travaux: "19M DA", prix_apres: "91M DA",
+    before_color: "#3D2B1F",
+    after_color: "#0F1F2E",
+    before_label_fr: "Avant rénovation", before_label_ar: "قبل التجديد", before_label_en: "Before", before_label_es: "Antes",
+    after_label_fr: "Après rénovation", after_label_ar: "بعد التجديد", after_label_en: "After", after_label_es: "Después",
+    desc_fr: "Villa côtière des années 70 intégralement restructurée. Façade contemporaine, terrasse panoramique, piscine intégrée, domotique complète. Style méditerranéen moderne.",
+    desc_ar: "فيلا ساحلية من السبعينيات تم تجديدها بالكامل. واجهة معاصرة، شرفة بانورامية، مسبح مدمج، نظام ذكي متكامل. أسلوب متوسطي حديث.",
+    desc_en: "Coastal villa from the 70s fully restructured. Contemporary facade, panoramic terrace, integrated pool, full home automation. Modern Mediterranean style.",
+    desc_es: "Villa costera de los 70 reestructurada íntegramente. Fachada contemporánea, terraza panorámica, piscina integrada, domótica completa. Estilo mediterráneo moderno.",
+    travaux: ["Restructuration façade", "Terrasse panoramique", "Piscine intégrée", "Domotique", "Climatisation centrale", "Cuisine professionnelle", "3 salles de bain", "Jardin paysager"],
+  },
+  {
+    id: 3,
+    title_fr: "Local Commercial Casablanca",
+    title_ar: "محل تجاري الدار البيضاء",
+    title_en: "Casablanca Commercial Space",
+    title_es: "Local Comercial Casablanca",
+    location_fr: "Casablanca, Maroc",
+    location_ar: "الدار البيضاء، المغرب",
+    location_en: "Casablanca, Morocco",
+    location_es: "Casablanca, Marruecos",
+    type: "commercial", pays: "MA",
+    surface: "180m²", duree: "3 mois", valeur: "+55%",
+    prix_avant: "1.2M MAD", cout_travaux: "0.65M MAD", prix_apres: "2.9M MAD",
+    before_color: "#2A2A1A",
+    after_color: "#1A2A1A",
+    before_label_fr: "Avant rénovation", before_label_ar: "قبل التجديد", before_label_en: "Before", before_label_es: "Antes",
+    after_label_fr: "Après rénovation", after_label_ar: "بعد التجديد", after_label_en: "After", after_label_es: "Después",
+    desc_fr: "Transformation d'un entrepôt désaffecté en espace commercial premium. Double hauteur, verrière industrielle, béton ciré, acier et bois. Idéal showroom ou boutique haut de gamme.",
+    desc_ar: "تحويل مستودع مهجور إلى فضاء تجاري راقٍ. ارتفاع مزدوج، نافذة صناعية زجاجية، خرسانة مصقولة، صلب وخشب. مثالي لصالة عرض أو متجر فاخر.",
+    desc_en: "Conversion of a disused warehouse into a premium commercial space. Double height, industrial skylight, polished concrete, steel and wood. Ideal showroom or luxury boutique.",
+    desc_es: "Transformación de un almacén en desuso en espacio comercial premium. Doble altura, lucernario industrial, hormigón pulido, acero y madera. Ideal para showroom o boutique de lujo.",
+    travaux: ["Structure double hauteur", "Verrière industrielle", "Béton ciré sol", "Cloisons vitrées", "Éclairage scénique", "Système HVAC", "Façade vitrée", "Signalétique design"],
+  },
+  {
+    id: 4,
+    title_fr: "Appartement Marrakech Médina",
+    title_ar: "شقة مراكش المدينة",
+    title_en: "Marrakech Medina Apartment",
+    title_es: "Apartamento Medina Marrakech",
+    location_fr: "Marrakech, Maroc",
+    location_ar: "مراكش، المغرب",
+    location_en: "Marrakech, Morocco",
+    location_es: "Marrakech, Marruecos",
+    type: "artistique", pays: "MA",
+    surface: "95m²", duree: "5 mois", valeur: "+61%",
+    prix_avant: "0.8M MAD", cout_travaux: "0.49M MAD", prix_apres: "2.1M MAD",
+    before_color: "#2D1A0E",
+    after_color: "#1A0D1A",
+    before_label_fr: "Avant rénovation", before_label_ar: "قبل التجديد", before_label_en: "Before", before_label_es: "Antes",
+    after_label_fr: "Après rénovation", after_label_ar: "بعد التجديد", after_label_en: "After", after_label_es: "Después",
+    desc_fr: "Riad traditionnel sublimé par une approche artistique contemporaine. Zellige revisité, tableaux de Najat Toubal intégrés aux murs, fontaine centrale restaurée. Fusion Orient-modernité.",
+    desc_ar: "رياض تقليدي جُمِّل بأسلوب فني معاصر. زليج محدّث، لوحات نجاة توبال مدمجة في الجدران، نافورة مركزية مرممة. مزيج بين الشرق والحداثة.",
+    desc_en: "Traditional riad elevated with a contemporary artistic approach. Reimagined zellige, Najat Toubal paintings integrated into walls, restored central fountain. East-meets-modernity fusion.",
+    desc_es: "Riad tradicional sublimado con enfoque artístico contemporáneo. Zellige revisitado, cuadros de Najat Toubal integrados en paredes, fuente central restaurada. Fusión Oriente-modernidad.",
+    travaux: ["Restauration riad", "Zellige artisanal", "Fontaine centrale", "Œuvres Najat Toubal", "Tadelakt murs", "Mobilier sur mesure", "Éclairage d'ambiance", "Jardinet intérieur"],
+  },
+  {
+    id: 5,
+    title_fr: "Duplex Tizi Ouzou",
+    title_ar: "دوبلكس تيزي وزو",
+    title_en: "Tizi Ouzou Duplex",
+    title_es: "Dúplex Tizi Ouzou",
+    location_fr: "Tizi Ouzou, Algérie",
+    location_ar: "تيزي وزو، الجزائر",
+    location_en: "Tizi Ouzou, Algeria",
+    location_es: "Tizi Ouzou, Argelia",
+    type: "residentiel", pays: "DZ",
+    surface: "150m²", duree: "6 mois", valeur: "+33%",
+    prix_avant: "22M DA", cout_travaux: "9.5M DA", prix_apres: "42M DA",
+    before_color: "#1E2D1E",
+    after_color: "#0D1A2E",
+    before_label_fr: "Avant rénovation", before_label_ar: "قبل التجديد", before_label_en: "Before", before_label_es: "Antes",
+    after_label_fr: "Après rénovation", after_label_ar: "بعد التجديد", after_label_en: "After", after_label_es: "Después",
+    desc_fr: "Duplex familial transformé en maison contemporaine. Escalier design en fer forgé, verrière salon, 4 chambres réaménagées, terrasse couverte avec vue sur la vallée du Djurdjura.",
+    desc_ar: "دوبلكس عائلي تحوّل إلى منزل عصري. درج تصميمي من الحديد المطروق، مظلة زجاجية للصالون، 4 غرف مُعاد تهيئتها، شرفة مسقوفة بإطلالة على وادي جرجرة.",
+    desc_en: "Family duplex transformed into a contemporary home. Wrought iron design staircase, glass ceiling in living room, 4 redesigned bedrooms, covered terrace with Djurdjura valley view.",
+    desc_es: "Dúplex familiar transformado en casa contemporánea. Escalera de hierro forjado, lucernario en salón, 4 habitaciones rediseñadas, terraza cubierta con vistas al valle del Djurdjura.",
+    travaux: ["Escalier fer forgé", "Verrière salon", "4 chambres refaites", "2 salles de bain", "Cuisine américaine", "Terrasse couverte", "Isolation thermique", "Chauffage central"],
+  },
+  {
+    id: 6,
+    title_fr: "Showroom Rabat Centre",
+    title_ar: "صالة عرض الرباط وسط المدينة",
+    title_en: "Rabat Centre Showroom",
+    title_es: "Showroom Centro Rabat",
+    location_fr: "Rabat, Maroc",
+    location_ar: "الرباط، المغرب",
+    location_en: "Rabat, Morocco",
+    location_es: "Rabat, Marruecos",
+    type: "commercial", pays: "MA",
+    surface: "220m²", duree: "4 mois", valeur: "+48%",
+    prix_avant: "1.8M MAD", cout_travaux: "0.86M MAD", prix_apres: "3.9M MAD",
+    before_color: "#1A1A0D",
+    after_color: "#0D1A1A",
+    before_label_fr: "Avant rénovation", before_label_ar: "قبل التجديد", before_label_en: "Before", before_label_es: "Antes",
+    after_label_fr: "Après rénovation", after_label_ar: "بعد التجديد", after_label_en: "After", after_label_es: "Después",
+    desc_fr: "Showroom premium pour une marque de mobilier haut de gamme. Cloisons modulables, éclairage scénique LED, espace lounge intégré et œuvres d'art tournantes signées Najat Toubal.",
+    desc_ar: "صالة عرض راقية لعلامة أثاث فاخرة. جدران متحركة، إضاءة مسرحية LED، مساحة استرخاء مدمجة وأعمال فنية دوارة موقعة من نجاة توبال.",
+    desc_en: "Premium showroom for a high-end furniture brand. Modular partitions, LED scenic lighting, integrated lounge area and rotating signed artworks by Najat Toubal.",
+    desc_es: "Showroom premium para una marca de mobiliario de lujo. Tabiques modulares, iluminación escénica LED, zona lounge integrada y obras de arte rotativas firmadas por Najat Toubal.",
+    travaux: ["Cloisons modulables", "Éclairage LED scénique", "Sol époxy nacré", "Espace lounge", "Façade vitrée", "Système audio", "Œuvres Najat Toubal", "Signalétique premium"],
+  },
+];
+
+let currentFilter = 'all';
+let currentLang = 'fr';
+let activeSliders = {};
+
+const i18n = {
+  fr: { nav_services:'Services', nav_realisations:'Réalisations', nav_vente:'Vente', nav_art:'Art', nav_rdv:'Rendez-vous', nav_profil:'Mon profil', page_tag:'Nos réalisations', page_title:'Chaque espace,<br>une <em>transformation</em>', filter_all:'Tous', filter_res:'Résidentiel', filter_com:'Commercial', filter_art:'Artistique', filter_dz:'🇩🇿 Algérie', filter_ma:'🇲🇦 Maroc', no_results:'Aucun projet trouvé pour ce filtre.', lbl_surface:'Surface', lbl_duree:'Durée', lbl_valeur:'Valeur ajoutée', lbl_avant:'Prix avant', lbl_cout:'Coût travaux', lbl_apres:'Prix de vente', lbl_travaux:'Travaux réalisés', rdv_btn:'Prendre rendez-vous', see_detail:'Voir le projet' },
+  ar: { nav_services:'الخدمات', nav_realisations:'الإنجازات', nav_vente:'البيع', nav_art:'فن', nav_rdv:'المواعيد', nav_profil:'ملفي', page_tag:'إنجازاتنا', page_title:'كل فضاء،<br><em>تحول</em> فريد', filter_all:'الكل', filter_res:'سكني', filter_com:'تجاري', filter_art:'فني', filter_dz:'🇩🇿 الجزائر', filter_ma:'🇲🇦 المغرب', no_results:'لا توجد مشاريع لهذا التصفية.', lbl_surface:'المساحة', lbl_duree:'المدة', lbl_valeur:'القيمة المضافة', lbl_avant:'السعر قبل', lbl_cout:'تكلفة الأشغال', lbl_apres:'سعر البيع', lbl_travaux:'الأشغال المنجزة', rdv_btn:'حجز موعد', see_detail:'عرض المشروع' },
+  en: { nav_services:'Services', nav_realisations:'Portfolio', nav_vente:'For Sale', nav_art:'Art', nav_rdv:'Book', nav_profil:'My Profile', page_tag:'Our portfolio', page_title:'Every space,<br>a <em>transformation</em>', filter_all:'All', filter_res:'Residential', filter_com:'Commercial', filter_art:'Artistic', filter_dz:'🇩🇿 Algeria', filter_ma:'🇲🇦 Morocco', no_results:'No projects found for this filter.', lbl_surface:'Area', lbl_duree:'Duration', lbl_valeur:'Added value', lbl_avant:'Before price', lbl_cout:'Renovation cost', lbl_apres:'Sale price', lbl_travaux:'Works carried out', rdv_btn:'Book an appointment', see_detail:'View project' },
+  es: { nav_services:'Servicios', nav_realisations:'Realizaciones', nav_vente:'Venta', nav_art:'Arte', nav_rdv:'Cita', nav_profil:'Mi perfil', page_tag:'Nuestras realizaciones', page_title:'Cada espacio,<br>una <em>transformación</em>', filter_all:'Todos', filter_res:'Residencial', filter_com:'Comercial', filter_art:'Artístico', filter_dz:'🇩🇿 Argelia', filter_ma:'🇲🇦 Marruecos', no_results:'No se encontraron proyectos para este filtro.', lbl_surface:'Superficie', lbl_duree:'Duración', lbl_valeur:'Valor añadido', lbl_avant:'Precio antes', lbl_cout:'Coste obras', lbl_apres:'Precio de venta', lbl_travaux:'Obras realizadas', rdv_btn:'Reservar cita', see_detail:'Ver proyecto' },
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent.toLowerCase()===lang) b.classList.add('active'); });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(t[key]) el.innerHTML = t[key];
+  });
+  renderProjects();
+}
+
+function filterProjects(f) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderProjects();
+}
+
+function getFiltered() {
+  if (currentFilter === 'all') return PROJECTS;
+  return PROJECTS.filter(p => p.type === currentFilter || p.pays === currentFilter);
+}
+
+function renderProjects() {
+  const t = i18n[currentLang];
+  const filtered = getFiltered();
+  const grid = document.getElementById('projectsGrid');
+  const noRes = document.getElementById('noResults');
+
+  if (filtered.length === 0) { grid.innerHTML = ''; noRes.style.display = 'block'; return; }
+  noRes.style.display = 'none';
+
+  grid.innerHTML = filtered.map(p => {
+    const title = p[`title_${currentLang}`];
+    const location = p[`location_${currentLang}`];
+    const desc = p[`desc_${currentLang}`];
+    const beforeLabel = p[`before_label_${currentLang}`];
+    const afterLabel = p[`after_label_${currentLang}`];
+    return `
+    <div class="project-card" onclick="openModal(${p.id})">
+      <div class="slider-wrap" id="sw_${p.id}" data-id="${p.id}">
+        <div class="slider-img img-before" style="background:${p.before_color};display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:3rem;opacity:0.3">🏚️</span>
+        </div>
+        <div class="slider-img img-after" id="after_${p.id}" style="background:${p.after_color};display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:3rem;opacity:0.5">✨</span>
+        </div>
+        <div class="slider-handle" id="handle_${p.id}" style="left:50%"></div>
+        <div class="label-before">${beforeLabel}</div>
+        <div class="label-after">${afterLabel}</div>
+      </div>
+      <div class="project-info">
+        <div class="project-badges">
+          <span class="badge type-${p.type}" data-i18n="filter_${p.type.substring(0,3)}">${p.type === 'residentiel' ? (t.filter_res||'Résidentiel') : p.type === 'commercial' ? (t.filter_com||'Commercial') : (t.filter_art||'Artistique')}</span>
+          <span class="badge pays">${p.pays === 'DZ' ? '🇩🇿 Algérie' : '🇲🇦 Maroc'}</span>
+        </div>
+        <h3 class="project-title">${title}</h3>
+        <p class="project-location">📍 ${location}</p>
+        <div class="project-stats">
+          <div class="pstat"><div class="pstat-val">${p.surface}</div><div class="pstat-label">${t.lbl_surface}</div></div>
+          <div class="pstat"><div class="pstat-val">${p.duree}</div><div class="pstat-label">${t.lbl_duree}</div></div>
+          <div class="pstat"><div class="pstat-val" style="color:#4CAF50">${p.valeur}</div><div class="pstat-label">${t.lbl_valeur}</div></div>
+        </div>
+        <p class="project-desc">${desc.substring(0,120)}...</p>
+        <span class="project-cta">${t.see_detail} →</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Init sliders
+  setTimeout(() => {
+    filtered.forEach(p => initSlider(p.id));
+  }, 50);
+}
+
+function initSlider(id) {
+  const wrap = document.getElementById(`sw_${id}`);
+  const after = document.getElementById(`after_${id}`);
+  const handle = document.getElementById(`handle_${id}`);
+  if (!wrap || !after || !handle) return;
+
+  let dragging = false;
+
+  function setPos(pct) {
+    pct = Math.max(5, Math.min(95, pct));
+    handle.style.left = pct + '%';
+    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+  }
+
+  function getPos(e, rect) {
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    return ((clientX - rect.left) / rect.width) * 100;
+  }
+
+  wrap.addEventListener('mousedown', e => { e.preventDefault(); dragging = true; setPos(getPos(e, wrap.getBoundingClientRect())); });
+  wrap.addEventListener('touchstart', e => { dragging = true; setPos(getPos(e, wrap.getBoundingClientRect())); }, {passive:true});
+  window.addEventListener('mousemove', e => { if(dragging) setPos(getPos(e, wrap.getBoundingClientRect())); });
+  window.addEventListener('touchmove', e => { if(dragging) setPos(getPos(e, wrap.getBoundingClientRect())); }, {passive:true});
+  window.addEventListener('mouseup', () => { dragging = false; });
+  window.addEventListener('touchend', () => { dragging = false; });
+}
+
+function openModal(id) {
+  const p = PROJECTS.find(x => x.id === id);
+  if (!p) return;
+  const t = i18n[currentLang];
+  const title = p[`title_${currentLang}`];
+  const location = p[`location_${currentLang}`];
+  const desc = p[`desc_${currentLang}`];
+  const beforeLabel = p[`before_label_${currentLang}`];
+  const afterLabel = p[`after_label_${currentLang}`];
+
+  document.getElementById('modalBox').innerHTML = `
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title">${title}</h2>
+        <p style="font-size:0.8rem;color:var(--muted);margin-top:0.3rem">📍 ${location}</p>
+      </div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-slider-wrap" id="msw_${id}">
+      <div class="slider-img img-before" style="background:${p.before_color};display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:5rem;opacity:0.25">🏚️</span>
+      </div>
+      <div class="slider-img img-after" id="mafter_${id}" style="background:${p.after_color};display:flex;align-items:center;justify-content:center;clip-path:inset(0 50% 0 0)">
+        <span style="font-size:5rem;opacity:0.4">✨</span>
+      </div>
+      <div class="slider-handle" id="mhandle_${id}" style="left:50%"></div>
+      <div class="label-before">${beforeLabel}</div>
+      <div class="label-after">${afterLabel}</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-stats">
+        <div class="modal-stat"><div class="modal-stat-val">${p.surface}</div><div class="modal-stat-label">${t.lbl_surface}</div></div>
+        <div class="modal-stat"><div class="modal-stat-val">${p.duree}</div><div class="modal-stat-label">${t.lbl_duree}</div></div>
+        <div class="modal-stat"><div class="modal-stat-val" style="color:#4CAF50">${p.valeur}</div><div class="modal-stat-label">${t.lbl_valeur}</div></div>
+        <div class="modal-stat"><div class="modal-stat-val" style="font-size:1rem">${p.prix_avant} → ${p.prix_apres}</div><div class="modal-stat-label">${t.lbl_avant} / ${t.lbl_apres}</div></div>
+      </div>
+      <p class="modal-desc">${desc}</p>
+      <div class="modal-travaux">
+        <h4>${t.lbl_travaux}</h4>
+        <div class="travaux-list">${p.travaux.map(tr => `<span class="travaux-item">${tr}</span>`).join('')}</div>
+      </div>
+      <a href="agenda.html" class="modal-rdv-btn">${t.rdv_btn} →</a>
+    </div>
+  `;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(() => initModalSlider(id), 50);
+}
+
+function initModalSlider(id) {
+  const wrap = document.getElementById(`msw_${id}`);
+  const after = document.getElementById(`mafter_${id}`);
+  const handle = document.getElementById(`mhandle_${id}`);
+  if (!wrap || !after || !handle) return;
+  let dragging = false;
+  function setPos(pct) {
+    pct = Math.max(5, Math.min(95, pct));
+    handle.style.left = pct + '%';
+    after.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+  }
+  function getPos(e, rect) {
+    const cx = e.touches ? e.touches[0].clientX : e.clientX;
+    return ((cx - rect.left) / rect.width) * 100;
+  }
+  wrap.addEventListener('mousedown', e => { e.preventDefault(); dragging = true; setPos(getPos(e, wrap.getBoundingClientRect())); });
+  wrap.addEventListener('touchstart', e => { dragging = true; setPos(getPos(e, wrap.getBoundingClientRect())); }, {passive:true});
+  window.addEventListener('mousemove', e => { if(dragging) setPos(getPos(e, wrap.getBoundingClientRect())); });
+  window.addEventListener('touchmove', e => { if(dragging) setPos(getPos(e, wrap.getBoundingClientRect())); }, {passive:true});
+  window.addEventListener('mouseup', () => dragging = false);
+  window.addEventListener('touchend', () => dragging = false);
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+renderProjects();
+</script>
+</body>
+</html>

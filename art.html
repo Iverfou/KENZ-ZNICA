@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KENZ ZNICA — Art & Décoration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8D5A3; --gold-dark: #8B6914;
+  --noir: #0D0D0D; --charcoal: #1A1A1A; --stone: #2C2C2C;
+  --cream: #F5F0E8; --muted: #9A9A8A;
+  --rose: #C4856A; --violet: #7B5EA7; --teal: #4A9B8E;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--noir); color: var(--cream); font-family: var(--sans); font-weight: 300; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 4rem;
+  background: rgba(13,13,13,0.95); backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(201,168,76,0.2);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; }
+.nav-logo span { color: var(--cream); font-weight: 300; }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.lang-selector { display: flex; gap: 0.4rem; }
+.lang-btn { background: none; border: 0.5px solid rgba(201,168,76,0.3); color: var(--muted); font-size: 0.7rem; padding: 0.3rem 0.6rem; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
+.lang-btn.active, .lang-btn:hover { background: var(--gold); color: var(--noir); border-color: var(--gold); }
+
+/* ── HERO ARTISTE ── */
+.artist-hero {
+  min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+  padding-top: 80px; position: relative; overflow: hidden;
+}
+.hero-left {
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 6rem 4rem; position: relative; z-index: 1;
+}
+.hero-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+.hero-tag::before { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+.artist-name { font-family: var(--serif); font-size: clamp(2.5rem, 4vw, 4rem); font-weight: 300; line-height: 1.05; margin-bottom: 0.5rem; }
+.artist-name em { color: var(--gold); font-style: italic; }
+.artist-title { font-size: 0.85rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 2rem; }
+.artist-bio { font-size: 0.92rem; color: var(--muted); line-height: 1.9; max-width: 480px; margin-bottom: 3rem; }
+.artist-stats { display: flex; gap: 3rem; margin-bottom: 3rem; }
+.astat-val { font-family: var(--serif); font-size: 2rem; font-weight: 300; color: var(--gold); }
+.astat-label { font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; margin-top: 0.2rem; }
+.hero-ctas { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+.btn-gold { background: var(--gold); color: var(--noir); padding: 0.9rem 2rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; cursor: pointer; border: none; font-family: var(--sans); transition: background 0.2s; text-decoration: none; display: inline-block; }
+.btn-gold:hover { background: var(--gold-light); }
+.btn-outline { background: none; border: 0.5px solid rgba(201,168,76,0.4); color: var(--gold); padding: 0.9rem 2rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; font-family: var(--sans); transition: all 0.2s; text-decoration: none; display: inline-block; }
+.btn-outline:hover { background: rgba(201,168,76,0.1); }
+
+.hero-right {
+  position: relative; background: var(--charcoal);
+  border-left: 0.5px solid rgba(201,168,76,0.15);
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.hero-artwork {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.artwork-canvas {
+  width: 320px; height: 420px; position: relative;
+  border: 0.5px solid rgba(201,168,76,0.2);
+}
+.canvas-bg { position: absolute; inset: 0; }
+.canvas-label {
+  position: absolute; bottom: -2rem; left: 0; right: 0;
+  text-align: center; font-family: var(--serif); font-style: italic;
+  font-size: 1rem; color: var(--muted);
+}
+.artwork-badge {
+  position: absolute; top: 1rem; right: 1rem;
+  background: rgba(13,13,13,0.9); border: 0.5px solid var(--gold);
+  padding: 0.5rem 0.8rem; font-size: 0.68rem; color: var(--gold);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+.signature {
+  position: absolute; bottom: 1rem; right: 1rem;
+  font-family: var(--serif); font-style: italic; font-size: 1.1rem;
+  color: rgba(201,168,76,0.7);
+}
+
+/* ── SECTION TITRE ── */
+.section { padding: 6rem 4rem; }
+.section-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+.section-tag::before { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+.section-title { font-family: var(--serif); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; margin-bottom: 3rem; line-height: 1.1; }
+.section-title em { color: var(--gold); font-style: italic; }
+
+/* ── FILTRES GALERIE ── */
+.gallery-filters { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-bottom: 3rem; }
+.gf-btn { background: none; border: 0.5px solid rgba(201,168,76,0.2); color: var(--muted); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.45rem 1rem; cursor: pointer; font-family: var(--sans); transition: all 0.2s; }
+.gf-btn:hover { border-color: var(--gold); color: var(--cream); }
+.gf-btn.active { background: var(--gold); color: var(--noir); border-color: var(--gold); }
+
+/* ── GALERIE OEUVRES ── */
+.gallery-masonry {
+  columns: 3; column-gap: 1.5rem;
+}
+.gallery-item {
+  break-inside: avoid; margin-bottom: 1.5rem; cursor: pointer;
+  border: 0.5px solid rgba(201,168,76,0.1); transition: border-color 0.3s;
+  position: relative; overflow: hidden;
+}
+.gallery-item:hover { border-color: rgba(201,168,76,0.5); }
+.gallery-item:hover .item-overlay { opacity: 1; }
+.artwork-visual {
+  width: 100%; display: flex; align-items: center; justify-content: center;
+  position: relative;
+}
+.item-overlay {
+  position: absolute; inset: 0; background: rgba(13,13,13,0.75);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.3s; gap: 0.5rem;
+}
+.overlay-view { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); border: 0.5px solid var(--gold); padding: 0.5rem 1.2rem; }
+.item-info { padding: 1rem 1.2rem; background: var(--charcoal); }
+.item-title { font-family: var(--serif); font-size: 1.05rem; font-weight: 300; color: var(--cream); margin-bottom: 0.3rem; }
+.item-meta { font-size: 0.7rem; color: var(--muted); }
+.item-price { font-family: var(--serif); font-size: 1rem; color: var(--gold); margin-top: 0.5rem; }
+.item-dispo { display: inline-block; font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.5rem; margin-top: 0.4rem; }
+.item-dispo.disponible { background: rgba(76,175,80,0.15); color: #4CAF50; border: 0.5px solid rgba(76,175,80,0.3); }
+.item-dispo.vendu { background: rgba(154,154,138,0.1); color: var(--muted); border: 0.5px solid rgba(154,154,138,0.2); }
+.item-dispo.commission { background: rgba(201,168,76,0.1); color: var(--gold); border: 0.5px solid rgba(201,168,76,0.3); }
+
+/* ── ÉVÉNEMENTS ── */
+.events-section { background: var(--charcoal); }
+.events-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+.event-card { border: 0.5px solid rgba(201,168,76,0.15); padding: 2rem; transition: border-color 0.3s; position: relative; overflow: hidden; }
+.event-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 100%; background: var(--gold); }
+.event-card:hover { border-color: rgba(201,168,76,0.4); }
+.event-date { font-family: var(--serif); font-size: 2rem; font-weight: 300; color: var(--gold); line-height: 1; }
+.event-month { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.event-title { font-family: var(--serif); font-size: 1.2rem; font-weight: 300; color: var(--cream); margin-bottom: 0.5rem; }
+.event-location { font-size: 0.78rem; color: var(--muted); margin-bottom: 1rem; }
+.event-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.2rem; }
+.event-badge { display: inline-block; font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.25rem 0.7rem; border: 0.5px solid rgba(201,168,76,0.3); color: var(--gold); margin-bottom: 1.2rem; }
+.event-link { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); text-decoration: none; border-bottom: 0.5px solid rgba(201,168,76,0.3); padding-bottom: 2px; transition: all 0.2s; }
+.event-link:hover { color: var(--gold-light); }
+
+/* ── COMMISSION ── */
+.commission-section { background: var(--noir); }
+.commission-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+.commission-intro p { font-size: 0.9rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+.commission-steps { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 1rem; }
+.cstep { display: flex; gap: 1.2rem; align-items: flex-start; }
+.cstep-num { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; color: rgba(201,168,76,0.3); line-height: 1; flex-shrink: 0; min-width: 2rem; }
+.cstep-text h4 { font-size: 0.85rem; font-weight: 500; color: var(--cream); margin-bottom: 0.3rem; }
+.cstep-text p { font-size: 0.78rem; color: var(--muted); line-height: 1.6; }
+
+.commission-form { background: var(--charcoal); border: 0.5px solid rgba(201,168,76,0.2); padding: 2.5rem; }
+.form-title { font-family: var(--serif); font-size: 1.3rem; font-weight: 300; margin-bottom: 2rem; }
+.form-title em { color: var(--gold); font-style: italic; }
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+.form-group label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.form-group input, .form-group select, .form-group textarea {
+  background: var(--stone); border: 0.5px solid rgba(201,168,76,0.15);
+  color: var(--cream); padding: 0.75rem 1rem; font-size: 0.82rem;
+  font-family: var(--sans); outline: none; transition: border-color 0.2s; width: 100%;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+.form-group select option { background: var(--stone); }
+.form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
+.form-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.btn-submit-form { width: 100%; background: var(--gold); color: var(--noir); border: none; padding: 1rem; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-weight: 500; font-family: var(--sans); transition: background 0.2s; margin-top: 0.5rem; }
+.btn-submit-form:hover { background: var(--gold-light); }
+.form-success { display: none; text-align: center; padding: 2rem; }
+.form-success.show { display: block; }
+.form-success-icon { font-size: 2rem; margin-bottom: 1rem; }
+.form-success-title { font-family: var(--serif); font-size: 1.3rem; color: var(--gold); }
+
+/* ── MODAL OEUVRE ── */
+.modal-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.open { display: flex; }
+.modal-box { background: var(--charcoal); border: 0.5px solid rgba(201,168,76,0.3); width: 100%; max-width: 700px; max-height: 92vh; overflow-y: auto; }
+.modal-header { padding: 1.5rem 2rem; border-bottom: 0.5px solid rgba(201,168,76,0.15); display: flex; justify-content: space-between; align-items: center; }
+.modal-title { font-family: var(--serif); font-size: 1.6rem; font-weight: 300; }
+.modal-title em { color: var(--gold); font-style: italic; }
+.close-modal { background: none; border: none; color: var(--muted); font-size: 1.3rem; cursor: pointer; }
+.close-modal:hover { color: var(--cream); }
+.modal-artwork-view { display: flex; align-items: center; justify-content: center; padding: 3rem; }
+.modal-details { padding: 0 2rem 2rem; }
+.modal-info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1.5rem; }
+.minfo { background: var(--stone); padding: 1rem; text-align: center; }
+.minfo-val { font-family: var(--serif); font-size: 1.1rem; color: var(--gold); }
+.minfo-label { font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+.modal-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.8; margin-bottom: 1.5rem; }
+.modal-actions { display: flex; gap: 1rem; }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .artist-hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-right { min-height: 400px; }
+  .hero-left { padding: 6rem 1.5rem 3rem; }
+  .section { padding: 4rem 1.5rem; }
+  .gallery-masonry { columns: 2; }
+  .commission-grid { grid-template-columns: 1fr; gap: 3rem; }
+  .form-row2 { grid-template-columns: 1fr; }
+  .modal-info-grid { grid-template-columns: 1fr 1fr; }
+  .modal-actions { flex-direction: column; }
+}
+@media (max-width: 600px) { .gallery-masonry { columns: 1; } }
+
+[dir="rtl"] .hero-tag::before, [dir="rtl"] .section-tag::before { display: none; }
+[dir="rtl"] .hero-tag::after, [dir="rtl"] .section-tag::after { content:''; width:40px; height:0.5px; background:var(--gold); }
+[dir="rtl"] .event-card::before { left: auto; right: 0; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">KENZ<span> ZNICA</span></a>
+  <div class="nav-links">
+    <a href="index.html#services" data-i18n="nav_services">Services</a>
+    <a href="realisations.html" data-i18n="nav_realisations">Réalisations</a>
+    <a href="vente.html" data-i18n="nav_vente">Vente</a>
+    <a href="art.html" class="active" data-i18n="nav_art">Art</a>
+    <a href="agenda.html" data-i18n="nav_rdv">Rendez-vous</a>
+    <a href="profil.html" data-i18n="nav_profil">Mon profil</a>
+  </div>
+  <div class="lang-selector">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<!-- HERO ARTISTE -->
+<section class="artist-hero">
+  <div class="hero-left">
+    <div class="hero-tag" data-i18n="hero_tag">Artiste & Directrice artistique</div>
+    <h1 class="artist-name"><em>Najat</em><br>Toubal</h1>
+    <div class="artist-title" data-i18n="artist_title">Décoration artistique · Événements culturels</div>
+    <p class="artist-bio" data-i18n="artist_bio">Artiste pluridisciplinaire entre Algérie et Maroc, Najat Toubal crée des œuvres qui fusionnent l'héritage culturel maghrébin avec une sensibilité contemporaine. Ses tableaux, installations et objets d'art ornent les plus beaux intérieurs rénovés par KENZ ZNICA.</p>
+    <div class="artist-stats">
+      <div>
+        <div class="astat-val">+80</div>
+        <div class="astat-label" data-i18n="stat1">Œuvres créées</div>
+      </div>
+      <div>
+        <div class="astat-val">12</div>
+        <div class="astat-label" data-i18n="stat2">Expositions</div>
+      </div>
+      <div>
+        <div class="astat-val">2</div>
+        <div class="astat-label" data-i18n="stat3">Pays</div>
+      </div>
+    </div>
+    <div class="hero-ctas">
+      <a href="#galerie" class="btn-gold" data-i18n="cta1">Voir la galerie</a>
+      <a href="#commission" class="btn-outline" data-i18n="cta2">Commander une œuvre</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-artwork">
+      <div style="text-align:center">
+        <div class="artwork-canvas">
+          <div class="canvas-bg" style="background:linear-gradient(145deg,#1a0d20,#2d1a10,#0d1a20)">
+            <!-- Tableau SVG génératif -->
+            <svg width="100%" height="100%" viewBox="0 0 320 420" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="g1" cx="50%" cy="40%" r="60%">
+                  <stop offset="0%" stop-color="#C9A84C" stop-opacity="0.4"/>
+                  <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+                </radialGradient>
+                <radialGradient id="g2" cx="70%" cy="70%" r="50%">
+                  <stop offset="0%" stop-color="#7B5EA7" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#7B5EA7" stop-opacity="0"/>
+                </radialGradient>
+              </defs>
+              <rect width="320" height="420" fill="url(#g1)"/>
+              <rect width="320" height="420" fill="url(#g2)"/>
+              <!-- Motif géométrique inspiré du zellige -->
+              <g stroke="#C9A84C" stroke-width="0.5" fill="none" opacity="0.4">
+                <polygon points="160,40 200,100 160,160 120,100" />
+                <polygon points="160,40 200,100 160,160 120,100" transform="translate(0,120)"/>
+                <polygon points="160,40 200,100 160,160 120,100" transform="translate(0,240)"/>
+                <line x1="160" y1="0" x2="160" y2="420"/>
+                <line x1="0" y1="210" x2="320" y2="210"/>
+                <circle cx="160" cy="210" r="80" stroke-dasharray="4,8"/>
+                <circle cx="160" cy="210" r="120" stroke-dasharray="2,12" opacity="0.3"/>
+              </g>
+              <!-- Calligraphie stylisée -->
+              <text x="160" y="200" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#C9A84C" opacity="0.6" font-style="italic">لوحة</text>
+              <text x="160" y="225" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#9A9A8A" opacity="0.5">N · Toubal</text>
+              <!-- Points décoratifs -->
+              <g fill="#C9A84C" opacity="0.5">
+                <circle cx="80" cy="80" r="2"/>
+                <circle cx="240" cy="80" r="2"/>
+                <circle cx="80" cy="340" r="2"/>
+                <circle cx="240" cy="340" r="2"/>
+                <circle cx="160" cy="50" r="3"/>
+                <circle cx="160" cy="370" r="3"/>
+              </g>
+            </svg>
+          </div>
+          <div class="artwork-badge" data-i18n="artwork_original">Œuvre originale</div>
+          <div class="signature">N. Toubal</div>
+        </div>
+        <div class="canvas-label" data-i18n="artwork_sample">— Série Maghreb Intime, 2024 —</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section class="section" id="galerie" style="background:var(--noir)">
+  <div class="section-tag" data-i18n="gallery_tag">Galerie</div>
+  <h2 class="section-title" data-i18n="gallery_title">Œuvres <em>disponibles</em></h2>
+  <div class="gallery-filters">
+    <button class="gf-btn active" onclick="filterGallery('all',this)" data-i18n="gf_all">Toutes</button>
+    <button class="gf-btn" onclick="filterGallery('tableau',this)" data-i18n="gf_tableau">Tableaux</button>
+    <button class="gf-btn" onclick="filterGallery('installation',this)" data-i18n="gf_install">Installations</button>
+    <button class="gf-btn" onclick="filterGallery('objet',this)" data-i18n="gf_objet">Objets d'art</button>
+    <button class="gf-btn" onclick="filterGallery('disponible',this)" data-i18n="gf_dispo">Disponibles</button>
+  </div>
+  <div class="gallery-masonry" id="galleryGrid"></div>
+</section>
+
+<!-- ÉVÉNEMENTS -->
+<section class="section events-section" id="evenements">
+  <div class="section-tag" data-i18n="events_tag">Agenda culturel</div>
+  <h2 class="section-title" data-i18n="events_title">Événements<br>à <em>venir</em></h2>
+  <div class="events-grid" id="eventsGrid"></div>
+</section>
+
+<!-- COMMISSION -->
+<section class="section commission-section" id="commission">
+  <div class="commission-grid">
+    <div class="commission-intro">
+      <div class="section-tag" data-i18n="comm_tag">Commissions</div>
+      <h2 class="section-title" data-i18n="comm_title">Une œuvre<br>créée <em>pour vous</em></h2>
+      <p data-i18n="comm_intro">Najat Toubal accepte des commissions personnalisées pour particuliers et entreprises. Chaque œuvre est unique, conçue en harmonie avec votre espace et vos aspirations.</p>
+      <div class="commission-steps">
+        <div class="cstep">
+          <div class="cstep-num">01</div>
+          <div class="cstep-text">
+            <h4 data-i18n="step1_title">Consultation initiale</h4>
+            <p data-i18n="step1_desc">Échange sur votre vision, l'espace destiné à l'œuvre, vos références esthétiques et votre budget.</p>
+          </div>
+        </div>
+        <div class="cstep">
+          <div class="cstep-num">02</div>
+          <div class="cstep-text">
+            <h4 data-i18n="step2_title">Proposition artistique</h4>
+            <p data-i18n="step2_desc">Najat vous soumet une esquisse et un devis détaillé sous 7 jours ouvrés.</p>
+          </div>
+        </div>
+        <div class="cstep">
+          <div class="cstep-num">03</div>
+          <div class="cstep-text">
+            <h4 data-i18n="step3_title">Création & livraison</h4>
+            <p data-i18n="step3_desc">Réalisation en 4 à 12 semaines selon la complexité. Livraison avec certificat d'authenticité signé.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="commission-form">
+      <h3 class="form-title" data-i18n="form_title">Demande de <em>commission</em></h3>
+      <div id="formArea">
+        <div class="form-row2">
+          <div class="form-group">
+            <label data-i18n="lbl_prenom">Prénom</label>
+            <input type="text" id="c_prenom" data-i18n-ph="ph_prenom" placeholder="Votre prénom">
+          </div>
+          <div class="form-group">
+            <label data-i18n="lbl_nom">Nom</label>
+            <input type="text" id="c_nom" data-i18n-ph="ph_nom" placeholder="Votre nom">
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_email">Email</label>
+          <input type="email" id="c_email" placeholder="votre@email.com">
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_type">Type d'œuvre souhaitée</label>
+          <select id="c_type">
+            <option value="tableau" data-i18n="type1">Tableau (peinture sur toile)</option>
+            <option value="installation" data-i18n="type2">Installation murale</option>
+            <option value="objet" data-i18n="type3">Objet d'art / Sculpture</option>
+            <option value="serie" data-i18n="type4">Série de tableaux</option>
+            <option value="autre" data-i18n="type5">Autre / À définir</option>
+          </select>
+        </div>
+        <div class="form-row2">
+          <div class="form-group">
+            <label data-i18n="lbl_format">Format souhaité</label>
+            <select id="c_format">
+              <option value="petit">Petit (≤ 50×50 cm)</option>
+              <option value="moyen">Moyen (50–100 cm)</option>
+              <option value="grand">Grand (100–200 cm)</option>
+              <option value="xxl">XXL (> 200 cm)</option>
+              <option value="libre">Format libre</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label data-i18n="lbl_budget">Budget indicatif</label>
+            <select id="c_budget">
+              <option value="<500">< 500 €</option>
+              <option value="500-1500">500 – 1 500 €</option>
+              <option value="1500-5000">1 500 – 5 000 €</option>
+              <option value=">5000">> 5 000 €</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_vision">Votre vision (style, couleurs, thème…)</label>
+          <textarea id="c_vision" rows="4" data-i18n-ph="ph_vision" placeholder="Décrivez votre projet artistique..."></textarea>
+        </div>
+        <button class="btn-submit-form" onclick="submitCommission()" data-i18n="btn_submit">Envoyer ma demande</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✦</div>
+        <div class="form-success-title" data-i18n="success_title">Demande reçue</div>
+        <p style="font-size:0.82rem;color:var(--muted);margin-top:0.8rem" data-i18n="success_text">Najat Toubal vous contactera dans les 48h pour échanger sur votre projet.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MODAL OEUVRE -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+const OEUVRES = [
+  { id:1, cat:'tableau', statut:'disponible', height:340,
+    colors:['#1a0d20','#C9A84C','#7B5EA7'],
+    titre_fr:'Mémoire du Djurdjura', titre_ar:'ذاكرة جرجرة', titre_en:'Memory of Djurdjura', titre_es:'Memoria del Djurdjura',
+    technique_fr:'Huile sur toile', technique_ar:'زيت على قماش', technique_en:'Oil on canvas', technique_es:'Óleo sobre lienzo',
+    dimensions:'90 × 120 cm', annee:'2024',
+    prix:'3 800 €',
+    desc_fr:'Série inspirée des montagnes kabyles. Pigments naturels ocre et violet profond, travail à la spatule. Signée et certifiée.',
+    desc_ar:'سلسلة مستوحاة من جبال القبائل. أصباغ طبيعية أوكرية وبنفسجية عميقة، عمل بالملاط. موقعة ومعتمدة.',
+    desc_en:'Series inspired by the Kabyle mountains. Natural ochre and deep violet pigments, palette knife work. Signed and certified.',
+    desc_es:'Serie inspirada en las montañas de Cabilia. Pigmentos naturales ocre y violeta profundo, trabajo con espátula. Firmada y certificada.',
+  },
+  { id:2, cat:'installation', statut:'commission',  height:260,
+    colors:['#0d1a10','#4A9B8E','#C9A84C'],
+    titre_fr:'Zellige Contemporain', titre_ar:'زليج معاصر', titre_en:'Contemporary Zellige', titre_es:'Zellige Contemporáneo',
+    technique_fr:'Installation murale mixte', technique_ar:'تركيب جداري مختلط', technique_en:'Mixed wall installation', technique_es:'Instalación mural mixta',
+    dimensions:'200 × 150 cm', annee:'2023',
+    prix:'Sur devis',
+    desc_fr:'Réinterprétation du zellige traditionnel avec matériaux contemporains. Miroirs, résine et feuilles d\'or. Pièce unique sur commande.',
+    desc_ar:'إعادة تفسير الزليج التقليدي بمواد معاصرة. مرايا، راتنج وورق ذهب. قطعة فريدة بالطلب.',
+    desc_en:'Reinterpretation of traditional zellige with contemporary materials. Mirrors, resin and gold leaf. Unique piece on commission.',
+    desc_es:'Reinterpretación del zellige tradicional con materiales contemporáneos. Espejos, resina y pan de oro. Pieza única por encargo.',
+  },
+  { id:3, cat:'tableau', statut:'vendu', height:280,
+    colors:['#2a1010','#C4856A','#1a1a2a'],
+    titre_fr:'Femme Oranaise', titre_ar:'امرأة وهرانية', titre_en:'Woman from Oran', titre_es:'Mujer Oranesa',
+    technique_fr:'Acrylique et or sur bois', technique_ar:'أكريليك وذهب على خشب', technique_en:'Acrylic and gold on wood', technique_es:'Acrílico y oro sobre madera',
+    dimensions:'60 × 80 cm', annee:'2023',
+    prix:'Vendu',
+    desc_fr:'Portrait figuratif de la collection "Portraits du Maghreb". Feuilles d\'or appliquées à la main sur fond acrylique texturé.',
+    desc_ar:'بورتريه تصويري من مجموعة "بورتريهات المغرب العربي". أوراق ذهب مطبقة يدوياً على خلفية أكريليك مُخططة.',
+    desc_en:'Figurative portrait from the "Maghreb Portraits" collection. Gold leaf applied by hand on textured acrylic background.',
+    desc_es:'Retrato figurativo de la colección "Retratos del Magreb". Pan de oro aplicado a mano sobre fondo acrílico texturizado.',
+  },
+  { id:4, cat:'objet', statut:'disponible', height:220,
+    colors:['#101a2a','#C9A84C','#4A9B8E'],
+    titre_fr:'Vasque Berbère', titre_ar:'وعاء أمازيغي', titre_en:'Berber Basin', titre_es:'Vasija Bereber',
+    technique_fr:'Céramique émaillée artisanale', technique_ar:'سيراميك مطلي حرفي', technique_en:'Handcrafted glazed ceramic', technique_es:'Cerámica esmaltada artesanal',
+    dimensions:'Ø 35 × H 28 cm', annee:'2024',
+    prix:'480 €',
+    desc_fr:'Pièce unique en céramique de Jijel. Motifs géométriques traditionnels revisités à l\'or. Pièce décorative ou fonctionnelle.',
+    desc_ar:'قطعة فريدة من سيراميك جيجل. نقوش هندسية تقليدية محدّثة بالذهب. قطعة ديكورية أو وظيفية.',
+    desc_en:'Unique piece in Jijel ceramic. Traditional geometric patterns updated with gold. Decorative or functional piece.',
+    desc_es:'Pieza única en cerámica de Jijel. Motivos geométricos tradicionales actualizados con oro. Pieza decorativa o funcional.',
+  },
+  { id:5, cat:'tableau', statut:'disponible', height:380,
+    colors:['#0d200d','#4A9B8E','#C9A84C'],
+    titre_fr:'Jardin d\'Éden Kabyle', titre_ar:'جنة عدن القبائلية', titre_en:'Kabyle Garden of Eden', titre_es:'Jardín del Edén Cabil',
+    technique_fr:'Technique mixte sur lin', technique_ar:'تقنية مختلطة على كتان', technique_en:'Mixed media on linen', technique_es:'Técnica mixta sobre lino',
+    dimensions:'120 × 180 cm', annee:'2024',
+    prix:'6 200 €',
+    desc_fr:'Grande composition végétale inspirée des jardins de Kabylie. Techniques mixtes : acrylique, huile et collage végétal. Pièce maîtresse.',
+    desc_ar:'تركيبة نباتية كبيرة مستوحاة من حدائق القبائل. تقنيات مختلطة: أكريليك، زيت ولصق نباتي. تحفة فنية.',
+    desc_en:'Large botanical composition inspired by Kabylie gardens. Mixed media: acrylic, oil and botanical collage. Masterpiece.',
+    desc_es:'Gran composición botánica inspirada en los jardines de Cabilia. Técnicas mixtas: acrílico, óleo y collage botánico. Obra maestra.',
+  },
+  { id:6, cat:'installation', statut:'disponible', height:300,
+    colors:['#1a1020','#7B5EA7','#C9A84C'],
+    titre_fr:'Constellation Méditerranée', titre_ar:'كوكبة المتوسط', titre_en:'Mediterranean Constellation', titre_es:'Constelación Mediterráneo',
+    technique_fr:'Installation lumineuse', technique_ar:'تركيب ضوئي', technique_en:'Light installation', technique_es:'Instalación lumínica',
+    dimensions:'Variable — sur mesure', annee:'2024',
+    prix:'Sur devis',
+    desc_fr:'Installation lumineuse modulaire évoquant les étoiles et la navigation méditerranéenne. Laiton, verre soufflé et LED. Adaptable à tout espace.',
+    desc_ar:'تركيب ضوئي معياري يستحضر النجوم والملاحة المتوسطية. نحاس أصفر، زجاج منفوخ وLED. قابل للتكيف مع أي فضاء.',
+    desc_en:'Modular light installation evoking Mediterranean stars and navigation. Brass, blown glass and LED. Adaptable to any space.',
+    desc_es:'Instalación lumínica modular que evoca las estrellas y la navegación mediterránea. Latón, vidrio soplado y LED. Adaptable a cualquier espacio.',
+  },
+  { id:7, cat:'objet', statut:'disponible', height:200,
+    colors:['#200d0d','#C4856A','#C9A84C'],
+    titre_fr:'Plateau Tadelakt', titre_ar:'صينية تادلاكت', titre_en:'Tadelakt Tray', titre_es:'Bandeja Tadelakt',
+    technique_fr:'Tadelakt & laiton', technique_ar:'تادلاكت ونحاس أصفر', technique_en:'Tadelakt & brass', technique_es:'Tadelakt y latón',
+    dimensions:'50 × 35 cm', annee:'2023',
+    prix:'320 €',
+    desc_fr:'Plateau en tadelakt marocain avec incrustations de laiton. Finition cire naturelle. Pièce artisanale unique.',
+    desc_ar:'صينية من التادلاكت المغربي مع تطعيمات نحاسية. تشطيب شمع طبيعي. قطعة حرفية فريدة.',
+    desc_en:'Moroccan tadelakt tray with brass inlays. Natural wax finish. Unique artisanal piece.',
+    desc_es:'Bandeja de tadelakt marroquí con incrustaciones de latón. Acabado con cera natural. Pieza artesanal única.',
+  },
+  { id:8, cat:'tableau', statut:'disponible', height:310,
+    colors:['#0d0d1a','#C9A84C','#C4856A'],
+    titre_fr:'Nuit de Ramadan', titre_ar:'ليلة رمضان', titre_en:'Ramadan Night', titre_es:'Noche de Ramadán',
+    technique_fr:'Huile sur toile dorée', technique_ar:'زيت على قماش مذهب', technique_en:'Oil on gilded canvas', technique_es:'Óleo sobre lienzo dorado',
+    dimensions:'100 × 140 cm', annee:'2024',
+    prix:'4 500 €',
+    desc_fr:'Nocturne lumineux aux tons chauds évoquant les nuits de Ramadan au Maghreb. Fond or à la feuille, pigments naturels.',
+    desc_ar:'ليلية مضيئة بأتون دافئة تستحضر ليالي رمضان في المغرب العربي. خلفية ذهبية بالورق والأصباغ الطبيعية.',
+    desc_en:'Luminous nocturne in warm tones evoking Ramadan nights in the Maghreb. Gold leaf background, natural pigments.',
+    desc_es:'Nocturno luminoso en tonos cálidos que evoca las noches de Ramadán en el Magreb. Fondo de pan de oro, pigmentos naturales.',
+  },
+];
+
+const EVENEMENTS = [
+  {
+    id:1,
+    jour:'15', mois_fr:'Mars 2025', mois_ar:'مارس 2025', mois_en:'March 2025', mois_es:'Marzo 2025',
+    titre_fr:'Exposition "Maghreb Intime"', titre_ar:'معرض "المغرب الحميم"', titre_en:'"Maghreb Intime" Exhibition', titre_es:'Exposición "Maghreb Intime"',
+    lieu_fr:'Galerie Bab El Oued, Alger', lieu_ar:'غاليري باب الواد، الجزائر', lieu_en:'Galerie Bab El Oued, Algiers', lieu_es:'Galerie Bab El Oued, Argel',
+    desc_fr:'Vernissage de la nouvelle série de Najat Toubal. 20 œuvres inédites explorant l\'identité maghrébine contemporaine. Entrée libre.',
+    desc_ar:'افتتاح سلسلة نجاة توبال الجديدة. 20 عملاً غير مسبوق يستكشف الهوية المغاربية المعاصرة. الدخول مجاني.',
+    desc_en:'Opening of Najat Toubal\'s new series. 20 unreleased works exploring contemporary Maghrebi identity. Free admission.',
+    desc_es:'Inauguración de la nueva serie de Najat Toubal. 20 obras inéditas que exploran la identidad magrebi contemporánea. Entrada libre.',
+    type_fr:'Vernissage', type_ar:'افتتاح', type_en:'Opening night', type_es:'Inauguración',
+  },
+  {
+    id:2,
+    jour:'08', mois_fr:'Avr 2025', mois_ar:'أبريل 2025', mois_en:'Apr 2025', mois_es:'Abr 2025',
+    titre_fr:'Atelier Zellige & Design', titre_ar:'ورشة الزليج والتصميم', titre_en:'Zellige & Design Workshop', titre_es:'Taller Zellige & Diseño',
+    lieu_fr:'KENZ ZNICA Studio, Oran', lieu_ar:'ستوديو كنز زنيكا، وهران', lieu_en:'KENZ ZNICA Studio, Oran', lieu_es:'Estudio KENZ ZNICA, Orán',
+    desc_fr:'Atelier pratique animé par Najat Toubal. Initiation aux techniques du zellige contemporain et à leur intégration dans la décoration d\'intérieur.',
+    desc_ar:'ورشة عملية بإشراف نجاة توبال. تعلم تقنيات الزليج المعاصر وتكاملها في ديكور الداخل.',
+    desc_en:'Hands-on workshop led by Najat Toubal. Introduction to contemporary zellige techniques and their integration in interior decoration.',
+    desc_es:'Taller práctico dirigido por Najat Toubal. Iniciación a las técnicas del zellige contemporáneo y su integración en la decoración de interiores.',
+    type_fr:'Atelier', type_ar:'ورشة', type_en:'Workshop', type_es:'Taller',
+  },
+  {
+    id:3,
+    jour:'22', mois_fr:'Mai 2025', mois_ar:'مايو 2025', mois_en:'May 2025', mois_es:'May 2025',
+    titre_fr:'Art & Architecture — Table ronde', titre_ar:'الفن والعمارة — طاولة مستديرة', titre_en:'Art & Architecture — Round Table', titre_es:'Arte y Arquitectura — Mesa redonda',
+    lieu_fr:'Institut Français, Casablanca', lieu_ar:'المعهد الفرنسي، الدار البيضاء', lieu_en:'French Institute, Casablanca', lieu_es:'Instituto Francés, Casablanca',
+    desc_fr:'Najat Toubal intervient aux côtés d\'architectes et designers marocains sur le thème "L\'art dans les espaces rénovés". Inscription obligatoire.',
+    desc_ar:'نجاة توبال تشارك إلى جانب معماريين ومصممين مغاربة حول "الفن في الفضاءات المجددة". التسجيل إلزامي.',
+    desc_en:'Najat Toubal speaks alongside Moroccan architects and designers on "Art in renovated spaces". Registration required.',
+    desc_es:'Najat Toubal interviene junto a arquitectos y diseñadores marroquíes sobre "El arte en los espacios renovados". Inscripción obligatoria.',
+    type_fr:'Conférence', type_ar:'مؤتمر', type_en:'Conference', type_es:'Conferencia',
+  },
+  {
+    id:4,
+    jour:'14', mois_fr:'Jun 2025', mois_ar:'يونيو 2025', mois_en:'Jun 2025', mois_es:'Jun 2025',
+    titre_fr:'Vente aux enchères solidaire', titre_ar:'مزاد خيري', titre_en:'Charity art auction', titre_es:'Subasta solidaria',
+    lieu_fr:'Hôtel El Aurassi, Alger', lieu_ar:'فندق الأوراسي، الجزائر العاصمة', lieu_en:'El Aurassi Hotel, Algiers', lieu_es:'Hotel El Aurassi, Argel',
+    desc_fr:'5 œuvres de Najat Toubal mises aux enchères au profit d\'associations culturelles algériennes. Cocktail & exposition avant la vente.',
+    desc_ar:'5 أعمال لنجاة توبال تُطرح بالمزاد لصالح جمعيات ثقافية جزائرية. كوكتيل ومعرض قبل البيع.',
+    desc_en:'5 works by Najat Toubal auctioned for the benefit of Algerian cultural associations. Cocktail & exhibition before the sale.',
+    desc_es:'5 obras de Najat Toubal en subasta a beneficio de asociaciones culturales argelinas. Cóctel y exposición antes de la venta.',
+    type_fr:'Enchères', type_ar:'مزاد', type_en:'Auction', type_es:'Subasta',
+  },
+];
+
+let currentLang = 'fr';
+let currentFilter = 'all';
+
+const i18n = {
+  fr:{ nav_services:'Services', nav_realisations:'Réalisations', nav_vente:'Vente', nav_art:'Art', nav_rdv:'Rendez-vous', nav_profil:'Mon profil', hero_tag:'Artiste & Directrice artistique', artist_title:'Décoration artistique · Événements culturels', artist_bio:'Artiste pluridisciplinaire entre Algérie et Maroc, Najat Toubal crée des œuvres qui fusionnent l\'héritage culturel maghrébin avec une sensibilité contemporaine.', stat1:'Œuvres créées', stat2:'Expositions', stat3:'Pays', cta1:'Voir la galerie', cta2:'Commander une œuvre', artwork_original:'Œuvre originale', artwork_sample:'— Série Maghreb Intime, 2024 —', gallery_tag:'Galerie', gallery_title:'Œuvres <em>disponibles</em>', gf_all:'Toutes', gf_tableau:'Tableaux', gf_install:'Installations', gf_objet:'Objets d\'art', gf_dispo:'Disponibles', events_tag:'Agenda culturel', events_title:'Événements<br>à <em>venir</em>', comm_tag:'Commissions', comm_title:'Une œuvre<br>créée <em>pour vous</em>', comm_intro:'Najat Toubal accepte des commissions personnalisées pour particuliers et entreprises. Chaque œuvre est unique, conçue en harmonie avec votre espace.', step1_title:'Consultation initiale', step1_desc:'Échange sur votre vision, l\'espace destiné à l\'œuvre, vos références esthétiques et votre budget.', step2_title:'Proposition artistique', step2_desc:'Najat vous soumet une esquisse et un devis détaillé sous 7 jours ouvrés.', step3_title:'Création & livraison', step3_desc:'Réalisation en 4 à 12 semaines. Livraison avec certificat d\'authenticité signé.', form_title:'Demande de <em>commission</em>', lbl_prenom:'Prénom', lbl_nom:'Nom', lbl_email:'Email', lbl_type:'Type d\'œuvre souhaitée', lbl_format:'Format souhaité', lbl_budget:'Budget indicatif', lbl_vision:'Votre vision', ph_prenom:'Votre prénom', ph_nom:'Votre nom', ph_vision:'Style, couleurs, thème, usage prévu...', type1:'Tableau (peinture sur toile)', type2:'Installation murale', type3:'Objet d\'art / Sculpture', type4:'Série de tableaux', type5:'Autre / À définir', btn_submit:'Envoyer ma demande', success_title:'Demande reçue', success_text:'Najat Toubal vous contactera dans les 48h pour échanger sur votre projet.', voir:'Voir l\'œuvre', statut_disponible:'Disponible', statut_vendu:'Vendu', statut_commission:'Sur commission', rdv_btn:'Prendre rendez-vous', inscrire:'S\'inscrire →' },
+  ar:{ nav_services:'الخدمات', nav_realisations:'الإنجازات', nav_vente:'البيع', nav_art:'فن', nav_rdv:'المواعيد', nav_profil:'ملفي', hero_tag:'فنانة ومديرة فنية', artist_title:'الديكور الفني · الفعاليات الثقافية', artist_bio:'فنانة متعددة التخصصات بين الجزائر والمغرب، تبتكر نجاة توبال أعمالاً تمزج بين الإرث الثقافي المغاربي والحساسية المعاصرة.', stat1:'عمل فني', stat2:'معرض', stat3:'دولتان', cta1:'مشاهدة المعرض', cta2:'طلب عمل', artwork_original:'عمل أصلي', artwork_sample:'— سلسلة المغرب الحميم، 2024 —', gallery_tag:'المعرض', gallery_title:'أعمال <em>متاحة</em>', gf_all:'الكل', gf_tableau:'لوحات', gf_install:'تركيبات', gf_objet:'تحف فنية', gf_dispo:'المتاحة', events_tag:'الأجندة الثقافية', events_title:'الفعاليات<br><em>القادمة</em>', comm_tag:'الطلبات الخاصة', comm_title:'عمل فني<br>مبتكر <em>لأجلك</em>', comm_intro:'تقبل نجاة توبال الطلبات الشخصية للأفراد والشركات. كل عمل فريد، مصمم بتناغم مع فضائك وتطلعاتك.', step1_title:'استشارة أولية', step1_desc:'تبادل حول رؤيتك، الفضاء المخصص للعمل، مراجعاتك الجمالية وميزانيتك.', step2_title:'مقترح فني', step2_desc:'تقدم نجاة لك مسودة وعرضاً تفصيلياً خلال 7 أيام عمل.', step3_title:'الإنجاز والتسليم', step3_desc:'إنجاز في 4 إلى 12 أسبوعاً. تسليم مع شهادة أصالة موقعة.', form_title:'طلب <em>عمل خاص</em>', lbl_prenom:'الاسم الأول', lbl_nom:'اللقب', lbl_email:'البريد الإلكتروني', lbl_type:'نوع العمل المطلوب', lbl_format:'الحجم المطلوب', lbl_budget:'الميزانية التقريبية', lbl_vision:'رؤيتك', ph_prenom:'اسمك الأول', ph_nom:'لقبك', ph_vision:'الأسلوب، الألوان، الموضوع، الاستخدام المقصود...', type1:'لوحة (زيت على قماش)', type2:'تركيب جداري', type3:'تحفة / منحوتة', type4:'سلسلة لوحات', type5:'أخرى / يحدد لاحقاً', btn_submit:'إرسال طلبي', success_title:'تم استلام الطلب', success_text:'ستتواصل معك نجاة توبال في غضون 48 ساعة لمناقشة مشروعك.', voir:'عرض العمل', statut_disponible:'متاح', statut_vendu:'مبيع', statut_commission:'بالطلب', rdv_btn:'حجز موعد', inscrire:'التسجيل →' },
+  en:{ nav_services:'Services', nav_realisations:'Portfolio', nav_vente:'For Sale', nav_art:'Art', nav_rdv:'Book', nav_profil:'My Profile', hero_tag:'Artist & Artistic Director', artist_title:'Artistic decoration · Cultural events', artist_bio:'Multidisciplinary artist between Algeria and Morocco, Najat Toubal creates works that fuse Maghrebi cultural heritage with contemporary sensitivity.', stat1:'Works created', stat2:'Exhibitions', stat3:'Countries', cta1:'View gallery', cta2:'Commission a work', artwork_original:'Original artwork', artwork_sample:'— Maghreb Intime series, 2024 —', gallery_tag:'Gallery', gallery_title:'<em>Available</em> works', gf_all:'All', gf_tableau:'Paintings', gf_install:'Installations', gf_objet:'Art objects', gf_dispo:'Available', events_tag:'Cultural agenda', events_title:'Upcoming<br><em>events</em>', comm_tag:'Commissions', comm_title:'A work<br>created <em>for you</em>', comm_intro:'Najat Toubal accepts personalised commissions for individuals and businesses. Each work is unique, designed in harmony with your space.', step1_title:'Initial consultation', step1_desc:'Discussion about your vision, the space for the work, your aesthetic references and your budget.', step2_title:'Artistic proposal', step2_desc:'Najat will submit a sketch and a detailed quote within 7 working days.', step3_title:'Creation & delivery', step3_desc:'Completion in 4 to 12 weeks. Delivery with signed certificate of authenticity.', form_title:'Commission <em>request</em>', lbl_prenom:'First name', lbl_nom:'Last name', lbl_email:'Email', lbl_type:'Type of work desired', lbl_format:'Desired format', lbl_budget:'Indicative budget', lbl_vision:'Your vision', ph_prenom:'Your first name', ph_nom:'Your last name', ph_vision:'Style, colours, theme, intended use...', type1:'Painting (oil on canvas)', type2:'Wall installation', type3:'Art object / Sculpture', type4:'Series of paintings', type5:'Other / To be defined', btn_submit:'Send my request', success_title:'Request received', success_text:'Najat Toubal will contact you within 48 hours to discuss your project.', voir:'View artwork', statut_disponible:'Available', statut_vendu:'Sold', statut_commission:'On commission', rdv_btn:'Book appointment', inscrire:'Register →' },
+  es:{ nav_services:'Servicios', nav_realisations:'Realizaciones', nav_vente:'Venta', nav_art:'Arte', nav_rdv:'Cita', nav_profil:'Mi perfil', hero_tag:'Artista y Directora artística', artist_title:'Decoración artística · Eventos culturales', artist_bio:'Artista pluridisciplinar entre Argelia y Marruecos, Najat Toubal crea obras que fusionan la herencia cultural magrebi con una sensibilidad contemporánea.', stat1:'Obras creadas', stat2:'Exposiciones', stat3:'Países', cta1:'Ver la galería', cta2:'Encargar una obra', artwork_original:'Obra original', artwork_sample:'— Serie Maghreb Intime, 2024 —', gallery_tag:'Galería', gallery_title:'Obras <em>disponibles</em>', gf_all:'Todas', gf_tableau:'Cuadros', gf_install:'Instalaciones', gf_objet:'Objetos de arte', gf_dispo:'Disponibles', events_tag:'Agenda cultural', events_title:'Eventos<br><em>próximos</em>', comm_tag:'Comisiones', comm_title:'Una obra<br>creada <em>para usted</em>', comm_intro:'Najat Toubal acepta encargos personalizados para particulares y empresas. Cada obra es única, concebida en armonía con su espacio.', step1_title:'Consulta inicial', step1_desc:'Intercambio sobre su visión, el espacio destinado a la obra, sus referencias estéticas y su presupuesto.', step2_title:'Propuesta artística', step2_desc:'Najat le presentará un boceto y un presupuesto detallado en 7 días hábiles.', step3_title:'Creación y entrega', step3_desc:'Realización en 4 a 12 semanas. Entrega con certificado de autenticidad firmado.', form_title:'Solicitud de <em>comisión</em>', lbl_prenom:'Nombre', lbl_nom:'Apellido', lbl_email:'Email', lbl_type:'Tipo de obra deseada', lbl_format:'Formato deseado', lbl_budget:'Presupuesto indicativo', lbl_vision:'Su visión', ph_prenom:'Su nombre', ph_nom:'Su apellido', ph_vision:'Estilo, colores, tema, uso previsto...', type1:'Cuadro (óleo sobre lienzo)', type2:'Instalación mural', type3:'Objeto de arte / Escultura', type4:'Serie de cuadros', type5:'Otro / A definir', btn_submit:'Enviar mi solicitud', success_title:'Solicitud recibida', success_text:'Najat Toubal se pondrá en contacto con usted en 48 horas para hablar de su proyecto.', voir:'Ver la obra', statut_disponible:'Disponible', statut_vendu:'Vendido', statut_commission:'Por encargo', rdv_btn:'Reservar cita', inscrire:'Inscribirse →' },
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent.toLowerCase()===lang) b.classList.add('active'); });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if(t[key]) el.placeholder = t[key];
+  });
+  renderGallery();
+  renderEvents();
+}
+
+function filterGallery(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.gf-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGallery();
+}
+
+function getGradient(colors) {
+  return `linear-gradient(135deg,${colors.join(',')})`;
+}
+
+function renderGallery() {
+  const t = i18n[currentLang];
+  let list = OEUVRES;
+  if (currentFilter === 'tableau') list = list.filter(o => o.cat === 'tableau');
+  else if (currentFilter === 'installation') list = list.filter(o => o.cat === 'installation');
+  else if (currentFilter === 'objet') list = list.filter(o => o.cat === 'objet');
+  else if (currentFilter === 'disponible') list = list.filter(o => o.statut === 'disponible');
+
+  const statutLabel = s => s === 'disponible' ? t.statut_disponible : s === 'vendu' ? t.statut_vendu : t.statut_commission;
+  const statutClass = s => s;
+
+  document.getElementById('galleryGrid').innerHTML = list.map(o => `
+    <div class="gallery-item" onclick="openModal(${o.id})">
+      <div class="artwork-visual" style="height:${o.height}px;background:${getGradient(o.colors)}">
+        <svg width="100%" height="100%" viewBox="0 0 200 ${o.height}" xmlns="http://www.w3.org/2000/svg" style="position:absolute;inset:0">
+          <circle cx="100" cy="${o.height/2}" r="${o.height*0.25}" stroke="${o.colors[1]}" stroke-width="0.5" fill="none" opacity="0.4"/>
+          <circle cx="100" cy="${o.height/2}" r="${o.height*0.15}" stroke="${o.colors[1]}" stroke-width="0.5" fill="none" opacity="0.25"/>
+          <line x1="0" y1="${o.height/2}" x2="200" y2="${o.height/2}" stroke="${o.colors[1]}" stroke-width="0.3" opacity="0.2"/>
+          <line x1="100" y1="0" x2="100" y2="${o.height}" stroke="${o.colors[1]}" stroke-width="0.3" opacity="0.2"/>
+          <text x="100" y="${o.height/2+5}" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="11" fill="${o.colors[1]}" opacity="0.5">N·T</text>
+        </svg>
+        <div class="item-overlay"><span class="overlay-view">${t.voir}</span></div>
+      </div>
+      <div class="item-info">
+        <div class="item-title">${o[`titre_${currentLang}`]}</div>
+        <div class="item-meta">${o[`technique_${currentLang}`]} · ${o.dimensions} · ${o.annee}</div>
+        <div class="item-price">${o.prix}</div>
+        <span class="item-dispo ${statutClass(o.statut)}">${statutLabel(o.statut)}</span>
+      </div>
+    </div>`).join('');
+}
+
+function renderEvents() {
+  const t = i18n[currentLang];
+  document.getElementById('eventsGrid').innerHTML = EVENEMENTS.map(e => `
+    <div class="event-card">
+      <div class="event-date">${e.jour}</div>
+      <div class="event-month">${e[`mois_${currentLang}`]}</div>
+      <span class="event-badge">${e[`type_${currentLang}`]}</span>
+      <h3 class="event-title">${e[`titre_${currentLang}`]}</h3>
+      <p class="event-location">📍 ${e[`lieu_${currentLang}`]}</p>
+      <p class="event-desc">${e[`desc_${currentLang}`]}</p>
+      <a href="agenda.html?dir=1" class="event-link">${t.inscrire}</a>
+    </div>`).join('');
+}
+
+function openModal(id) {
+  const o = OEUVRES.find(x => x.id === id);
+  if (!o) return;
+  const t = i18n[currentLang];
+  const statutLabel = o.statut === 'disponible' ? t.statut_disponible : o.statut === 'vendu' ? t.statut_vendu : t.statut_commission;
+
+  document.getElementById('modalBox').innerHTML = `
+    <div class="modal-header">
+      <h2 class="modal-title">${o[`titre_${currentLang}`]}</h2>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-artwork-view" style="background:${getGradient(o.colors)};min-height:280px">
+      <svg width="260" height="260" viewBox="0 0 260 260" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="130" cy="130" r="90" stroke="${o.colors[1]}" stroke-width="0.8" fill="none" opacity="0.5"/>
+        <circle cx="130" cy="130" r="55" stroke="${o.colors[1]}" stroke-width="0.5" fill="none" opacity="0.3"/>
+        <polygon points="130,50 190,150 70,150" stroke="${o.colors[1]}" stroke-width="0.5" fill="none" opacity="0.3"/>
+        <text x="130" y="135" text-anchor="middle" font-family="Georgia,serif" font-style="italic" font-size="18" fill="${o.colors[1]}" opacity="0.7">N. Toubal</text>
+        <text x="130" y="155" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="${o.colors[2]||'#9A9A8A'}" opacity="0.5">${o.annee}</text>
+      </svg>
+    </div>
+    <div class="modal-details">
+      <div class="modal-info-grid">
+        <div class="minfo"><div class="minfo-val">${o.dimensions}</div><div class="minfo-label">Format</div></div>
+        <div class="minfo"><div class="minfo-val">${o.annee}</div><div class="minfo-label">Année</div></div>
+        <div class="minfo"><div class="minfo-val">${o.prix}</div><div class="minfo-label">Prix</div></div>
+      </div>
+      <p style="font-size:0.75rem;color:var(--muted);margin-bottom:1rem">${o[`technique_${currentLang}`]}</p>
+      <p class="modal-desc">${o[`desc_${currentLang}`]}</p>
+      <span class="item-dispo ${o.statut}" style="margin-bottom:1.5rem;display:inline-block">${statutLabel}</span>
+      <div class="modal-actions">
+        ${o.statut === 'disponible' ? `<a href="agenda.html?dir=1" class="btn-gold" style="flex:1;text-align:center">${t.rdv_btn} →</a>` : ''}
+        <a href="#commission" onclick="closeModal()" class="btn-outline" style="flex:1;text-align:center">${t.cta2}</a>
+      </div>
+    </div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+async function submitCommission() {
+  const prenom = document.getElementById('c_prenom').value.trim();
+  const nom = document.getElementById('c_nom').value.trim();
+  const email = document.getElementById('c_email').value.trim();
+  const vision = document.getElementById('c_vision').value.trim();
+  if (!prenom || !nom || !email) { alert(currentLang === 'ar' ? 'يرجى ملء الحقول الإلزامية' : 'Veuillez remplir les champs obligatoires.'); return; }
+
+  const payload = {
+    prenom, nom, email,
+    type: document.getElementById('c_type').value,
+    format: document.getElementById('c_format').value,
+    budget: document.getElementById('c_budget').value,
+    vision,
+    lang: currentLang,
+    sujet: 'Commission artistique Najat Toubal'
+  };
+
+  try {
+    await fetch('/api/rdv', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+  } catch(e) {}
+
+  document.getElementById('formArea').style.display = 'none';
+  document.getElementById('formSuccess').classList.add('show');
+}
+
+renderGallery();
+renderEvents();
+</script>
+</body>
+</html>

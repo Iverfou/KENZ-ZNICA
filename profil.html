@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KENZ ZNICA — Mon Profil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8D5A3; --gold-dark: #8B6914;
+  --noir: #0D0D0D; --charcoal: #1A1A1A; --stone: #2C2C2C;
+  --cream: #F5F0E8; --muted: #9A9A8A;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--noir); color: var(--cream); font-family: var(--sans); font-weight: 300; min-height: 100vh; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 4rem;
+  background: rgba(13,13,13,0.95); backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(201,168,76,0.2);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; }
+.nav-logo span { color: var(--cream); font-weight: 300; }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.lang-selector { display: flex; gap: 0.4rem; }
+.lang-btn { background: none; border: 0.5px solid rgba(201,168,76,0.3); color: var(--muted); font-size: 0.7rem; padding: 0.3rem 0.6rem; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
+.lang-btn.active, .lang-btn:hover { background: var(--gold); color: var(--noir); border-color: var(--gold); }
+
+/* ── LAYOUT ── */
+.page-wrap { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+
+/* ── LEFT — INTRO ── */
+.left-panel {
+  background: var(--charcoal); padding: 10rem 4rem 4rem;
+  border-right: 0.5px solid rgba(201,168,76,0.15);
+  display: flex; flex-direction: column; justify-content: center;
+  position: sticky; top: 0; height: 100vh; overflow: hidden;
+}
+.left-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+.left-tag::before { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+.left-title { font-family: var(--serif); font-size: clamp(2.5rem, 3.5vw, 3.5rem); font-weight: 300; line-height: 1.1; margin-bottom: 1.5rem; }
+.left-title em { color: var(--gold); font-style: italic; }
+.left-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.9; margin-bottom: 3rem; max-width: 400px; }
+
+.benefits { display: flex; flex-direction: column; gap: 1.2rem; }
+.benefit { display: flex; gap: 1rem; align-items: flex-start; }
+.benefit-icon { width: 36px; height: 36px; border: 0.5px solid rgba(201,168,76,0.3); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; color: var(--gold); }
+.benefit-text h4 { font-size: 0.82rem; font-weight: 500; color: var(--cream); margin-bottom: 0.2rem; }
+.benefit-text p { font-size: 0.75rem; color: var(--muted); line-height: 1.6; }
+
+/* Déco BG gauche */
+.left-deco { position: absolute; bottom: -4rem; right: -4rem; font-family: var(--serif); font-size: 14rem; font-weight: 300; color: rgba(201,168,76,0.04); line-height: 1; pointer-events: none; user-select: none; }
+
+/* ── RIGHT — FORMULAIRE ── */
+.right-panel { padding: 10rem 4rem 4rem; overflow-y: auto; }
+
+.form-card { max-width: 560px; }
+.form-section-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 300; color: var(--gold); margin-bottom: 1.2rem; margin-top: 2.5rem; padding-bottom: 0.6rem; border-bottom: 0.5px solid rgba(201,168,76,0.15); }
+.form-section-title:first-child { margin-top: 0; }
+
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.1rem; }
+.form-group label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+.form-group input, .form-group select, .form-group textarea {
+  background: var(--stone); border: 0.5px solid rgba(201,168,76,0.15);
+  color: var(--cream); padding: 0.8rem 1rem; font-size: 0.82rem;
+  font-family: var(--sans); outline: none; transition: border-color 0.2s; width: 100%;
+}
+.form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--gold); }
+.form-group select option { background: var(--stone); }
+.form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
+.form-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+
+/* Budget slider */
+.budget-wrap { position: relative; }
+.budget-display { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem; }
+.budget-val { font-family: var(--serif); font-size: 1.4rem; color: var(--gold); font-weight: 300; }
+.budget-label-r { font-size: 0.68rem; color: var(--muted); }
+input[type=range] {
+  width: 100%; height: 4px; background: var(--stone); outline: none; cursor: pointer;
+  -webkit-appearance: none; border: none; padding: 0;
+}
+input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); cursor: pointer; border: 2px solid var(--noir); }
+input[type=range]::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: var(--gold); cursor: pointer; border: 2px solid var(--noir); }
+
+/* Checkboxes projets */
+.project-types { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
+.proj-check { display: flex; align-items: center; gap: 0.7rem; padding: 0.7rem 1rem; border: 0.5px solid rgba(201,168,76,0.15); cursor: pointer; transition: all 0.2s; }
+.proj-check:hover { border-color: rgba(201,168,76,0.4); }
+.proj-check input { display: none; }
+.proj-check.checked { background: rgba(201,168,76,0.1); border-color: var(--gold); }
+.proj-icon { font-size: 1rem; }
+.proj-label { font-size: 0.78rem; color: var(--muted); }
+.proj-check.checked .proj-label { color: var(--cream); }
+
+/* Newsletter toggle */
+.newsletter-toggle { display: flex; align-items: center; gap: 1rem; padding: 1.2rem; border: 0.5px solid rgba(201,168,76,0.15); margin-bottom: 1.5rem; cursor: pointer; transition: all 0.2s; }
+.newsletter-toggle:hover { border-color: rgba(201,168,76,0.4); }
+.newsletter-toggle.on { background: rgba(201,168,76,0.08); border-color: var(--gold); }
+.toggle-switch { width: 40px; height: 22px; background: var(--stone); border-radius: 11px; position: relative; transition: background 0.2s; flex-shrink: 0; }
+.toggle-switch::after { content: ''; position: absolute; width: 16px; height: 16px; background: var(--muted); border-radius: 50%; top: 3px; left: 3px; transition: all 0.2s; }
+.newsletter-toggle.on .toggle-switch { background: var(--gold); }
+.newsletter-toggle.on .toggle-switch::after { left: 21px; background: var(--noir); }
+.toggle-info h4 { font-size: 0.82rem; font-weight: 500; color: var(--cream); margin-bottom: 0.2rem; }
+.toggle-info p { font-size: 0.72rem; color: var(--muted); }
+
+/* Submit */
+.btn-submit { width: 100%; background: var(--gold); color: var(--noir); border: none; padding: 1.1rem; font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer; font-weight: 500; font-family: var(--sans); transition: background 0.2s; margin-top: 0.5rem; }
+.btn-submit:hover { background: var(--gold-light); }
+.btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Progress bar formulaire */
+.progress-bar { height: 2px; background: var(--stone); margin-bottom: 2.5rem; }
+.progress-fill { height: 100%; background: var(--gold); transition: width 0.5s ease; }
+.progress-label { font-size: 0.68rem; color: var(--muted); text-align: right; margin-top: 0.4rem; }
+
+/* ── SUCCÈS ── */
+.success-screen { display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center; padding: 2rem; }
+.success-screen.show { display: flex; }
+.success-kz { font-family: var(--serif); font-size: 4rem; font-weight: 300; color: var(--gold); letter-spacing: 0.15em; margin-bottom: 1rem; }
+.success-title { font-family: var(--serif); font-size: 2rem; font-weight: 300; margin-bottom: 1rem; }
+.success-title em { color: var(--gold); font-style: italic; }
+.success-text { font-size: 0.88rem; color: var(--muted); line-height: 1.8; max-width: 400px; margin-bottom: 2.5rem; }
+.success-actions { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+.btn-s-gold { background: var(--gold); color: var(--noir); padding: 0.9rem 2rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; text-decoration: none; transition: background 0.2s; }
+.btn-s-gold:hover { background: var(--gold-light); }
+.btn-s-outline { background: none; border: 0.5px solid rgba(201,168,76,0.4); color: var(--gold); padding: 0.9rem 2rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: all 0.2s; }
+.btn-s-outline:hover { background: rgba(201,168,76,0.1); }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .page-wrap { grid-template-columns: 1fr; }
+  .left-panel { position: relative; height: auto; padding: 7rem 1.5rem 3rem; }
+  .right-panel { padding: 2rem 1.5rem 4rem; }
+  .form-row2, .form-row3 { grid-template-columns: 1fr; }
+  .project-types { grid-template-columns: 1fr; }
+}
+[dir="rtl"] .left-tag::before { display: none; }
+[dir="rtl"] .left-tag::after { content:''; width:40px; height:0.5px; background:var(--gold); }
+[dir="rtl"] .left-deco { right: auto; left: -4rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">KENZ<span> ZNICA</span></a>
+  <div class="nav-links">
+    <a href="index.html#services" data-i18n="nav_services">Services</a>
+    <a href="realisations.html" data-i18n="nav_realisations">Réalisations</a>
+    <a href="vente.html" data-i18n="nav_vente">Vente</a>
+    <a href="art.html" data-i18n="nav_art">Art</a>
+    <a href="agenda.html" data-i18n="nav_rdv">Rendez-vous</a>
+    <a href="profil.html" class="active" data-i18n="nav_profil">Mon profil</a>
+  </div>
+  <div class="lang-selector">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<div class="page-wrap">
+
+  <!-- GAUCHE -->
+  <div class="left-panel">
+    <div class="left-tag" data-i18n="left_tag">Votre espace personnel</div>
+    <h1 class="left-title" data-i18n="left_title">Partagez votre<br><em>projet</em> avec nous</h1>
+    <p class="left-desc" data-i18n="left_desc">Créez votre profil pour recevoir des offres personnalisées, être contacté par le bon directeur et accéder à notre newsletter exclusive sur les biens et événements KENZ ZNICA.</p>
+    <div class="benefits">
+      <div class="benefit">
+        <div class="benefit-icon">🎯</div>
+        <div class="benefit-text">
+          <h4 data-i18n="b1_title">Recommandations sur mesure</h4>
+          <p data-i18n="b1_desc">Nos directeurs vous contactent avec des propositions adaptées à votre profil et budget.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">📬</div>
+        <div class="benefit-text">
+          <h4 data-i18n="b2_title">Newsletter exclusive</h4>
+          <p data-i18n="b2_desc">Nouveaux biens, événements culturels, avant-premières — rédigés par Claude IA selon votre profil.</p>
+        </div>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">⚡</div>
+        <div class="benefit-text">
+          <h4 data-i18n="b3_title">Prise en charge rapide</h4>
+          <p data-i18n="b3_desc">Votre dossier est transmis directement à l'équipe concernée. Réponse sous 24h.</p>
+        </div>
+      </div>
+    </div>
+    <div class="left-deco">KZ</div>
+  </div>
+
+  <!-- DROITE — FORMULAIRE -->
+  <div class="right-panel">
+    <div class="form-card" id="formCard">
+
+      <!-- Progress -->
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-label" id="progressLabel">0 / 8 sections</div>
+
+      <!-- 1. IDENTITÉ -->
+      <div class="form-section-title" data-i18n="sect1">01 — Identité</div>
+      <div class="form-row2">
+        <div class="form-group">
+          <label data-i18n="lbl_prenom">Prénom *</label>
+          <input type="text" id="p_prenom" data-i18n-ph="ph_prenom" placeholder="Votre prénom" oninput="updateProgress()">
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_nom">Nom *</label>
+          <input type="text" id="p_nom" data-i18n-ph="ph_nom" placeholder="Votre nom" oninput="updateProgress()">
+        </div>
+      </div>
+      <div class="form-group">
+        <label data-i18n="lbl_email">Email *</label>
+        <input type="email" id="p_email" placeholder="votre@email.com" oninput="updateProgress()">
+      </div>
+      <div class="form-row2">
+        <div class="form-group">
+          <label data-i18n="lbl_tel">Téléphone</label>
+          <input type="tel" id="p_tel" placeholder="+213 / +212...">
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_pays">Pays de résidence</label>
+          <select id="p_pays" onchange="updateProgress()">
+            <option value="DZ">🇩🇿 Algérie</option>
+            <option value="MA">🇲🇦 Maroc</option>
+            <option value="FR">🇫🇷 France</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 2. PROJET -->
+      <div class="form-section-title" data-i18n="sect2">02 — Type de projet</div>
+      <div class="project-types" id="projectTypes">
+        <div class="proj-check" onclick="toggleProj(this,'renovation')">
+          <input type="checkbox" value="renovation">
+          <span class="proj-icon">🏗️</span>
+          <span class="proj-label" data-i18n="proj1">Rénovation</span>
+        </div>
+        <div class="proj-check" onclick="toggleProj(this,'achat')">
+          <input type="checkbox" value="achat">
+          <span class="proj-icon">🏠</span>
+          <span class="proj-label" data-i18n="proj2">Achat immobilier</span>
+        </div>
+        <div class="proj-check" onclick="toggleProj(this,'vente')">
+          <input type="checkbox" value="vente">
+          <span class="proj-icon">💼</span>
+          <span class="proj-label" data-i18n="proj3">Vente d'un bien</span>
+        </div>
+        <div class="proj-check" onclick="toggleProj(this,'decoration')">
+          <input type="checkbox" value="decoration">
+          <span class="proj-icon">🎨</span>
+          <span class="proj-label" data-i18n="proj4">Décoration artistique</span>
+        </div>
+        <div class="proj-check" onclick="toggleProj(this,'investissement')">
+          <input type="checkbox" value="investissement">
+          <span class="proj-icon">📈</span>
+          <span class="proj-label" data-i18n="proj5">Investissement</span>
+        </div>
+        <div class="proj-check" onclick="toggleProj(this,'evenement')">
+          <input type="checkbox" value="evenement">
+          <span class="proj-icon">🎭</span>
+          <span class="proj-label" data-i18n="proj6">Événement culturel</span>
+        </div>
+      </div>
+
+      <!-- 3. LOCALISATION -->
+      <div class="form-section-title" data-i18n="sect3">03 — Localisation du projet</div>
+      <div class="form-row2">
+        <div class="form-group">
+          <label data-i18n="lbl_proj_pays">Pays du projet</label>
+          <select id="p_proj_pays" onchange="updateVilles()">
+            <option value="DZ">🇩🇿 Algérie</option>
+            <option value="MA">🇲🇦 Maroc</option>
+            <option value="les_deux">Les deux</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_ville">Ville</label>
+          <select id="p_ville">
+            <option value="">Sélectionner...</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 4. BUDGET -->
+      <div class="form-section-title" data-i18n="sect4">04 — Budget</div>
+      <div class="budget-wrap">
+        <div class="budget-display">
+          <span class="budget-val" id="budgetVal">5 000 000 DA</span>
+          <span class="budget-label-r" data-i18n="budget_indicatif">Budget indicatif</span>
+        </div>
+        <input type="range" id="budgetSlider" min="0" max="20" value="5" step="1" oninput="updateBudget(this.value)">
+      </div>
+
+      <!-- 5. SURFACE -->
+      <div class="form-section-title" data-i18n="sect5">05 — Bien concerné</div>
+      <div class="form-row3">
+        <div class="form-group">
+          <label data-i18n="lbl_surface">Surface (m²)</label>
+          <input type="number" id="p_surface" placeholder="ex: 100">
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_chambres">Chambres</label>
+          <select id="p_chambres">
+            <option value="">—</option>
+            <option>1</option><option>2</option><option>3</option><option>4</option><option>5+</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_type_bien">Type de bien</label>
+          <select id="p_type_bien">
+            <option value="appartement" data-i18n="bien1">Appartement</option>
+            <option value="villa" data-i18n="bien2">Villa</option>
+            <option value="riad" data-i18n="bien3">Riad</option>
+            <option value="local" data-i18n="bien4">Local commercial</option>
+            <option value="autre" data-i18n="bien5">Autre</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 6. DÉLAI -->
+      <div class="form-section-title" data-i18n="sect6">06 — Délai & Objectif</div>
+      <div class="form-row2">
+        <div class="form-group">
+          <label data-i18n="lbl_delai">Délai souhaité</label>
+          <select id="p_delai">
+            <option value="urgent" data-i18n="delai1">Urgent (< 1 mois)</option>
+            <option value="3mois" data-i18n="delai2">Sous 3 mois</option>
+            <option value="6mois" data-i18n="delai3">Sous 6 mois</option>
+            <option value="1an" data-i18n="delai4">D'ici 1 an</option>
+            <option value="reflexion" data-i18n="delai5">En réflexion</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label data-i18n="lbl_objectif">Objectif principal</label>
+          <select id="p_objectif">
+            <option value="habiter" data-i18n="obj1">Habiter le bien</option>
+            <option value="louer" data-i18n="obj2">Mettre en location</option>
+            <option value="revendre" data-i18n="obj3">Revendre</option>
+            <option value="valoriser" data-i18n="obj4">Valoriser un patrimoine</option>
+            <option value="autre" data-i18n="obj5">Autre</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 7. NOTES -->
+      <div class="form-section-title" data-i18n="sect7">07 — Notes libres</div>
+      <div class="form-group">
+        <label data-i18n="lbl_notes">Décrivez votre projet en quelques mots</label>
+        <textarea id="p_notes" rows="4" data-i18n-ph="ph_notes" placeholder="État actuel du bien, travaux envisagés, contraintes particulières..."></textarea>
+      </div>
+
+      <!-- 8. NEWSLETTER -->
+      <div class="form-section-title" data-i18n="sect8">08 — Newsletter</div>
+      <div class="newsletter-toggle" id="newsletterToggle" onclick="toggleNewsletter()">
+        <div class="toggle-switch" id="toggleSwitch"></div>
+        <div class="toggle-info">
+          <h4 data-i18n="nl_title">Recevoir la newsletter KENZ ZNICA</h4>
+          <p data-i18n="nl_desc">Nouveaux biens disponibles, événements culturels, conseils rénovation — personnalisés selon votre profil.</p>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="submitBtn" onclick="submitProfil()" data-i18n="btn_submit">Créer mon profil</button>
+    </div>
+
+    <!-- SUCCÈS -->
+    <div class="success-screen" id="successScreen">
+      <div class="success-kz">KZ</div>
+      <h2 class="success-title" data-i18n="s_title">Bienvenue<br>dans la famille <em>KENZ ZNICA</em></h2>
+      <p class="success-text" id="successText"></p>
+      <div class="success-actions">
+        <a href="realisations.html" class="btn-s-gold" data-i18n="s_btn1">Voir les réalisations</a>
+        <a href="vente.html" class="btn-s-outline" data-i18n="s_btn2">Biens disponibles</a>
+        <a href="agenda.html" class="btn-s-outline" data-i18n="s_btn3">Prendre RDV</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let newsletterOn = false;
+let selectedProjets = [];
+let currentLang = 'fr';
+
+const BUDGETS_DZ = [
+  '1 000 000 DA','2 000 000 DA','3 000 000 DA','5 000 000 DA','7 000 000 DA',
+  '10 000 000 DA','12 000 000 DA','15 000 000 DA','18 000 000 DA','20 000 000 DA',
+  '25 000 000 DA','30 000 000 DA','40 000 000 DA','50 000 000 DA','60 000 000 DA',
+  '80 000 000 DA','100 000 000 DA','150 000 000 DA','200 000 000 DA','300 000 000 DA',
+  '500 000 000 DA+'
+];
+const BUDGETS_MA = [
+  '100 000 MAD','200 000 MAD','300 000 MAD','500 000 MAD','700 000 MAD',
+  '1 000 000 MAD','1 500 000 MAD','2 000 000 MAD','2 500 000 MAD','3 000 000 MAD',
+  '4 000 000 MAD','5 000 000 MAD','7 000 000 MAD','10 000 000 MAD','15 000 000 MAD',
+  '20 000 000 MAD','30 000 000 MAD','50 000 000 MAD','70 000 000 MAD','100 000 000 MAD',
+  '150 000 000 MAD+'
+];
+
+const VILLES = {
+  DZ: ['Alger','Oran','Constantine','Annaba','Tizi Ouzou','Béjaïa','Sétif','Jijel','Blida','Tlemcen','Batna','Skikda','Autre'],
+  MA: ['Casablanca','Rabat','Marrakech','Tanger','Fès','Agadir','Meknès','Oujda','Tétouan','Autre'],
+  les_deux: ['Alger','Oran','Tizi Ouzou','Jijel','Casablanca','Rabat','Marrakech','Autre']
+};
+
+function updateVilles() {
+  const pays = document.getElementById('p_proj_pays').value;
+  const sel = document.getElementById('p_ville');
+  sel.innerHTML = '<option value="">—</option>' + VILLES[pays].map(v => `<option value="${v}">${v}</option>`).join('');
+  updateBudget(document.getElementById('budgetSlider').value);
+}
+
+function updateBudget(val) {
+  const pays = document.getElementById('p_proj_pays').value;
+  const arr = pays === 'MA' ? BUDGETS_MA : BUDGETS_DZ;
+  document.getElementById('budgetVal').textContent = arr[parseInt(val)] || arr[arr.length-1];
+}
+
+function toggleProj(el, val) {
+  el.classList.toggle('checked');
+  if (el.classList.contains('checked')) {
+    if (!selectedProjets.includes(val)) selectedProjets.push(val);
+  } else {
+    selectedProjets = selectedProjets.filter(v => v !== val);
+  }
+  updateProgress();
+}
+
+function toggleNewsletter() {
+  newsletterOn = !newsletterOn;
+  document.getElementById('newsletterToggle').classList.toggle('on', newsletterOn);
+}
+
+function updateProgress() {
+  const fields = ['p_prenom','p_nom','p_email'];
+  let filled = 0;
+  const total = 8;
+  fields.forEach(id => { if (document.getElementById(id).value.trim()) filled++; });
+  if (selectedProjets.length > 0) filled++;
+  if (document.getElementById('p_ville').value) filled++;
+  filled += 3; // budget, délai, objectif toujours présents
+  const pct = Math.min(Math.round((filled / total) * 100), 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  const t = i18n[currentLang];
+  document.getElementById('progressLabel').textContent = `${filled} / ${total} ${t.sections || 'sections'}`;
+}
+
+async function submitProfil() {
+  const prenom = document.getElementById('p_prenom').value.trim();
+  const nom = document.getElementById('p_nom').value.trim();
+  const email = document.getElementById('p_email').value.trim();
+  if (!prenom || !nom || !email) {
+    alert(i18n[currentLang].fill_required || 'Veuillez remplir les champs obligatoires.');
+    return;
+  }
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '...';
+
+  const payload = {
+    prenom, nom, email,
+    tel: document.getElementById('p_tel').value,
+    pays: document.getElementById('p_pays').value,
+    projets: selectedProjets,
+    proj_pays: document.getElementById('p_proj_pays').value,
+    ville: document.getElementById('p_ville').value,
+    budget: document.getElementById('budgetVal').textContent,
+    surface: document.getElementById('p_surface').value,
+    chambres: document.getElementById('p_chambres').value,
+    type_bien: document.getElementById('p_type_bien').value,
+    delai: document.getElementById('p_delai').value,
+    objectif: document.getElementById('p_objectif').value,
+    notes: document.getElementById('p_notes').value,
+    newsletter: newsletterOn,
+    lang: currentLang
+  };
+
+  try {
+    await fetch('/api/profil', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+  } catch(e) {}
+
+  document.getElementById('formCard').style.display = 'none';
+  const s = document.getElementById('successScreen');
+  s.classList.add('show');
+  const t = i18n[currentLang];
+  document.getElementById('successText').textContent =
+    `${t.success_text_1 || 'Bonjour'} ${prenom} ! ${t.success_text_2 || 'Votre profil a été transmis à l\'équipe KENZ ZNICA. Vous recevrez un email de confirmation à'} ${email}. ${newsletterOn ? (t.success_nl || 'Vous êtes inscrit à la newsletter.') : ''}`;
+}
+
+// ── I18N ──
+const i18n = {
+  fr: { nav_services:'Services', nav_realisations:'Réalisations', nav_vente:'Vente', nav_art:'Art', nav_rdv:'Rendez-vous', nav_profil:'Mon profil', left_tag:'Votre espace personnel', left_title:'Partagez votre<br><em>projet</em> avec nous', left_desc:'Créez votre profil pour recevoir des offres personnalisées, être contacté par le bon directeur et accéder à notre newsletter exclusive.', b1_title:'Recommandations sur mesure', b1_desc:'Nos directeurs vous contactent avec des propositions adaptées à votre profil et budget.', b2_title:'Newsletter exclusive', b2_desc:'Nouveaux biens, événements culturels, avant-premières — rédigés par Claude IA selon votre profil.', b3_title:'Prise en charge rapide', b3_desc:'Votre dossier est transmis directement à l\'équipe. Réponse sous 24h.', sect1:'01 — Identité', sect2:'02 — Type de projet', sect3:'03 — Localisation du projet', sect4:'04 — Budget', sect5:'05 — Bien concerné', sect6:'06 — Délai & Objectif', sect7:'07 — Notes libres', sect8:'08 — Newsletter', lbl_prenom:'Prénom *', lbl_nom:'Nom *', lbl_email:'Email *', lbl_tel:'Téléphone', lbl_pays:'Pays de résidence', lbl_proj_pays:'Pays du projet', lbl_ville:'Ville', lbl_surface:'Surface (m²)', lbl_chambres:'Chambres', lbl_type_bien:'Type de bien', lbl_delai:'Délai souhaité', lbl_objectif:'Objectif principal', lbl_notes:'Décrivez votre projet', budget_indicatif:'Budget indicatif', ph_prenom:'Votre prénom', ph_nom:'Votre nom', ph_notes:'État actuel du bien, travaux envisagés...', proj1:'Rénovation', proj2:'Achat immobilier', proj3:'Vente d\'un bien', proj4:'Décoration artistique', proj5:'Investissement', proj6:'Événement culturel', bien1:'Appartement', bien2:'Villa', bien3:'Riad', bien4:'Local commercial', bien5:'Autre', delai1:'Urgent (< 1 mois)', delai2:'Sous 3 mois', delai3:'Sous 6 mois', delai4:'D\'ici 1 an', delai5:'En réflexion', obj1:'Habiter le bien', obj2:'Mettre en location', obj3:'Revendre', obj4:'Valoriser un patrimoine', obj5:'Autre', nl_title:'Recevoir la newsletter KENZ ZNICA', nl_desc:'Nouveaux biens, événements culturels, conseils rénovation — personnalisés selon votre profil.', btn_submit:'Créer mon profil', sections:'sections', fill_required:'Veuillez remplir les champs obligatoires (prénom, nom, email).', s_title:'Bienvenue<br>dans la famille <em>KENZ ZNICA</em>', s_btn1:'Voir les réalisations', s_btn2:'Biens disponibles', s_btn3:'Prendre RDV', success_text_1:'Bonjour', success_text_2:'Votre profil a été transmis à l\'équipe KENZ ZNICA. Vous recevrez un email de confirmation à', success_nl:'Vous êtes inscrit à la newsletter.' },
+  ar: { nav_services:'الخدمات', nav_realisations:'الإنجازات', nav_vente:'البيع', nav_art:'فن', nav_rdv:'المواعيد', nav_profil:'ملفي', left_tag:'فضاؤك الشخصي', left_title:'شاركنا<br><em>مشروعك</em>', left_desc:'أنشئ ملفك الشخصي لتلقي عروض مخصصة والتواصل مع المدير المناسب والوصول إلى نشرتنا الإخبارية الحصرية.', b1_title:'توصيات مخصصة', b1_desc:'يتواصل معك مدراؤنا بعروض تتناسب مع ملفك وميزانيتك.', b2_title:'نشرة إخبارية حصرية', b2_desc:'عقارات جديدة، فعاليات ثقافية، أولويات — محررة بواسطة Claude AI وفق ملفك.', b3_title:'متابعة سريعة', b3_desc:'يُحال ملفك مباشرة إلى الفريق المعني. رد خلال 24 ساعة.', sect1:'01 — الهوية', sect2:'02 — نوع المشروع', sect3:'03 — موقع المشروع', sect4:'04 — الميزانية', sect5:'05 — العقار المعني', sect6:'06 — المدة والهدف', sect7:'07 — ملاحظات حرة', sect8:'08 — النشرة الإخبارية', lbl_prenom:'الاسم الأول *', lbl_nom:'اللقب *', lbl_email:'البريد الإلكتروني *', lbl_tel:'الهاتف', lbl_pays:'بلد الإقامة', lbl_proj_pays:'بلد المشروع', lbl_ville:'المدينة', lbl_surface:'المساحة (م²)', lbl_chambres:'الغرف', lbl_type_bien:'نوع العقار', lbl_delai:'المدة المطلوبة', lbl_objectif:'الهدف الرئيسي', lbl_notes:'صف مشروعك', budget_indicatif:'الميزانية التقريبية', ph_prenom:'اسمك الأول', ph_nom:'لقبك', ph_notes:'الحالة الراهنة للعقار، الأشغال المتوقعة...', proj1:'تجديد', proj2:'شراء عقار', proj3:'بيع عقار', proj4:'ديكور فني', proj5:'استثمار', proj6:'فعالية ثقافية', bien1:'شقة', bien2:'فيلا', bien3:'رياض', bien4:'محل تجاري', bien5:'أخرى', delai1:'عاجل (< شهر)', delai2:'خلال 3 أشهر', delai3:'خلال 6 أشهر', delai4:'خلال سنة', delai5:'في مرحلة التفكير', obj1:'السكن في العقار', obj2:'تأجيره', obj3:'إعادة بيعه', obj4:'تثمين تراث', obj5:'أخرى', nl_title:'الاشتراك في نشرة KENZ ZNICA', nl_desc:'عقارات جديدة، فعاليات ثقافية، نصائح التجديد — مخصصة وفق ملفك.', btn_submit:'إنشاء ملفي', sections:'أقسام', fill_required:'يرجى ملء الحقول الإلزامية (الاسم الأول، اللقب، البريد الإلكتروني).', s_title:'مرحباً بك<br>في عائلة <em>KENZ ZNICA</em>', s_btn1:'مشاهدة الإنجازات', s_btn2:'العقارات المتاحة', s_btn3:'حجز موعد', success_text_1:'مرحباً', success_text_2:'تم إرسال ملفك إلى فريق KENZ ZNICA. ستتلقى رسالة تأكيد على', success_nl:'أنت مشترك في النشرة الإخبارية.' },
+  en: { nav_services:'Services', nav_realisations:'Portfolio', nav_vente:'For Sale', nav_art:'Art', nav_rdv:'Book', nav_profil:'My Profile', left_tag:'Your personal space', left_title:'Share your<br><em>project</em> with us', left_desc:'Create your profile to receive personalised offers, be contacted by the right director and access our exclusive newsletter.', b1_title:'Tailored recommendations', b1_desc:'Our directors contact you with proposals suited to your profile and budget.', b2_title:'Exclusive newsletter', b2_desc:'New properties, cultural events, previews — written by Claude AI based on your profile.', b3_title:'Fast handling', b3_desc:'Your file is sent directly to the relevant team. Response within 24h.', sect1:'01 — Identity', sect2:'02 — Project type', sect3:'03 — Project location', sect4:'04 — Budget', sect5:'05 — Property details', sect6:'06 — Timeline & Goal', sect7:'07 — Free notes', sect8:'08 — Newsletter', lbl_prenom:'First name *', lbl_nom:'Last name *', lbl_email:'Email *', lbl_tel:'Phone', lbl_pays:'Country of residence', lbl_proj_pays:'Project country', lbl_ville:'City', lbl_surface:'Area (m²)', lbl_chambres:'Bedrooms', lbl_type_bien:'Property type', lbl_delai:'Desired timeline', lbl_objectif:'Main goal', lbl_notes:'Describe your project', budget_indicatif:'Indicative budget', ph_prenom:'Your first name', ph_nom:'Your last name', ph_notes:'Current condition, planned works, specific constraints...', proj1:'Renovation', proj2:'Property purchase', proj3:'Property sale', proj4:'Artistic decoration', proj5:'Investment', proj6:'Cultural event', bien1:'Apartment', bien2:'Villa', bien3:'Riad', bien4:'Commercial premises', bien5:'Other', delai1:'Urgent (< 1 month)', delai2:'Within 3 months', delai3:'Within 6 months', delai4:'Within 1 year', delai5:'Still thinking', obj1:'Live in the property', obj2:'Rent it out', obj3:'Resell', obj4:'Value a heritage asset', obj5:'Other', nl_title:'Receive the KENZ ZNICA newsletter', nl_desc:'New properties, cultural events, renovation tips — personalised to your profile.', btn_submit:'Create my profile', sections:'sections', fill_required:'Please fill in the required fields (first name, last name, email).', s_title:'Welcome<br>to the <em>KENZ ZNICA</em> family', s_btn1:'See our portfolio', s_btn2:'Available properties', s_btn3:'Book appointment', success_text_1:'Hello', success_text_2:'Your profile has been sent to the KENZ ZNICA team. You will receive a confirmation email at', success_nl:'You are subscribed to the newsletter.' },
+  es: { nav_services:'Servicios', nav_realisations:'Realizaciones', nav_vente:'Venta', nav_art:'Arte', nav_rdv:'Cita', nav_profil:'Mi perfil', left_tag:'Su espacio personal', left_title:'Comparta su<br><em>proyecto</em> con nosotros', left_desc:'Cree su perfil para recibir ofertas personalizadas, ser contactado por el director adecuado y acceder a nuestra newsletter exclusiva.', b1_title:'Recomendaciones a medida', b1_desc:'Nuestros directores le contactan con propuestas adaptadas a su perfil y presupuesto.', b2_title:'Newsletter exclusiva', b2_desc:'Nuevos bienes, eventos culturales, estrenos — redactados por Claude IA según su perfil.', b3_title:'Gestión rápida', b3_desc:'Su expediente se envía directamente al equipo. Respuesta en 24h.', sect1:'01 — Identidad', sect2:'02 — Tipo de proyecto', sect3:'03 — Localización del proyecto', sect4:'04 — Presupuesto', sect5:'05 — Bien concernido', sect6:'06 — Plazo y Objetivo', sect7:'07 — Notas libres', sect8:'08 — Newsletter', lbl_prenom:'Nombre *', lbl_nom:'Apellido *', lbl_email:'Email *', lbl_tel:'Teléfono', lbl_pays:'País de residencia', lbl_proj_pays:'País del proyecto', lbl_ville:'Ciudad', lbl_surface:'Superficie (m²)', lbl_chambres:'Habitaciones', lbl_type_bien:'Tipo de bien', lbl_delai:'Plazo deseado', lbl_objectif:'Objetivo principal', lbl_notes:'Describa su proyecto', budget_indicatif:'Presupuesto indicativo', ph_prenom:'Su nombre', ph_nom:'Su apellido', ph_notes:'Estado actual del bien, obras previstas...', proj1:'Renovación', proj2:'Compra inmobiliaria', proj3:'Venta de un bien', proj4:'Decoración artística', proj5:'Inversión', proj6:'Evento cultural', bien1:'Apartamento', bien2:'Villa', bien3:'Riad', bien4:'Local comercial', bien5:'Otro', delai1:'Urgente (< 1 mes)', delai2:'En 3 meses', delai3:'En 6 meses', delai4:'En 1 año', delai5:'En reflexión', obj1:'Habitar el bien', obj2:'Arrendarlo', obj3:'Revenderlo', obj4:'Valorizar un patrimonio', obj5:'Otro', nl_title:'Recibir la newsletter KENZ ZNICA', nl_desc:'Nuevos bienes, eventos culturales, consejos de renovación — personalizados según su perfil.', btn_submit:'Crear mi perfil', sections:'secciones', fill_required:'Por favor, rellene los campos obligatorios (nombre, apellido, email).', s_title:'Bienvenido<br>a la familia <em>KENZ ZNICA</em>', s_btn1:'Ver realizaciones', s_btn2:'Bienes disponibles', s_btn3:'Reservar cita', success_text_1:'Hola', success_text_2:'Su perfil ha sido enviado al equipo KENZ ZNICA. Recibirá un email de confirmación en', success_nl:'Está suscrito a la newsletter.' },
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent.toLowerCase()===lang) b.classList.add('active'); });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(t[key] !== undefined) el.innerHTML = t[key];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const key = el.getAttribute('data-i18n-ph');
+    if(t[key]) el.placeholder = t[key];
+  });
+  updateProgress();
+}
+
+// Init
+updateVilles();
+updateBudget(5);
+updateProgress();
+</script>
+</body>
+</html>

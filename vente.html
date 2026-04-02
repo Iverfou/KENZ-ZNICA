@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KENZ ZNICA — Vente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C; --gold-light: #E8D5A3; --gold-dark: #8B6914;
+  --noir: #0D0D0D; --charcoal: #1A1A1A; --stone: #2C2C2C;
+  --cream: #F5F0E8; --muted: #9A9A8A; --green: #4CAF50;
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'DM Sans', sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: var(--noir); color: var(--cream); font-family: var(--sans); font-weight: 300; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 4rem;
+  background: rgba(13,13,13,0.95); backdrop-filter: blur(12px);
+  border-bottom: 0.5px solid rgba(201,168,76,0.2);
+}
+.nav-logo { font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: 0.15em; color: var(--gold); text-decoration: none; }
+.nav-logo span { color: var(--cream); font-weight: 300; }
+.nav-links { display: flex; gap: 2rem; }
+.nav-links a { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.lang-selector { display: flex; gap: 0.4rem; }
+.lang-btn { background: none; border: 0.5px solid rgba(201,168,76,0.3); color: var(--muted); font-size: 0.7rem; padding: 0.3rem 0.6rem; cursor: pointer; transition: all 0.2s; font-family: var(--sans); }
+.lang-btn.active, .lang-btn:hover { background: var(--gold); color: var(--noir); border-color: var(--gold); }
+
+/* ── HEADER ── */
+.page-header { padding: 9rem 4rem 4rem; background: var(--charcoal); border-bottom: 0.5px solid rgba(201,168,76,0.15); }
+.page-tag { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
+.page-tag::before { content: ''; width: 40px; height: 0.5px; background: var(--gold); }
+.page-title { font-family: var(--serif); font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 300; margin-bottom: 2rem; }
+.page-title em { font-style: italic; color: var(--gold); }
+.header-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem; }
+
+/* ── FILTRES & TRI ── */
+.filters { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.filter-btn { background: none; border: 0.5px solid rgba(201,168,76,0.25); color: var(--muted); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.45rem 1rem; cursor: pointer; font-family: var(--sans); transition: all 0.2s; }
+.filter-btn:hover { border-color: var(--gold); color: var(--cream); }
+.filter-btn.active { background: var(--gold); color: var(--noir); border-color: var(--gold); }
+.sort-select { background: var(--stone); border: 0.5px solid rgba(201,168,76,0.2); color: var(--cream); padding: 0.45rem 1rem; font-size: 0.72rem; font-family: var(--sans); cursor: pointer; outline: none; }
+.sort-select option { background: var(--stone); }
+
+/* ── STATS GLOBALES ── */
+.global-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(201,168,76,0.1); border-bottom: 0.5px solid rgba(201,168,76,0.15); }
+.gstat { background: var(--noir); padding: 1.8rem 2rem; text-align: center; }
+.gstat-val { font-family: var(--serif); font-size: 2.2rem; font-weight: 300; color: var(--gold); }
+.gstat-label { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+
+/* ── GRILLE BIENS ── */
+.biens-section { padding: 3rem 4rem; }
+.biens-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.5rem; }
+
+.bien-card { background: var(--charcoal); border: 0.5px solid rgba(201,168,76,0.12); transition: border-color 0.3s, transform 0.2s; overflow: hidden; }
+.bien-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-3px); }
+
+/* Visuel bien */
+.bien-visual {
+  height: 220px; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.bien-bg { position: absolute; inset: 0; }
+.bien-emoji { font-size: 4rem; opacity: 0.35; position: relative; z-index: 1; }
+.bien-badges-overlay { position: absolute; top: 12px; left: 12px; z-index: 2; display: flex; flex-direction: column; gap: 0.4rem; }
+.badge-overlay { font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 0.3rem 0.7rem; font-weight: 500; }
+.badge-dispo { background: var(--green); color: #fff; }
+.badge-reserve { background: rgba(201,168,76,0.9); color: var(--noir); }
+.badge-vendu { background: rgba(154,154,138,0.9); color: var(--noir); }
+.valeur-badge { position: absolute; top: 12px; right: 12px; z-index: 2; background: rgba(13,13,13,0.85); border: 0.5px solid var(--green); padding: 0.4rem 0.8rem; }
+.valeur-badge span { font-family: var(--serif); font-size: 1.1rem; color: var(--green); }
+.valeur-badge small { font-size: 0.6rem; color: var(--muted); display: block; text-align: center; }
+
+/* Infos bien */
+.bien-info { padding: 1.5rem; }
+.bien-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+.bien-title { font-family: var(--serif); font-size: 1.25rem; font-weight: 300; line-height: 1.2; }
+.bien-pays { font-size: 1.2rem; }
+.bien-location { font-size: 0.75rem; color: var(--muted); margin-bottom: 1rem; }
+
+/* Prix timeline */
+.prix-timeline { background: var(--stone); padding: 1rem; margin-bottom: 1rem; }
+.prix-label { font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.7rem; }
+.prix-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+.prix-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.prix-dot.avant { background: var(--muted); }
+.prix-dot.travaux { background: var(--gold); }
+.prix-dot.apres { background: var(--green); }
+.prix-text { font-size: 0.8rem; flex: 1; }
+.prix-val { font-family: var(--serif); font-size: 1rem; font-weight: 300; }
+.prix-val.final { color: var(--green); font-size: 1.1rem; }
+
+/* Progress bar valeur ajoutée */
+.valeur-bar { margin-bottom: 1.2rem; }
+.valeur-bar-label { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-bottom: 0.4rem; }
+.valeur-bar-label span:last-child { color: var(--green); font-weight: 500; }
+.bar-track { height: 4px; background: var(--stone); border-radius: 2px; overflow: hidden; }
+.bar-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--green)); border-radius: 2px; transition: width 1s ease; }
+
+/* Specs */
+.bien-specs { display: flex; gap: 1.2rem; margin-bottom: 1.2rem; flex-wrap: wrap; }
+.spec { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; color: var(--muted); }
+.spec-icon { font-size: 0.85rem; }
+
+/* Actions */
+.bien-actions { display: flex; gap: 0.8rem; }
+.btn-detail { flex: 1; background: none; border: 0.5px solid rgba(201,168,76,0.3); color: var(--gold); padding: 0.7rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; font-family: var(--sans); transition: all 0.2s; }
+.btn-detail:hover { background: rgba(201,168,76,0.1); }
+.btn-rdv { flex: 1; background: var(--gold); border: none; color: var(--noir); padding: 0.7rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; font-family: var(--sans); font-weight: 500; transition: background 0.2s; text-decoration: none; display: flex; align-items: center; justify-content: center; }
+.btn-rdv:hover { background: var(--gold-light); }
+.btn-rdv.disabled { background: var(--stone); color: var(--muted); cursor: not-allowed; pointer-events: none; }
+
+/* ── MODAL DÉTAIL ── */
+.modal-overlay { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.88); align-items: center; justify-content: center; padding: 1rem; }
+.modal-overlay.open { display: flex; }
+.modal-box { background: var(--charcoal); border: 0.5px solid rgba(201,168,76,0.3); width: 100%; max-width: 750px; max-height: 92vh; overflow-y: auto; }
+.modal-header { padding: 1.5rem 2rem; border-bottom: 0.5px solid rgba(201,168,76,0.15); display: flex; justify-content: space-between; align-items: flex-start; }
+.modal-title { font-family: var(--serif); font-size: 1.8rem; font-weight: 300; }
+.modal-title em { color: var(--gold); font-style: italic; }
+.close-modal { background: none; border: none; color: var(--muted); font-size: 1.3rem; cursor: pointer; transition: color 0.2s; }
+.close-modal:hover { color: var(--cream); }
+
+.modal-visual { height: 280px; position: relative; display: flex; align-items: center; justify-content: center; }
+.modal-visual .bien-emoji { font-size: 6rem; }
+
+.modal-body { padding: 2rem; }
+
+/* Historique valorisation */
+.histo-section { margin-bottom: 2rem; }
+.histo-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 300; color: var(--cream); margin-bottom: 1.2rem; border-bottom: 0.5px solid rgba(201,168,76,0.15); padding-bottom: 0.8rem; }
+.histo-timeline { position: relative; padding-left: 1.5rem; }
+.histo-timeline::before { content: ''; position: absolute; left: 0; top: 6px; bottom: 6px; width: 1px; background: rgba(201,168,76,0.2); }
+.histo-item { position: relative; margin-bottom: 1.2rem; }
+.histo-item::before { content: ''; position: absolute; left: -1.5rem; top: 6px; width: 9px; height: 9px; border-radius: 50%; border: 1.5px solid var(--gold); background: var(--charcoal); }
+.histo-item.current::before { background: var(--green); border-color: var(--green); }
+.histo-date { font-size: 0.68rem; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 0.2rem; }
+.histo-event { font-size: 0.85rem; color: var(--cream); }
+.histo-price { font-family: var(--serif); font-size: 1.1rem; color: var(--gold); margin-top: 0.2rem; }
+.histo-price.green { color: var(--green); }
+.histo-delta { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; margin-top: 0.2rem; }
+.delta-up { color: var(--green); }
+
+.modal-travaux { margin-bottom: 2rem; }
+.travaux-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.8rem; }
+.travaux-item { font-size: 0.75rem; color: var(--muted); padding: 0.5rem 0.8rem; border: 0.5px solid rgba(201,168,76,0.15); display: flex; align-items: center; gap: 0.5rem; }
+.travaux-item::before { content: '✓'; color: var(--gold); font-size: 0.7rem; flex-shrink: 0; }
+
+.modal-specs-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+.mspec { background: var(--stone); padding: 1rem; text-align: center; }
+.mspec-val { font-family: var(--serif); font-size: 1.4rem; font-weight: 300; color: var(--gold); }
+.mspec-label { font-size: 0.62rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-top: 0.3rem; }
+
+.modal-rdv-btn { display: block; width: 100%; background: var(--gold); color: var(--noir); border: none; padding: 1rem; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; font-weight: 500; font-family: var(--sans); text-align: center; text-decoration: none; transition: background 0.2s; }
+.modal-rdv-btn:hover { background: var(--gold-light); }
+
+/* ── NO RESULTS ── */
+.no-results { text-align: center; padding: 6rem; color: var(--muted); font-size: 0.9rem; }
+
+@media (max-width: 900px) {
+  nav { padding: 1rem 1.5rem; }
+  .nav-links { display: none; }
+  .page-header { padding: 7rem 1.5rem 3rem; }
+  .biens-section { padding: 2rem 1.5rem; }
+  .biens-grid { grid-template-columns: 1fr; }
+  .global-stats { grid-template-columns: 1fr 1fr; }
+  .modal-specs-grid { grid-template-columns: 1fr 1fr; }
+  .travaux-grid { grid-template-columns: 1fr; }
+}
+[dir="rtl"] .page-tag::before { display: none; }
+[dir="rtl"] .page-tag::after { content:''; width:40px; height:0.5px; background:var(--gold); }
+[dir="rtl"] .histo-timeline { padding-left: 0; padding-right: 1.5rem; }
+[dir="rtl"] .histo-timeline::before { left: auto; right: 0; }
+[dir="rtl"] .histo-item::before { left: auto; right: -1.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">KENZ<span> ZNICA</span></a>
+  <div class="nav-links">
+    <a href="index.html#services" data-i18n="nav_services">Services</a>
+    <a href="realisations.html" data-i18n="nav_realisations">Réalisations</a>
+    <a href="vente.html" class="active" data-i18n="nav_vente">Vente</a>
+    <a href="art.html" data-i18n="nav_art">Art</a>
+    <a href="agenda.html" data-i18n="nav_rdv">Rendez-vous</a>
+    <a href="profil.html" data-i18n="nav_profil">Mon profil</a>
+  </div>
+  <div class="lang-selector">
+    <button class="lang-btn active" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <button class="lang-btn" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('es')">ES</button>
+  </div>
+</nav>
+
+<div class="page-header">
+  <div class="page-tag" data-i18n="page_tag">Appartements clé en main</div>
+  <h1 class="page-title" data-i18n="page_title">Biens rénovés,<br>prêts à <em>habiter</em></h1>
+  <div class="header-bottom">
+    <div class="filters" id="filters">
+      <button class="filter-btn active" onclick="applyFilter('all',this)" data-i18n="f_all">Tous</button>
+      <button class="filter-btn" onclick="applyFilter('dispo',this)" data-i18n="f_dispo">Disponibles</button>
+      <button class="filter-btn" onclick="applyFilter('reserve',this)" data-i18n="f_reserve">Réservés</button>
+      <button class="filter-btn" onclick="applyFilter('DZ',this)" data-i18n="f_dz">🇩🇿 Algérie</button>
+      <button class="filter-btn" onclick="applyFilter('MA',this)" data-i18n="f_ma">🇲🇦 Maroc</button>
+    </div>
+    <select class="sort-select" id="sortSelect" onchange="renderBiens()">
+      <option value="default" data-i18n="sort_default">Trier par défaut</option>
+      <option value="prix_asc" data-i18n="sort_prix_asc">Prix croissant</option>
+      <option value="prix_desc" data-i18n="sort_prix_desc">Prix décroissant</option>
+      <option value="valeur_desc" data-i18n="sort_valeur">Meilleure valeur ajoutée</option>
+    </select>
+  </div>
+</div>
+
+<!-- STATS GLOBALES -->
+<div class="global-stats">
+  <div class="gstat">
+    <div class="gstat-val" id="stat_dispo">—</div>
+    <div class="gstat-label" data-i18n="stat_dispo">Biens disponibles</div>
+  </div>
+  <div class="gstat">
+    <div class="gstat-val">+38%</div>
+    <div class="gstat-label" data-i18n="stat_valeur">Valeur ajoutée moyenne</div>
+  </div>
+  <div class="gstat">
+    <div class="gstat-val">8</div>
+    <div class="gstat-label" data-i18n="stat_vendus">Biens vendus cette année</div>
+  </div>
+  <div class="gstat">
+    <div class="gstat-val">2</div>
+    <div class="gstat-label" data-i18n="stat_pays">Pays — DZ & MA</div>
+  </div>
+</div>
+
+<section class="biens-section">
+  <div class="biens-grid" id="biensGrid"></div>
+  <div class="no-results" id="noResults" style="display:none" data-i18n="no_results">Aucun bien trouvé.</div>
+</section>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<script>
+const BIENS = [
+  {
+    id: 1,
+    emoji: '🏢',
+    bg: 'linear-gradient(135deg,#1a1025,#2d1a40)',
+    statut: 'dispo',
+    pays: 'DZ',
+    titre_fr: 'Appartement F4 Hydra', titre_ar: 'شقة F4 حيدرة', titre_en: 'F4 Apartment Hydra', titre_es: 'Apartamento F4 Hydra',
+    location_fr: 'Alger, Algérie', location_ar: 'الجزائر العاصمة، الجزائر', location_en: 'Algiers, Algeria', location_es: 'Argel, Argelia',
+    surface: '110m²', chambres: 3, sdb: 2, etage_fr: '4ème étage', etage_ar: 'الطابق 4', etage_en: '4th floor', etage_es: '4.ª planta',
+    prix_avant: 18000000, cout_travaux: 7000000, prix_vente: 34000000,
+    devise: 'DA', valeur_pct: 38,
+    desc_fr: 'Appartement entièrement rénové dans le quartier prisé de Hydra. Finitions haut de gamme : marbre italien, cuisine équipée allemande, domotique, menuiseries aluminium double vitrage.',
+    desc_ar: 'شقة مجددة بالكامل في حي حيدرة الراقي. تشطيبات عالية الجودة: رخام إيطالي، مطبخ مجهز ألماني، نظام ذكي، نوافذ ألومنيوم مزدوجة.',
+    desc_en: 'Fully renovated apartment in the sought-after Hydra district. Premium finishes: Italian marble, German fitted kitchen, home automation, double-glazed aluminium joinery.',
+    desc_es: 'Apartamento totalmente renovado en el codiciado barrio de Hydra. Acabados premium: mármol italiano, cocina alemana equipada, domótica, carpintería de aluminio con doble acristalamiento.',
+    travaux: ['Démolition & restructuration','Marbre sol & murs','Cuisine équipée','Domotique complète','Électricité neuve','Plomberie refaite','Menuiseries aluminium','Peinture décorative','Climatisation centrale','Décoration Najat Toubal'],
+    historique: [
+      { date_fr:'Jan 2022', date_ar:'يناير 2022', date_en:'Jan 2022', date_es:'Ene 2022', event_fr:'Acquisition du bien', event_ar:'اقتناء العقار', event_en:'Property acquired', event_es:'Adquisición del bien', prix:'18 000 000 DA', delta:null },
+      { date_fr:'Fév–Jun 2022', date_ar:'فبراير–يونيو 2022', date_en:'Feb–Jun 2022', date_es:'Feb–Jun 2022', event_fr:'Travaux de rénovation (4 mois)', event_ar:'أشغال التجديد (4 أشهر)', event_en:'Renovation works (4 months)', event_es:'Obras de renovación (4 meses)', prix:'7 000 000 DA', delta:null },
+      { date_fr:'Juil 2022', date_ar:'يوليو 2022', date_en:'Jul 2022', date_es:'Jul 2022', event_fr:'Livraison & mise en vente', event_ar:'التسليم والطرح للبيع', event_en:'Delivery & listing', event_es:'Entrega y puesta en venta', prix:'34 000 000 DA', delta:'+38%', current: true },
+    ]
+  },
+  {
+    id: 2,
+    emoji: '🌊',
+    bg: 'linear-gradient(135deg,#0d1a2e,#0a2a1a)',
+    statut: 'dispo',
+    pays: 'DZ',
+    titre_fr: 'Duplex Vue Mer Jijel', titre_ar: 'دوبلكس إطلالة بحرية جيجل', titre_en: 'Sea View Duplex Jijel', titre_es: 'Dúplex Vista Mar Jijel',
+    location_fr: 'Jijel, Algérie', location_ar: 'جيجل، الجزائر', location_en: 'Jijel, Algeria', location_es: 'Jijel, Argelia',
+    surface: '145m²', chambres: 4, sdb: 2, etage_fr: '5ème étage avec terrasse', etage_ar: 'الطابق 5 مع شرفة', etage_en: '5th floor with terrace', etage_es: '5.ª planta con terraza',
+    prix_avant: 22000000, cout_travaux: 9500000, prix_vente: 44000000,
+    devise: 'DA', valeur_pct: 41,
+    desc_fr: 'Duplex exceptionnel avec vue panoramique sur la mer de Jijel. Grande terrasse de 30m², salon double, cuisine ouverte américaine. Matériaux nobles, éclairage architectural.',
+    desc_ar: 'دوبلكس استثنائي بإطلالة بانورامية على بحر جيجل. شرفة كبيرة 30 متر، صالون مزدوج، مطبخ أمريكي مفتوح. مواد نبيلة، إضاءة معمارية.',
+    desc_en: 'Exceptional duplex with panoramic sea view over Jijel. 30m² terrace, double living room, open American kitchen. Noble materials, architectural lighting.',
+    desc_es: 'Dúplex excepcional con vista panorámica al mar de Jijel. Gran terraza de 30m², salón doble, cocina americana abierta. Materiales nobles, iluminación arquitectónica.',
+    travaux: ['Restructuration complète','Terrasse 30m²','Vue mer dégagée','Cuisine américaine','Salon double','2 salles de bain','Parquet massif','Éclairage LED','Isolation phonique','Décoration Najat Toubal'],
+    historique: [
+      { date_fr:'Mar 2023', date_ar:'مارس 2023', date_en:'Mar 2023', date_es:'Mar 2023', event_fr:'Acquisition', event_ar:'الاقتناء', event_en:'Acquisition', event_es:'Adquisición', prix:'22 000 000 DA', delta:null },
+      { date_fr:'Avr–Oct 2023', date_ar:'أبريل–أكتوبر 2023', date_en:'Apr–Oct 2023', date_es:'Abr–Oct 2023', event_fr:'Rénovation complète (6 mois)', event_ar:'تجديد كامل (6 أشهر)', event_en:'Full renovation (6 months)', event_es:'Renovación completa (6 meses)', prix:'9 500 000 DA', delta:null },
+      { date_fr:'Nov 2023', date_ar:'نوفمبر 2023', date_en:'Nov 2023', date_es:'Nov 2023', event_fr:'Mise en vente — disponible', event_ar:'طرح للبيع — متاح', event_en:'Listed — available', event_es:'En venta — disponible', prix:'44 000 000 DA', delta:'+41%', current: true },
+    ]
+  },
+  {
+    id: 3,
+    emoji: '🌴',
+    bg: 'linear-gradient(135deg,#1a2d10,#2a1a0a)',
+    statut: 'reserve',
+    pays: 'MA',
+    titre_fr: 'Appartement Premium Casablanca', titre_ar: 'شقة بريميوم الدار البيضاء', titre_en: 'Premium Apartment Casablanca', titre_es: 'Apartamento Premium Casablanca',
+    location_fr: 'Casablanca, Maroc', location_ar: 'الدار البيضاء، المغرب', location_en: 'Casablanca, Morocco', location_es: 'Casablanca, Marruecos',
+    surface: '125m²', chambres: 3, sdb: 2, etage_fr: '8ème étage', etage_ar: 'الطابق 8', etage_en: '8th floor', etage_es: '8.ª planta',
+    prix_avant: 1200000, cout_travaux: 550000, prix_vente: 2600000,
+    devise: 'MAD', valeur_pct: 47,
+    desc_fr: 'Appartement redesigné dans un immeuble de standing à Casablanca. Vue dégagée, finitions contemporaines, terrasse privative, parking double. Décoration artistique intégrée.',
+    desc_ar: 'شقة معاد تصميمها في مبنى راقٍ بالدار البيضاء. إطلالة مفتوحة، تشطيبات معاصرة، شرفة خاصة، موقف مزدوج. ديكور فني متكامل.',
+    desc_en: 'Redesigned apartment in an upmarket building in Casablanca. Open view, contemporary finishes, private terrace, double parking. Integrated artistic decoration.',
+    desc_es: 'Apartamento rediseñado en un edificio de lujo en Casablanca. Vistas despejadas, acabados contemporáneos, terraza privada, garaje doble. Decoración artística integrada.',
+    travaux: ['Restructuration intérieure','Terrasse privative','Cuisine design','Parquet chêne massif','Salle de bain spa','Dressing sur mesure','Électricité aux normes','Peinture effet stuc','Éclairage architectural','Œuvre Najat Toubal'],
+    historique: [
+      { date_fr:'Sep 2022', date_ar:'سبتمبر 2022', date_en:'Sep 2022', date_es:'Sep 2022', event_fr:'Acquisition', event_ar:'الاقتناء', event_en:'Acquisition', event_es:'Adquisición', prix:'1 200 000 MAD', delta:null },
+      { date_fr:'Oct 2022–Fév 2023', date_ar:'أكتوبر 2022–فبراير 2023', date_en:'Oct 2022–Feb 2023', date_es:'Oct 2022–Feb 2023', event_fr:'Rénovation 5 mois', event_ar:'تجديد 5 أشهر', event_en:'5-month renovation', event_es:'Renovación 5 meses', prix:'550 000 MAD', delta:null },
+      { date_fr:'Mar 2023', date_ar:'مارس 2023', date_en:'Mar 2023', date_es:'Mar 2023', event_fr:'Mise en vente', event_ar:'طرح للبيع', event_en:'Listed', event_es:'En venta', prix:'2 200 000 MAD', delta:'+37%' },
+      { date_fr:'Jan 2024', date_ar:'يناير 2024', date_en:'Jan 2024', date_es:'Ene 2024', event_fr:'Réévaluation & réservation', event_ar:'إعادة التقييم والحجز', event_en:'Revaluation & reservation', event_es:'Revaluación y reserva', prix:'2 600 000 MAD', delta:'+47%', current: true },
+    ]
+  },
+  {
+    id: 4,
+    emoji: '🌟',
+    bg: 'linear-gradient(135deg,#2a1520,#1a0d2a)',
+    statut: 'dispo',
+    pays: 'MA',
+    titre_fr: 'Riad Réinventé Marrakech', titre_ar: 'رياض معاد اكتشافه مراكش', titre_en: 'Reinvented Riad Marrakech', titre_es: 'Riad Reinventado Marrakech',
+    location_fr: 'Marrakech, Maroc', location_ar: 'مراكش، المغرب', location_en: 'Marrakech, Morocco', location_es: 'Marrakech, Marruecos',
+    surface: '200m²', chambres: 5, sdb: 3, etage_fr: 'Maison 2 niveaux + terrasse', etage_ar: 'منزل طابقين + شرفة', etage_en: '2-level house + terrace', etage_es: 'Casa 2 niveles + terraza',
+    prix_avant: 1800000, cout_travaux: 980000, prix_vente: 4200000,
+    devise: 'MAD', valeur_pct: 61,
+    desc_fr: 'Riad traditionnel de la Médina entièrement restauré. Zellige artisanal, tadelakt, fontaine centrale, terrasse panoramique sur les toits. 5 suites dont une suite royale. Œuvres exclusives Najat Toubal.',
+    desc_ar: 'رياض تقليدي من المدينة القديمة مُرمَّم بالكامل. زليج حرفي، تادلاكت، نافورة مركزية، شرفة بانورامية. 5 أجنحة بما فيها جناح ملكي. أعمال حصرية لنجاة توبال.',
+    desc_en: 'Traditional Medina riad fully restored. Artisan zellige, tadelakt, central fountain, panoramic rooftop terrace. 5 suites including a royal suite. Exclusive Najat Toubal artworks.',
+    desc_es: 'Riad tradicional de la Medina totalmente restaurado. Zellige artesanal, tadelakt, fuente central, terraza panorámica. 5 suites incluida suite real. Obras exclusivas de Najat Toubal.',
+    travaux: ['Restauration structure','Zellige artisanal','Fontaine centrale','Tadelakt murs','Terrasse panoramique','5 suites rénovées','Suite royale','Jardinet intérieur','Éclairage ambiance','Œuvres Najat Toubal'],
+    historique: [
+      { date_fr:'Juin 2022', date_ar:'يونيو 2022', date_en:'Jun 2022', date_es:'Jun 2022', event_fr:'Acquisition riad ancien', event_ar:'اقتناء رياض قديم', event_en:'Old riad acquired', event_es:'Adquisición riad antiguo', prix:'1 800 000 MAD', delta:null },
+      { date_fr:'Juil 2022–Jan 2023', date_ar:'يوليو 2022–يناير 2023', date_en:'Jul 2022–Jan 2023', date_es:'Jul 2022–Ene 2023', event_fr:'Restauration complète (7 mois)', event_ar:'ترميم كامل (7 أشهر)', event_en:'Full restoration (7 months)', event_es:'Restauración completa (7 meses)', prix:'980 000 MAD', delta:null },
+      { date_fr:'Fév 2023', date_ar:'فبراير 2023', date_en:'Feb 2023', date_es:'Feb 2023', event_fr:'Livraison & estimation initiale', event_ar:'التسليم والتقييم الأولي', event_en:'Delivery & initial estimate', event_es:'Entrega y estimación inicial', prix:'3 500 000 MAD', delta:'+44%' },
+      { date_fr:'Jan 2024', date_ar:'يناير 2024', date_en:'Jan 2024', date_es:'Ene 2024', event_fr:'Réévaluation — mis en vente', event_ar:'إعادة التقييم — طرح للبيع', event_en:'Revaluation — listed', event_es:'Revaluación — en venta', prix:'4 200 000 MAD', delta:'+61%', current: true },
+    ]
+  },
+  {
+    id: 5,
+    emoji: '🏔️',
+    bg: 'linear-gradient(135deg,#1a1a0d,#2a2010)',
+    statut: 'dispo',
+    pays: 'DZ',
+    titre_fr: 'Appartement F3 Tizi Ouzou', titre_ar: 'شقة F3 تيزي وزو', titre_en: 'F3 Apartment Tizi Ouzou', titre_es: 'Apartamento F3 Tizi Ouzou',
+    location_fr: 'Tizi Ouzou, Algérie', location_ar: 'تيزي وزو، الجزائر', location_en: 'Tizi Ouzou, Algeria', location_es: 'Tizi Ouzou, Argelia',
+    surface: '85m²', chambres: 2, sdb: 1, etage_fr: '3ème étage', etage_ar: 'الطابق 3', etage_en: '3rd floor', etage_es: '3.ª planta',
+    prix_avant: 12000000, cout_travaux: 4500000, prix_vente: 22000000,
+    devise: 'DA', valeur_pct: 33,
+    desc_fr: 'Appartement compact et fonctionnel entièrement rénové avec vue sur les montagnes du Djurdjura. Idéal primo-accédant ou investisseur. Très faibles charges.',
+    desc_ar: 'شقة مدمجة وعملية مجددة بالكامل مع إطلالة على جبال جرجرة. مثالية للمشتري الأول أو المستثمر. تكاليف منخفضة جداً.',
+    desc_en: 'Compact and functional fully renovated apartment with views of the Djurdjura mountains. Ideal for first-time buyers or investors. Very low charges.',
+    desc_es: 'Apartamento compacto y funcional totalmente renovado con vistas a las montañas del Djurdjura. Ideal para primera compra o inversión. Gastos muy bajos.',
+    travaux: ['Électricité refaite','Plomberie complète','Carrelage neuf','Cuisine équipée','Salle de bain refaite','Peinture complète','Double vitrage','Porte blindée','Rangements intégrés','Chauffe-eau solaire'],
+    historique: [
+      { date_fr:'Mar 2023', date_ar:'مارس 2023', date_en:'Mar 2023', date_es:'Mar 2023', event_fr:'Acquisition', event_ar:'الاقتناء', event_en:'Acquisition', event_es:'Adquisición', prix:'12 000 000 DA', delta:null },
+      { date_fr:'Avr–Jul 2023', date_ar:'أبريل–يوليو 2023', date_en:'Apr–Jul 2023', date_es:'Abr–Jul 2023', event_fr:'Rénovation 4 mois', event_ar:'تجديد 4 أشهر', event_en:'4-month renovation', event_es:'Renovación 4 meses', prix:'4 500 000 DA', delta:null },
+      { date_fr:'Août 2023', date_ar:'أغسطس 2023', date_en:'Aug 2023', date_es:'Ago 2023', event_fr:'Mise en vente', event_ar:'طرح للبيع', event_en:'Listed', event_es:'En venta', prix:'22 000 000 DA', delta:'+33%', current: true },
+    ]
+  },
+  {
+    id: 6,
+    emoji: '🌅',
+    bg: 'linear-gradient(135deg,#2a1010,#1a1a2a)',
+    statut: 'vendu',
+    pays: 'MA',
+    titre_fr: 'Studio Prestige Rabat', titre_ar: 'استوديو بريستيج الرباط', titre_en: 'Prestige Studio Rabat', titre_es: 'Estudio Prestige Rabat',
+    location_fr: 'Rabat, Maroc', location_ar: 'الرباط، المغرب', location_en: 'Rabat, Morocco', location_es: 'Rabat, Marruecos',
+    surface: '52m²', chambres: 1, sdb: 1, etage_fr: '6ème étage', etage_ar: 'الطابق 6', etage_en: '6th floor', etage_es: '6.ª planta',
+    prix_avant: 420000, cout_travaux: 180000, prix_vente: 850000,
+    devise: 'MAD', valeur_pct: 40,
+    desc_fr: 'Studio compact entièrement redesigné, vendu en 3 semaines. Exemple type de la stratégie KENZ ZNICA : acquisition bas de marché, rénovation premium, revente rapide.',
+    desc_ar: 'استوديو مدمج معاد تصميمه بالكامل، بيع في 3 أسابيع. نموذج استراتيجية KENZ ZNICA: اقتناء بسعر منخفض، تجديد راقٍ، إعادة بيع سريعة.',
+    desc_en: 'Compact fully redesigned studio, sold in 3 weeks. Typical example of the KENZ ZNICA strategy: low-market acquisition, premium renovation, fast resale.',
+    desc_es: 'Estudio compacto totalmente rediseñado, vendido en 3 semanas. Ejemplo típico de la estrategia KENZ ZNICA: adquisición a bajo precio, renovación premium, reventa rápida.',
+    travaux: ['Cuisine design compact','Salle de bain walk-in','Rangements sur mesure','Béton ciré sol','Éclairage design','Dressing intégré','Volets motorisés','Fibre optique','Interphone vidéo','Décoration Najat Toubal'],
+    historique: [
+      { date_fr:'Jan 2023', date_ar:'يناير 2023', date_en:'Jan 2023', date_es:'Ene 2023', event_fr:'Acquisition', event_ar:'الاقتناء', event_en:'Acquisition', event_es:'Adquisición', prix:'420 000 MAD', delta:null },
+      { date_fr:'Fév–Avr 2023', date_ar:'فبراير–أبريل 2023', date_en:'Feb–Apr 2023', date_es:'Feb–Abr 2023', event_fr:'Rénovation 3 mois', event_ar:'تجديد 3 أشهر', event_en:'3-month renovation', event_es:'Renovación 3 meses', prix:'180 000 MAD', delta:null },
+      { date_fr:'Mai 2023', date_ar:'مايو 2023', date_en:'May 2023', date_es:'May 2023', event_fr:'Mise en vente', event_ar:'طرح للبيع', event_en:'Listed', event_es:'En venta', prix:'850 000 MAD', delta:'+40%' },
+      { date_fr:'Jun 2023', date_ar:'يونيو 2023', date_en:'Jun 2023', date_es:'Jun 2023', event_fr:'Vendu — 3 semaines', event_ar:'مبيع — 3 أسابيع', event_en:'Sold — 3 weeks', event_es:'Vendido — 3 semanas', prix:'850 000 MAD', delta:'✓', current: true },
+    ]
+  },
+];
+
+let currentFilter = 'all';
+let currentLang = 'fr';
+
+const i18n = {
+  fr: { nav_services:'Services', nav_realisations:'Réalisations', nav_vente:'Vente', nav_art:'Art', nav_rdv:'Rendez-vous', nav_profil:'Mon profil', page_tag:'Appartements clé en main', page_title:'Biens rénovés,<br>prêts à <em>habiter</em>', f_all:'Tous', f_dispo:'Disponibles', f_reserve:'Réservés', f_dz:'🇩🇿 Algérie', f_ma:'🇲🇦 Maroc', sort_default:'Trier par défaut', sort_prix_asc:'Prix croissant', sort_prix_desc:'Prix décroissant', sort_valeur:'Meilleure valeur ajoutée', stat_dispo:'Biens disponibles', stat_valeur:'Valeur ajoutée moyenne', stat_vendus:'Vendus cette année', stat_pays:'Pays — DZ & MA', no_results:'Aucun bien trouvé.', lbl_surface:'Surface', lbl_chambres:'Ch.', lbl_sdb:'SdB', lbl_prix_hist:'Historique de valorisation', lbl_travaux:'Travaux réalisés', lbl_prix_vente:'Prix de vente', btn_detail:'Voir détail', btn_rdv:'Prendre RDV', btn_rdv_reserve:'Réservé', btn_rdv_vendu:'Vendu', statut_dispo:'Disponible', statut_reserve:'Réservé', statut_vendu:'Vendu', valeur_label:'Valeur ajoutée' },
+  ar: { nav_services:'الخدمات', nav_realisations:'الإنجازات', nav_vente:'البيع', nav_art:'فن', nav_rdv:'المواعيد', nav_profil:'ملفي', page_tag:'شقق جاهزة للسكن', page_title:'عقارات مجددة،<br>جاهزة <em>للسكن</em>', f_all:'الكل', f_dispo:'المتاحة', f_reserve:'المحجوزة', f_dz:'🇩🇿 الجزائر', f_ma:'🇲🇦 المغرب', sort_default:'الترتيب الافتراضي', sort_prix_asc:'السعر تصاعدي', sort_prix_desc:'السعر تنازلي', sort_valeur:'أعلى قيمة مضافة', stat_dispo:'عقارات متاحة', stat_valeur:'متوسط القيمة المضافة', stat_vendus:'مبيعة هذا العام', stat_pays:'دولتان — الجزائر والمغرب', no_results:'لم يتم العثور على عقارات.', lbl_surface:'المساحة', lbl_chambres:'غرف', lbl_sdb:'حمام', lbl_prix_hist:'سجل التقييم', lbl_travaux:'الأشغال المنجزة', lbl_prix_vente:'سعر البيع', btn_detail:'عرض التفاصيل', btn_rdv:'حجز موعد', btn_rdv_reserve:'محجوز', btn_rdv_vendu:'مبيع', statut_dispo:'متاح', statut_reserve:'محجوز', statut_vendu:'مبيع', valeur_label:'القيمة المضافة' },
+  en: { nav_services:'Services', nav_realisations:'Portfolio', nav_vente:'For Sale', nav_art:'Art', nav_rdv:'Book', nav_profil:'My Profile', page_tag:'Turnkey apartments', page_title:'Renovated properties,<br>ready to <em>move in</em>', f_all:'All', f_dispo:'Available', f_reserve:'Reserved', f_dz:'🇩🇿 Algeria', f_ma:'🇲🇦 Morocco', sort_default:'Default order', sort_prix_asc:'Price low to high', sort_prix_desc:'Price high to low', sort_valeur:'Best added value', stat_dispo:'Properties available', stat_valeur:'Average added value', stat_vendus:'Sold this year', stat_pays:'Countries — DZ & MA', no_results:'No properties found.', lbl_surface:'Area', lbl_chambres:'Beds', lbl_sdb:'Baths', lbl_prix_hist:'Valuation history', lbl_travaux:'Works carried out', lbl_prix_vente:'Sale price', btn_detail:'View details', btn_rdv:'Book appointment', btn_rdv_reserve:'Reserved', btn_rdv_vendu:'Sold', statut_dispo:'Available', statut_reserve:'Reserved', statut_vendu:'Sold', valeur_label:'Added value' },
+  es: { nav_services:'Servicios', nav_realisations:'Realizaciones', nav_vente:'Venta', nav_art:'Arte', nav_rdv:'Cita', nav_profil:'Mi perfil', page_tag:'Apartamentos llave en mano', page_title:'Bienes renovados,<br>listos para <em>habitar</em>', f_all:'Todos', f_dispo:'Disponibles', f_reserve:'Reservados', f_dz:'🇩🇿 Argelia', f_ma:'🇲🇦 Marruecos', sort_default:'Orden por defecto', sort_prix_asc:'Precio ascendente', sort_prix_desc:'Precio descendente', sort_valeur:'Mejor valor añadido', stat_dispo:'Bienes disponibles', stat_valeur:'Valor añadido medio', stat_vendus:'Vendidos este año', stat_pays:'Países — DZ & MA', no_results:'No se encontraron bienes.', lbl_surface:'Superficie', lbl_chambres:'Hab.', lbl_sdb:'Baños', lbl_prix_hist:'Historial de valorización', lbl_travaux:'Obras realizadas', lbl_prix_vente:'Precio de venta', btn_detail:'Ver detalles', btn_rdv:'Reservar cita', btn_rdv_reserve:'Reservado', btn_rdv_vendu:'Vendido', statut_dispo:'Disponible', statut_reserve:'Reservado', statut_vendu:'Vendido', valeur_label:'Valor añadido' },
+};
+
+function setLang(lang) {
+  currentLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(b => { if(b.textContent.toLowerCase()===lang) b.classList.add('active'); });
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  const t = i18n[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if(t[key]) el.innerHTML = t[key];
+  });
+  renderBiens();
+}
+
+function applyFilter(f, btn) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderBiens();
+}
+
+function getFiltered() {
+  let list = BIENS.slice();
+  if (currentFilter === 'dispo') list = list.filter(b => b.statut === 'dispo');
+  else if (currentFilter === 'reserve') list = list.filter(b => b.statut === 'reserve');
+  else if (currentFilter === 'DZ') list = list.filter(b => b.pays === 'DZ');
+  else if (currentFilter === 'MA') list = list.filter(b => b.pays === 'MA');
+  const sort = document.getElementById('sortSelect').value;
+  if (sort === 'prix_asc') list.sort((a,b) => a.prix_vente - b.prix_vente);
+  else if (sort === 'prix_desc') list.sort((a,b) => b.prix_vente - a.prix_vente);
+  else if (sort === 'valeur_desc') list.sort((a,b) => b.valeur_pct - a.valeur_pct);
+  return list;
+}
+
+function fmtPrix(val, devise) {
+  return val.toLocaleString('fr-FR') + ' ' + devise;
+}
+
+function renderBiens() {
+  const t = i18n[currentLang];
+  const list = getFiltered();
+  const grid = document.getElementById('biensGrid');
+  const noRes = document.getElementById('noResults');
+  const nbDispo = BIENS.filter(b => b.statut === 'dispo').length;
+  document.getElementById('stat_dispo').textContent = nbDispo;
+
+  if (list.length === 0) { grid.innerHTML=''; noRes.style.display='block'; return; }
+  noRes.style.display = 'none';
+
+  grid.innerHTML = list.map(b => {
+    const titre = b[`titre_${currentLang}`];
+    const loc = b[`location_${currentLang}`];
+    const etage = b[`etage_${currentLang}`];
+    const statutClass = b.statut === 'dispo' ? 'badge-dispo' : b.statut === 'reserve' ? 'badge-reserve' : 'badge-vendu';
+    const statutLabel = b.statut === 'dispo' ? t.statut_dispo : b.statut === 'reserve' ? t.statut_reserve : t.statut_vendu;
+    const barWidth = Math.min(b.valeur_pct * 1.2, 100);
+    const rdvClass = b.statut !== 'dispo' ? 'disabled' : '';
+    const rdvLabel = b.statut === 'dispo' ? t.btn_rdv : b.statut === 'reserve' ? t.btn_rdv_reserve : t.btn_rdv_vendu;
+    const rdvHref = b.statut === 'dispo' ? `agenda.html?dir=2&bien=${b.id}` : '#';
+
+    return `
+    <div class="bien-card">
+      <div class="bien-visual">
+        <div class="bien-bg" style="background:${b.bg}"></div>
+        <div class="bien-emoji">${b.emoji}</div>
+        <div class="bien-badges-overlay">
+          <span class="badge-overlay ${statutClass}">${statutLabel}</span>
+        </div>
+        <div class="valeur-badge">
+          <span>+${b.valeur_pct}%</span>
+          <small>${t.valeur_label}</small>
+        </div>
+      </div>
+      <div class="bien-info">
+        <div class="bien-top">
+          <h3 class="bien-title">${titre}</h3>
+          <span class="bien-pays">${b.pays === 'DZ' ? '🇩🇿' : '🇲🇦'}</span>
+        </div>
+        <p class="bien-location">📍 ${loc} · ${etage}</p>
+        <div class="prix-timeline">
+          <div class="prix-label">${t.lbl_prix_hist}</div>
+          <div class="prix-row"><div class="prix-dot avant"></div><span class="prix-text" style="color:var(--muted)">Achat</span><span class="prix-val">${fmtPrix(b.prix_avant, b.devise)}</span></div>
+          <div class="prix-row"><div class="prix-dot travaux"></div><span class="prix-text" style="color:var(--muted)">Travaux</span><span class="prix-val">+ ${fmtPrix(b.cout_travaux, b.devise)}</span></div>
+          <div class="prix-row"><div class="prix-dot apres"></div><span class="prix-text" style="color:var(--cream);font-weight:500">${t.lbl_prix_vente}</span><span class="prix-val final">${fmtPrix(b.prix_vente, b.devise)}</span></div>
+        </div>
+        <div class="valeur-bar">
+          <div class="valeur-bar-label"><span>${t.valeur_label}</span><span>+${b.valeur_pct}%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:${barWidth}%"></div></div>
+        </div>
+        <div class="bien-specs">
+          <span class="spec"><span class="spec-icon">📐</span>${b.surface}</span>
+          <span class="spec"><span class="spec-icon">🛏️</span>${b.chambres} ${t.lbl_chambres}</span>
+          <span class="spec"><span class="spec-icon">🚿</span>${b.sdb} ${t.lbl_sdb}</span>
+        </div>
+        <div class="bien-actions">
+          <button class="btn-detail" onclick="openModal(${b.id})">${t.btn_detail}</button>
+          <a href="${rdvHref}" class="btn-rdv ${rdvClass}">${rdvLabel} ${b.statut==='dispo'?'→':''}</a>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openModal(id) {
+  const b = BIENS.find(x => x.id === id);
+  if (!b) return;
+  const t = i18n[currentLang];
+  const titre = b[`titre_${currentLang}`];
+  const loc = b[`location_${currentLang}`];
+  const desc = b[`desc_${currentLang}`];
+  const etage = b[`etage_${currentLang}`];
+
+  const histoHtml = b.historique.map(h => `
+    <div class="histo-item${h.current?' current':''}">
+      <div class="histo-date">${h[`date_${currentLang}`]}</div>
+      <div class="histo-event">${h[`event_${currentLang}`]}</div>
+      <div class="histo-price${h.current?' green':''}">${h.prix}</div>
+      ${h.delta ? `<div class="histo-delta delta-up">▲ ${h.delta}</div>` : ''}
+    </div>`).join('');
+
+  const rdvHref = b.statut === 'dispo' ? `agenda.html?dir=2&bien=${b.id}` : '#';
+  const rdvLabel = b.statut === 'dispo' ? t.btn_rdv : b.statut === 'reserve' ? t.btn_rdv_reserve : t.btn_rdv_vendu;
+
+  document.getElementById('modalBox').innerHTML = `
+    <div class="modal-header">
+      <div>
+        <h2 class="modal-title">${titre}</h2>
+        <p style="font-size:0.8rem;color:var(--muted);margin-top:0.3rem">📍 ${loc} · ${etage}</p>
+      </div>
+      <button class="close-modal" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-visual" style="background:${b.bg}">
+      <div class="bien-emoji" style="font-size:6rem;opacity:0.4">${b.emoji}</div>
+      <div style="position:absolute;top:16px;right:16px;background:rgba(13,13,13,0.85);border:0.5px solid var(--green);padding:0.6rem 1rem;text-align:center">
+        <div style="font-family:var(--serif);font-size:1.6rem;color:var(--green)">+${b.valeur_pct}%</div>
+        <div style="font-size:0.62rem;color:var(--muted)">${t.valeur_label}</div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-specs-grid">
+        <div class="mspec"><div class="mspec-val">${b.surface}</div><div class="mspec-label">${t.lbl_surface}</div></div>
+        <div class="mspec"><div class="mspec-val">${b.chambres}</div><div class="mspec-label">${t.lbl_chambres}</div></div>
+        <div class="mspec"><div class="mspec-val">${fmtPrix(b.prix_vente, b.devise)}</div><div class="mspec-label">${t.lbl_prix_vente}</div></div>
+      </div>
+      <p style="font-size:0.88rem;color:var(--muted);line-height:1.8;margin-bottom:2rem">${desc}</p>
+      <div class="histo-section">
+        <div class="histo-title">${t.lbl_prix_hist}</div>
+        <div class="histo-timeline">${histoHtml}</div>
+      </div>
+      <div class="modal-travaux" style="margin-bottom:2rem">
+        <div class="histo-title">${t.lbl_travaux}</div>
+        <div class="travaux-grid">${b.travaux.map(tr => `<div class="travaux-item">${tr}</div>`).join('')}</div>
+      </div>
+      ${b.statut === 'dispo' ? `<a href="${rdvHref}" class="modal-rdv-btn">${rdvLabel} →</a>` : `<div style="text-align:center;padding:1rem;font-size:0.8rem;color:var(--muted);border:0.5px solid rgba(201,168,76,0.15)">${rdvLabel}</div>`}
+    </div>`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+
+renderBiens();
+</script>
+</body>
+</html>
