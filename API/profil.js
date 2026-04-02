@@ -228,9 +228,9 @@ ${notes ? `<div class="row"><span class="label">Notes</span><span class="val" st
     };
 
     // Email bienvenue client
-    await sendEmail(email, welcomeSubjects[lang] || welcomeSubjects.fr, clientEmailHTML);
+    await sendEmail('fouedtaffar@outlook.com', welcomeSubjects[lang] || welcomeSubjects.fr, clientEmailHTML);
     // Notif équipe
-    await sendEmail(teamEmail, teamSubject, teamHTML);
+    await sendEmail('fouedtaffar@outlook.com', teamSubject, teamHTML);
 
     return res.status(200).json({ success: true });
 
